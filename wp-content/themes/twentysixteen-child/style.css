@@ -1,0 +1,10 @@
+/*
+ Theme Name: Twenty Sixteen Child
+ Theme URI: https://localhost:8888/
+ Description: This is a child theme of 2016
+ Author: CS 16.6
+ Author URI: https://wordpress.org/
+ Template: twentysixteen
+ Version: 1.0
+*/
+@import url("../twentysixteen/style.css");
