@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 </head>
 <body>
-<div id="map" style="width: 1200px; height: 675px"></div>
+<div id="map" style="width: 94.8%; height: 100vh"></div>
 
 
 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
@@ -44,8 +44,8 @@ var map = L.map('map', {
                 boxZoom: false,
                 crs: L.CRS.Simple
                 });
-var w = 1200,
-    h = 675,
+var w = (1200 * screen.width)/1280,
+    h = (675 * screen.height)/800,
     url = urlBegin + '/02/FredHutch_Home-1200x675.png';
 
 // calculate the edges of the image, in coordinate space
@@ -141,7 +141,7 @@ function changeEastlakeAngle(e, map, initialView, hotspot2){
                             });
     
     //define back button marker for the map
-    var backButton = L.marker([320, 15], {icon: goBackIcon});
+    var backButton = L.marker([318, 15], {icon: goBackIcon});
     
     
     // add all layers for path to zoom in
