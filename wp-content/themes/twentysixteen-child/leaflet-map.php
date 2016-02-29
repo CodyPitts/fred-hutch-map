@@ -149,37 +149,43 @@ function changeEastlakeAngle(e, map, initialView, hotspot2){
     var i = 2;
     setInterval(function(){
                 map.addLayer(sequence[i]);
-                map.removeLayer(sequence[i-1]);
+                
+                if (i > 3){
+                    map.removeLayer(sequence[i-2]);
+                }
+                
                 i++;
                 
                 //when all layers have been added, add back the back button and menu
-                if (i == 65){
+                if (i == 66){
                     mapMenu.addTo(map);
                     backButton.addTo(map);
                 }
                 
                 
-    }, 50, 65);
+    }, 40, 63);
     
      
     //event to go back when the back button is clicked
     backButton.on('click', function(e){
+        // removing the leftover layer from the additions above, and other features
+        map.removeLayer(sequence[64]);
         map.removeLayer(hotspot1);
         map.removeLayer(backButton);
         mapMenu.removeFrom(map);
                   
         //remove all layers and get back to the home image
-        var i = 65;
+        var k = 65;
         setInterval(function(){
-                    map.removeLayer(sequence[i]);
-                    map.addLayer(sequence[i-1]);
-                    i--;
+                    map.removeLayer(sequence[k]);
+                    map.addLayer(sequence[k-1]);
+                    k--;
                     
                     // when the initial layer is finally added back on, put the name hotspot back
-                    if(i == 1){
+                    if(k == 1){
                         map.addLayer(hotspot2);
                     }
-        }, 50, 64);
+        }, 40, 64);
     });
 }
 
