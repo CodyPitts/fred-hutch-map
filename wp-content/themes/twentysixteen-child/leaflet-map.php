@@ -10,12 +10,26 @@
 <title>Fred Hutch Virtual Map</title>
     <meta charset="utf-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 </head>
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    html, body, #map {
+        height: 100%;
+        max-width: 1200px;
+        max-height: 675px;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+}
+</style>
 <body>
-<div id="map" style="width: 94.8%; height: 100vh"></div>
+<div id="map"</div>
 
 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 <script>
@@ -28,7 +42,7 @@ var thomasSequence = new Array();
 var yaleSequence = new Array();
 
 
-//FOR ABOVE MAP STYLE: width: 960px; height: 315px
+//FOR ABOVE MAP STYLE (ORIGINAL): width: 960px; height: 315px
 
 //get URLs for images
 // this part holds "http://host_name"
@@ -56,14 +70,15 @@ var map = L.map('map', {
                 boxZoom: false,
                 crs: L.CRS.Simple
                 });
-var w = (1200 * screen.width)/1280,
-    h = (675 * screen.height)/800,
+// width and height of the image
+var w = 1200,
+    h = 675,
     url = urlBegin + '/03/FredHutch_Home-1200x675.png';
 
-// calculate the edges of the image, in coordinate space
+/*// calculate the edges of the image, in coordinate space
 var southWest = map.unproject([0, h], map.getMaxZoom()-1);
 var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
-var bounds = new L.LatLngBounds(southWest, northEast);
+var bounds = new L.LatLngBounds(southWest, northEast);*/
 
 // setup map dimensions, change x in zoom * x if dimensions are off
 var zoom = 1;
