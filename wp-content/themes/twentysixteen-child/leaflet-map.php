@@ -33,13 +33,18 @@ var yaleSequence = new Array();
 //get URLs for images
 // this part holds "http://host_name"
 var urlBegin = window.location.protocol + "//" + window.location.host;
-
+if (window.location.protocol != "http:"){
+    urlBegin = window.location.host;
+}
 // this part gets everything after host_name up until the individual folders holding the images
 var pathArray = window.location.pathname.split( '/' );
 var directoryFolder = pathArray[1];
 
 //put them together with folder path ( http://localhost:888/wordpresstest/wp-content/uploads/2016 )
-urlBegin = urlBegin + "/" + directoryFolder + "/wp-content/uploads/2016";
+if (directoryFolder == "wordpresstest")
+    urlBegin = urlBegin + "/" + directoryFolder + "/wp-content/uploads/2016";
+else
+    urlBegin = urlBegin + "/wp-content/uploads/2016";
 
 // setup map
 var map = L.map('map', {
@@ -71,9 +76,9 @@ var initialView = new L.imageOverlay( url, [[ center_h * 2, 0 ], [ 0, center_w *
 map.addLayer(initialView);
 
 // PRELOAD IMAGES
-preloadImages(eastlakeSequence, arnoldSequence, thomasSequence, SCCASequence, yaleSequence, map);
+preloadImages();
 
-function preloadImages(eastlakeSequence, arnoldSequence, thomasSequence, SCCASequence, yaleSequence, map){
+function preloadImages(){
     // Eastlake preload
     for(i = 1; i < 46; i++) {
         if (i < 10)
@@ -228,7 +233,7 @@ function resetStyle(e) {
 }
 
 //switch to Eastlake angle when eastlakeZone is clicked
-function changeEastlakeAngle(e, map, hotspot2, eastlakeSequence){
+function changeEastlakeAngle(e){
 
     // Preload images (45 of them)
     /*if (eastlakeSequence == null){
@@ -259,7 +264,7 @@ function changeEastlakeAngle(e, map, hotspot2, eastlakeSequence){
     
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/02/edited_back_arrow.png',
+                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
                             iconSize: [80,80]
                             });
     
@@ -313,12 +318,10 @@ function changeEastlakeAngle(e, map, hotspot2, eastlakeSequence){
                     }
         }, 40, 44);
     });
-    
-    return eastlakeSequence;
 }
 
 //switch to Arnold angle when arnoldZone is clicked
-function changeArnoldAngle(e, map, hotspot2, arnoldSequence){
+function changeArnoldAngle(e){
     
     // Preload images (40 of them)
     /*if(arnoldSequence == null){
@@ -350,7 +353,7 @@ function changeArnoldAngle(e, map, hotspot2, arnoldSequence){
     
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/02/edited_back_arrow.png',
+                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
                             iconSize: [80,80]
                             });
     
@@ -405,11 +408,10 @@ function changeArnoldAngle(e, map, hotspot2, arnoldSequence){
                               }
                   }, 40, 39);
     });
-    return arnoldSequence;
 }
 
 //switch to SCCA angle when SCCAZone is clicked
-function changeSCCAAngle(e, map, hotspot2, SCCASequence){
+function changeSCCAAngle(e){
     
     // Preload images (32 of them)
     /*if (SCCASequence == null){
@@ -441,7 +443,7 @@ function changeSCCAAngle(e, map, hotspot2, SCCASequence){
     
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/02/edited_back_arrow.png',
+                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
                             iconSize: [80,80]
                             });
     
@@ -496,11 +498,10 @@ function changeSCCAAngle(e, map, hotspot2, SCCASequence){
                               }
                   }, 40, 31);
     });
-    return SCCASequence;
 }
 
 //switch to Thomas angle when thomasZone is clicked
-function changeThomasAngle(e, map, hotspot2, thomasSequence){
+function changeThomasAngle(e){
     
     // Preload images (40 of them)
     /*if (thomasSequence == null){
@@ -532,7 +533,7 @@ function changeThomasAngle(e, map, hotspot2, thomasSequence){
     
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/02/edited_back_arrow.png',
+                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
                             iconSize: [80,80]
                             });
     
@@ -587,11 +588,10 @@ function changeThomasAngle(e, map, hotspot2, thomasSequence){
                               }
                   }, 40, 39);
     });
-    return thomasSequence;
 }
 
 //switch to Yale angle when yaleZone is clicked
-function changeYaleAngle(e, map, hotspot2, yaleSequence){
+function changeYaleAngle(e){
     
     // Preload images (45 of them)
     /*if (yaleSequence == null){
@@ -623,7 +623,7 @@ function changeYaleAngle(e, map, hotspot2, yaleSequence){
     
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/02/edited_back_arrow.png',
+                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
                             iconSize: [80,80]
                             });
     
@@ -678,7 +678,6 @@ function changeYaleAngle(e, map, hotspot2, yaleSequence){
                               }
                   }, 40, 44);
     });
-    return yaleSequence;
 }
 
 
@@ -741,31 +740,31 @@ yaleZone.on('mouseout', function(e){
 //Eastlake hotzone click
 eastlakeZone.on('click', function(e){
         map.removeLayer(hotspot2);
-        eastlakeSequence = changeEastlakeAngle(e, map, hotspot2, eastlakeSequence);
+        changeEastlakeAngle(e);
 });
 
 //Arnold hotzone click
 arnoldZone.on('click', function(e){
         map.removeLayer(hotspot2);
-        arnoldSequence = changeArnoldAngle(e, map, hotspot2, arnoldSequence);
+        changeArnoldAngle(e);
 });
 
 //SCCA hotzone click
 SCCAZone.on('click', function(e){
         map.removeLayer(hotspot2);
-        SCCASequence = changeSCCAAngle(e, map, hotspot2, SCCASequence);
+        changeSCCAAngle(e);
 });
 
 //Thomas hotzone click
 thomasZone.on('click', function(e){
         map.removeLayer(hotspot2);
-        thomasSequence = changeThomasAngle(e, map, hotspot2, thomasSequence);
+        changeThomasAngle(e);
 });
 
 //Yale hotzone click
 yaleZone.on('click', function(e){
         map.removeLayer(hotspot2);
-        yaleSequence = changeYaleAngle(e, map, hotspot2, yaleSequence);
+        changeYaleAngle(e);
 });
 
 // mimic system sleep
