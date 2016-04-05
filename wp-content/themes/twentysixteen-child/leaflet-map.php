@@ -8,11 +8,11 @@
 <html>
 <head>
 <title>Fred Hutch Virtual Map</title>
-    <meta charset="utf-8" />
+<meta charset="utf-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 </head>
 <style>
     body {
@@ -21,18 +21,46 @@
     }
     html, body, #map {
         height: 100%;
-        max-width: 1200px;
-        max-height: 675px;
+        max-width: 736px;
+        max-height: 414px;
         position: relative;
         margin-left: auto;
         margin-right: auto;
-}
+    }
+    @media only screen and (min-device-width: 415px) {
+        html, body, #map {
+            height: 100%;
+            max-width: 1200px;
+            max-height: 675px;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    .leaflet-popup-content-wrapper {
+        border: 2px solid rgb(18,48,84);
+        border-radius: 0px;
+        font: 12px Calibri;
+    }
+
+    .leaflet-popup-tip-container {
+        visibility: hidden;
+    }
+
 </style>
 <body>
 <div id="map"</div>
 
+<script>L_DISABLE_3D = true;
+//CAN ALSO ADD 'L_PREFER_CANVAS = true;' TO SPEED UP LOAD TIME, BUT SLOWS DOWN ZOOMING
+</script>
+
 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 <script>
+
+L.Browser.webkit3d = false;
+L.Browser.any3d = false;
 
 //Create sequences for image arrays
 var eastlakeSequence = new Array();
@@ -70,6 +98,8 @@ var map = L.map('map', {
                 boxZoom: false,
                 crs: L.CRS.Simple
                 });
+// remove Leaflet attribution in bottom corner
+map.attributionControl.setPrefix("");
 // width and height of the image
 var w = 1200,
     h = 675,
@@ -222,7 +252,7 @@ function highlightFeature(e) {
                    weight: 5,
                    color: 'green',
                    dashArray: '',
-                   fillOpacity: 0.3
+                   fillOpacity: 0.1
                    });
     
     if (!L.Browser.ie && !L.Browser.opera) {
@@ -275,7 +305,8 @@ function changeEastlakeAngle(e){
     var filters = {
         "Miscellaneous": miscellaneous
     };
-    var mapMenu = L.control.layers(null,filters);
+    
+    var mapMenu = L.control.layers(null,filters,{collapsed: false});
     
     //define the back button
     var goBackIcon = L.icon({
@@ -327,9 +358,9 @@ function changeEastlakeAngle(e){
                     map.addLayer(eastlakeSequence[k-1]);
                     k--;
                     
-                    // when the initial layer is finally added back on, put the name hotspot back
+                    // when the initial layer is finally added back on, put the defaults back
                     if(k == 1){
-                        map.addLayer(hotspot2);
+                        addLayersForGoBack();
                     }
         }, 40, 44);
     });
@@ -364,7 +395,7 @@ function changeArnoldAngle(e){
     var filters = {
         "Miscellaneous": miscellaneous
     };
-    var mapMenu = L.control.layers(null,filters);
+    var mapMenu = L.control.layers(null,filters,{collapsed: false});
     
     //define the back button
     var goBackIcon = L.icon({
@@ -417,9 +448,9 @@ function changeArnoldAngle(e){
                               map.addLayer(arnoldSequence[k-1]);
                               k--;
                               
-                              // when the initial layer is finally added back on, put the name hotspot back
+                              // when the initial layer is finally added back on, put the defaults back
                               if(k == 1){
-                              map.addLayer(hotspot2);
+                                addLayersForGoBack();
                               }
                   }, 40, 39);
     });
@@ -454,7 +485,7 @@ function changeSCCAAngle(e){
     var filters = {
         "Miscellaneous": miscellaneous
     };
-    var mapMenu = L.control.layers(null,filters);
+    var mapMenu = L.control.layers(null,filters,{collapsed: false});
     
     //define the back button
     var goBackIcon = L.icon({
@@ -507,9 +538,9 @@ function changeSCCAAngle(e){
                               map.addLayer(SCCASequence[k-1]);
                               k--;
                               
-                              // when the initial layer is finally added back on, put the name hotspot back
+                              // when the initial layer is finally added back on, put the defaults back
                               if(k == 1){
-                                map.addLayer(hotspot2);
+                                addLayersForGoBack();
                               }
                   }, 40, 31);
     });
@@ -544,7 +575,7 @@ function changeThomasAngle(e){
     var filters = {
         "Miscellaneous": miscellaneous
     };
-    var mapMenu = L.control.layers(null,filters);
+    var mapMenu = L.control.layers(null,filters,{collapsed: false});
     
     //define the back button
     var goBackIcon = L.icon({
@@ -597,9 +628,9 @@ function changeThomasAngle(e){
                               map.addLayer(thomasSequence[k-1]);
                               k--;
                               
-                              // when the initial layer is finally added back on, put the name hotspot back
+                              // when the initial layer is finally added back on, put the defaults back
                               if(k == 1){
-                                map.addLayer(hotspot2);
+                                addLayersForGoBack();
                               }
                   }, 40, 39);
     });
@@ -634,7 +665,7 @@ function changeYaleAngle(e){
     var filters = {
         "Miscellaneous": miscellaneous
     };
-    var mapMenu = L.control.layers(null,filters);
+    var mapMenu = L.control.layers(null,filters,{collapsed: false});
     
     //define the back button
     var goBackIcon = L.icon({
@@ -687,16 +718,228 @@ function changeYaleAngle(e){
                               map.addLayer(yaleSequence[k-1]);
                               k--;
                               
-                              // when the initial layer is finally added back on, put the name hotspot back
+                              // when the initial layer is finally added back on, put the defaults back
                               if(k == 1){
-                              map.addLayer(hotspot2);
+                                addLayersForGoBack();
                               }
                   }, 40, 44);
     });
 }
 
+// add building names and other pins for default map view
+function addDefaultPins(){
+    var pins = new Array();
+    
+    // ADD THE FH LOGO TO THE BOTTOM LEFT CORNER
+    var FredHutchLogoIcon = L.icon({
+                                   iconUrl: urlBegin + '/04/FredHutchLogo.png',
+                                   iconSize: [200, 48]
+                                   });
+    var FredHutchLogo = L.marker([20, 60], {icon: FredHutchLogoIcon}).addTo(map);
+    pins[1] = FredHutchLogo;
+    
+    // 1144 Eastlake Pin
+    var Eastlake1144Icon = L.icon({
+                                  iconUrl: urlBegin + '/04/1144EastlakeName.png',
+                                  iconSize: [66,34]
+                                  });
+    var Eastlake1144Pin = L.marker([195, 65], {icon: Eastlake1144Icon}).addTo(map);
+    pins[2] = Eastlake1144Pin;
+    
+    // Eastlake Pin
+    var EastlakeIcon = L.icon({
+                              iconUrl: urlBegin + '/04/EastlakeName.png',
+                              iconSize: [68,67]
+                              });
+    var EastlakePin = L.marker([210, 160], {icon: EastlakeIcon}).addTo(map);
+    pins[3] = EastlakePin;
+    
+    // Weintraub Pin
+    var WeintraubIcon = L.icon({
+                              iconUrl: urlBegin + '/04/WeintraubName.png',
+                              iconSize: [79,64]
+                              });
+    var WeintraubPin = L.marker([175, 120], {icon: WeintraubIcon}).addTo(map);
+    pins[4] = WeintraubPin;
+    
+    // Thomas Pin
+    var ThomasIcon = L.icon({
+                            iconUrl: urlBegin + '/04/ThomasName.png',
+                            iconSize: [56,64]
+                            });
+    var ThomasPin = L.marker([185, 245], {icon: ThomasIcon}).addTo(map);
+    pins[5] = ThomasPin;
+    
+    // Hutchinson Pin
+    var HutchinsonIcon = L.icon({
+                                iconUrl: urlBegin + '/04/HutchinsonName.png',
+                                iconSize: [79,64]
+                                });
+    var HutchinsonPin = L.marker([155, 180], {icon: HutchinsonIcon}).addTo(map);
+    pins[6] = HutchinsonPin;
+    
+    // Fairview Pin
+    var FairviewIcon = L.icon({
+                              iconUrl: urlBegin + '/04/FairviewName.png',
+                              iconSize: [65,18]
+                              });
+    var FairviewPin = L.marker([105, 265], {icon: FairviewIcon}).addTo(map);
+    pins[7] = FairviewPin;
+    
+    // Arnold Pin
+    var ArnoldIcon = L.icon({
+                            iconUrl: urlBegin + '/04/ArnoldName.png',
+                            iconSize: [58,65]
+                            });
+    var ArnoldPin = L.marker([130, 370], {icon: ArnoldIcon}).addTo(map);
+    pins[8] = ArnoldPin;
+    
+    // Lea Pin
+    var LeaIcon = L.icon({
+                         iconUrl: urlBegin + '/04/LeaName.png',
+                         iconSize: [30,19]
+                         });
+    var LeaPin = L.marker([150, 535], {icon: LeaIcon}).addTo(map);
+    pins[9] = LeaPin;
+    
+    // Yale Pin
+    var YaleIcon = L.icon({
+                          iconUrl: urlBegin + '/04/YaleName.png',
+                          iconSize: [38,67]
+                          });
+    var YalePin = L.marker([185, 455], {icon: YaleIcon}).addTo(map);
+    pins[10] = YalePin;
+    
+    // Aloha Pin
+    var AlohaIcon = L.icon({
+                           iconUrl: urlBegin + '/04/AlohaName.png',
+                           iconSize: [50,18]
+                           });
+    var AlohaPin = L.marker([185, 365], {icon: AlohaIcon}).addTo(map);
+    pins[11] = AlohaPin;
+    
+    // Valley Pin
+    var ValleyIcon = L.icon({
+                           iconUrl: urlBegin + '/04/ValleyName.png',
+                           iconSize: [55,21]
+                           });
+    var ValleyPin = L.marker([195, 395], {icon: ValleyIcon}).addTo(map);
+    pins[12] = ValleyPin;
+    
+    // SCCA Pin
+    var SCCAIcon = L.icon({
+                            iconUrl: urlBegin + '/04/SCCAName.png',
+                            iconSize: [40,64]
+                            });
+    var SCCAPin = L.marker([230, 350], {icon: SCCAIcon}).addTo(map);
+    pins[13] = SCCAPin;
+    
+    // BUSES
+    var busIcon = L.icon({
+                         iconUrl: urlBegin + '/04/BusLogo.png',
+                         iconSize: [27,25]
+                         });
+    // Bus 1 of 4
+    var bus1of4 = L.marker([215, 310], {icon: busIcon}).addTo(map);
+    pins[14] = bus1of4;
+    // Bus 2 of 4
+    var bus2of4 = L.marker([200, 225], {icon: busIcon}).addTo(map);
+    pins[15] = bus2of4;
+    // Bus 3 of 4
+    var bus3of4 = L.marker([125, 25], {icon: busIcon}).addTo(map);
+    pins[16] = bus3of4;
+    // Bus 4 of 4
+    var bus4of4 = L.marker([95, 145], {icon: busIcon}).addTo(map);
+    pins[17] = bus4of4;
+    
+    // PARKING
+    var parkingIcon = L.icon({
+                             iconUrl: urlBegin + '/04/ParkingLogo.png',
+                             iconSize: [22,27]
+                             });
+    // Parking 1 of 3
+    var parking1of3 = L.marker([155, 415], {icon: parkingIcon}).addTo(map);
+    pins[18] = parking1of3;
+    // Parking 2 of 3
+    var parking2of3 = L.marker([155, 275], {icon: parkingIcon}).addTo(map);
+    pins[19] = parking2of3;
+    // Parking 3 of 3
+    var parking3of3 = L.marker([125, 220], {icon: parkingIcon}).addTo(map);
+    pins[20] = parking3of3;
+    
+    // LIGHTRAIL
+    var lightrailIcon = L.icon({
+                             iconUrl: urlBegin + '/04/LightrailLogo.png',
+                             iconSize: [21,30]
+                             });
+    var lightrail = L.marker([35, 365], {icon: lightrailIcon}).addTo(map);
+    pins[21] = lightrail;
+    
+    // COMPASS
+    var compassIcon = L.icon({
+                               iconUrl: urlBegin + '/04/CompassLogo.png',
+                               iconSize: [57,27]
+                               });
+    var compass = L.marker([215, 25], {icon: compassIcon}).addTo(map);
+    pins[22] = compass;
 
-//create eastlakeZone and add to map
+    return pins;
+}
+
+// add pins back when you hit the back button to go to default map view
+function addLayersForGoBack(){
+    map.addLayer(HutchKidsPin);
+    map.addLayer(Eastlake1144Pin);
+    map.addLayer(EastlakePin);
+    map.addLayer(WeintraubPin);
+    map.addLayer(ThomasPin);
+    map.addLayer(HutchinsonPin);
+    map.addLayer(FairviewPin);
+    map.addLayer(ArnoldPin);
+    map.addLayer(LeaPin);
+    map.addLayer(YalePin);
+    map.addLayer(AlohaPin);
+    map.addLayer(ValleyPin);
+    map.addLayer(SCCAPin);
+    map.addLayer(bus1of4);
+    map.addLayer(bus2of4);
+    map.addLayer(bus3of4);
+    map.addLayer(bus4of4);
+    map.addLayer(parking1of3);
+    map.addLayer(parking2of3);
+    map.addLayer(parking3of3);
+    map.addLayer(lightrail);
+    map.addLayer(compass);
+}
+
+// remove the pins when you hit a hotzone and zoom in
+function removeLayersForZoom(){
+    map.removeLayer(HutchKidsPin);
+    map.removeLayer(HutchKidsPopup);
+    map.removeLayer(Eastlake1144Pin);
+    map.removeLayer(EastlakePin);
+    map.removeLayer(WeintraubPin);
+    map.removeLayer(ThomasPin);
+    map.removeLayer(HutchinsonPin);
+    map.removeLayer(FairviewPin);
+    map.removeLayer(ArnoldPin);
+    map.removeLayer(LeaPin);
+    map.removeLayer(YalePin);
+    map.removeLayer(AlohaPin);
+    map.removeLayer(ValleyPin);
+    map.removeLayer(SCCAPin);
+    map.removeLayer(bus1of4);
+    map.removeLayer(bus2of4);
+    map.removeLayer(bus3of4);
+    map.removeLayer(bus4of4);
+    map.removeLayer(parking1of3);
+    map.removeLayer(parking2of3);
+    map.removeLayer(parking3of3);
+    map.removeLayer(lightrail);
+    map.removeLayer(compass);
+}
+
+//create the zones and add to map
 var hotzones = createHotzones();
 var eastlakeZone = hotzones[1];
 var arnoldZone = hotzones[2];
@@ -709,19 +952,52 @@ map.addLayer(SCCAZone);
 map.addLayer(thomasZone);
 map.addLayer(yaleZone);
 
+// add all default pins to the global context for use in other functions
+var pins = addDefaultPins();
+FredHutchLogo = pins[1];
+Eastlake1144Pin = pins[2];
+EastlakePin = pins[3];
+WeintraubPin = pins[4];
+ThomasPin = pins[5];
+HutchinsonPin = pins[6];
+FairviewPin = pins[7];
+ArnoldPin = pins[8];
+LeaPin = pins[9];
+YalePin = pins[10];
+AlohaPin = pins[11];
+ValleyPin = pins[12];
+SCCAPin = pins[13];
+bus1of4 = pins[14];
+bus2of4 = pins[15];
+bus3of4 = pins[16];
+bus4of4 = pins[17];
+parking1of3 = pins[18];
+parking2of3 = pins[19];
+parking3of3 = pins[20];
+lightrail = pins[21];
+compass = pins[22];
+
+
+// TESTING POPUPS IN CUSTOM LOCATION FOR HUTCH KIDS
+var popupOptions = {
+    offset:  new L.Point(0, 70)
+};
+var HutchKidsPopup = L.popup(popupOptions)
+    .setLatLng([ 135, 495 ])
+    .setContent('<b>Hutch Kids</b>')
+    ;
+var HutchKidsPin = L.marker([135, 495]);
+HutchKidsPin.addTo(map);
+HutchKidsPin.on('click', function(){
+                HutchKidsPopup.openOn(map);
+});
+
 // deallcate memory
 hotzones = null;
-
-//TEST COLOR CHANGE
-//var coloredEastlake = new L.ImageOverlay(urlBegin + '/03/FredHutch_EastlakeColor-1200x675.png', [[ center_h * 2, 0 ], [ 0, center_w * 2]]);
-
-var hotspot2 = L.marker([165, 240]);
-hotspot2.bindPopup("<b>Thomas Building</b>");
-hotspot2.addTo(map);
+pins = null;
 
 // mouseover and mouseout for hotzones
 eastlakeZone.on('mouseover', function(e){
-        //map.addLayer(coloredEastlake);
         highlightFeature(e);
 });
 eastlakeZone.on('mouseout', function(e){
@@ -752,33 +1028,39 @@ yaleZone.on('mouseout', function(e){
         resetStyle(e);
 });
 
+// open the FH website when the logo is clicked
+FredHutchLogo.on('click', function(e){
+        var win = window.open('https://www.fredhutch.org', '_blank');
+        win.focus();
+});
+
 //Eastlake hotzone click
 eastlakeZone.on('click', function(e){
-        map.removeLayer(hotspot2);
+        removeLayersForZoom();
         changeEastlakeAngle(e);
 });
 
 //Arnold hotzone click
 arnoldZone.on('click', function(e){
-        map.removeLayer(hotspot2);
+        removeLayersForZoom();
         changeArnoldAngle(e);
 });
 
 //SCCA hotzone click
 SCCAZone.on('click', function(e){
-        map.removeLayer(hotspot2);
+        removeLayersForZoom();
         changeSCCAAngle(e);
 });
 
 //Thomas hotzone click
 thomasZone.on('click', function(e){
-        map.removeLayer(hotspot2);
+        removeLayersForZoom();
         changeThomasAngle(e);
 });
 
 //Yale hotzone click
 yaleZone.on('click', function(e){
-        map.removeLayer(hotspot2);
+        removeLayersForZoom();
         changeYaleAngle(e);
 });
 
@@ -790,6 +1072,11 @@ function sleep(milliseconds) {
             break;
         }
     }
+}
+
+
+window.onload = function(){
+//    alert("Fully loaded");
 }
 
 </script>
