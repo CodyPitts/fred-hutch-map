@@ -5,6 +5,7 @@
 ?>
 
 <!DOCTYPE html>
+
 <html>
 <head>
 <title>Fred Hutch Virtual Map</title>
@@ -19,6 +20,7 @@
         padding: 0;
         margin: 0;
     }
+
     html, body, #map {
         height: 100%;
         max-width: 736px;
@@ -27,6 +29,7 @@
         margin-left: auto;
         margin-right: auto;
     }
+
     @media only screen and (min-device-width: 415px) {
         html, body, #map {
             height: 100%;
@@ -38,27 +41,368 @@
         }
     }
 
+    @font-face {
+        font-family: 'geogrotesque';
+        src: url('http://localhost:8888/wordpresstest/wp-content/uploads/2016/04/Emtype-Foundry-Geogrotesque-Regular.eot');
+        src: local('☺'), url('http://localhost:8888/wordpresstest/wp-content/uploads/2016/04/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://localhost:8888/wordpresstest/wp-content/uploads/2016/04/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
+    }
+
     .leaflet-popup-content-wrapper {
         border: 2px solid rgb(18,48,84);
         border-radius: 0px;
-        font: 12px Calibri;
+        font-family: 'geogrotesque';
     }
 
     .leaflet-popup-tip-container {
         visibility: hidden;
     }
 
+    *, *:before, *:after {
+    margin: 0;
+    padding: 0;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    body {
+        text-align: center;
+        line-height: 100vh;
+    }
+
+    .container {
+        display: inline-block;
+    }
+
+    .dots {
+        display: inline-block;
+        position: relative;
+    }
+    .dots:not(:last-child) {
+        margin-right: 9px;
+    }
+    .dots:before, .dots:after {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        position: absolute;
+    }
+    .dots:nth-child(1):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(1):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(2):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -1.8s;
+        animation-delay: -1.8s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(2):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -1.8s;
+        animation-delay: -1.8s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(3):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -2.7s;
+        animation-delay: -2.7s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(3):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -2.7s;
+        animation-delay: -2.7s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(4):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -3.6s;
+        animation-delay: -3.6s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(4):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -3.6s;
+        animation-delay: -3.6s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(5):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -4.5s;
+        animation-delay: -4.5s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(5):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -4.5s;
+        animation-delay: -4.5s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(6):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -5.4s;
+        animation-delay: -5.4s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(6):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -5.4s;
+        animation-delay: -5.4s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(7):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -6.3s;
+        animation-delay: -6.3s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(7):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -6.3s;
+        animation-delay: -6.3s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(8):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -7.2s;
+        animation-delay: -7.2s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(8):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -7.2s;
+        animation-delay: -7.2s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(9):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -8.1s;
+        animation-delay: -8.1s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(9):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -8.1s;
+        animation-delay: -8.1s;
+        background-color: #39b6b9;
+    }
+    .dots:nth-child(10):before {
+        -webkit-transform: translateY(-200%);
+        transform: translateY(-200%);
+        -webkit-animation: animBefore 1s linear infinite;
+        animation: animBefore 1s linear infinite;
+        -webkit-animation-delay: -9s;
+        animation-delay: -9s;
+        background-color: #89c348;
+    }
+    .dots:nth-child(10):after {
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+        -webkit-animation: animAfter 1s linear infinite;
+        animation: animAfter 1s linear infinite;
+        -webkit-animation-delay: -9s;
+        animation-delay: -9s;
+        background-color: #39b6b9;
+    }
+
+    @-webkit-keyframes animBefore {
+        0% {
+            -webkit-transform: scale(1) translateY(-200%);
+            z-index: 1;
+        }
+        25% {
+            -webkit-transform: scale(1.3) translateY(0);
+            z-index: 1;
+        }
+        50% {
+            -webkit-transform: scale(1) translateY(200%);
+            z-index: -1;
+        }
+        75% {
+            -webkit-transform: scale(0.7) translateY(0);
+            z-index: -1;
+        }
+        100% {
+            -webkit-transform: scale(1) translateY(-200%);
+            z-index: -1;
+        }
+    }
+    @keyframes animBefore {
+        0% {
+        transform: scale(1) translateY(-200%);
+            z-index: 1;
+        }
+        25% {
+        transform: scale(1.3) translateY(0);
+            z-index: 1;
+        }
+        50% {
+        transform: scale(1) translateY(200%);
+            z-index: -1;
+        }
+        75% {
+        transform: scale(0.7) translateY(0);
+            z-index: -1;
+        }
+        100% {
+        transform: scale(1) translateY(-200%);
+            z-index: -1;
+        }
+    }
+    @-webkit-keyframes animAfter {
+        0% {
+            -webkit-transform: scale(1) translateY(200%);
+            z-index: -1;
+        }
+        25% {
+            -webkit-transform: scale(0.7) translateY(0);
+            z-index: -1;
+        }
+        50% {
+            -webkit-transform: scale(1) translateY(-200%);
+            z-index: 1;
+        }
+        75% {
+            -webkit-transform: scale(1.3) translateY(0);
+            z-index: 1;
+        }
+        100% {
+            -webkit-transform: scale(1) translateY(200%);
+            z-index: 1;
+        }
+    }
+    @keyframes animAfter {
+        0% {
+        transform: scale(1) translateY(200%);
+            z-index: -1;
+        }
+        25% {
+        transform: scale(0.7) translateY(0);
+            z-index: -1;
+        }
+        50% {
+        transform: scale(1) translateY(-200%);
+            z-index: 1;
+        }
+        75% {
+        transform: scale(1.3) translateY(0);
+            z-index: 1;
+        }
+        100% {
+        transform: scale(1) translateY(200%);
+            z-index: 1;
+        }
+    }
+
+    .logo{
+        content:url(https://pbs.twimg.com/profile_images/509056962743382016/jOKr-9bc.png);
+        height: 60px;
+        width: 60px;
+        display:block;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+    }
+
 </style>
 <body>
+
+<div id="loading">
+<div class="container">
+<span class="logo"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+<span class="dots"></span>
+</div>
+</div>
+
 <div id="map"</div>
 
 <script>L_DISABLE_3D = true;
 //CAN ALSO ADD 'L_PREFER_CANVAS = true;' TO SPEED UP LOAD TIME, BUT SLOWS DOWN ZOOMING
 </script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 <script>
 
+jQuery(window).load(function () {
+                    jQuery('#loading').hide();
+                    });
+                    
 L.Browser.webkit3d = false;
 L.Browser.any3d = false;
 
@@ -122,6 +466,12 @@ map.addLayer(initialView);
 
 // PRELOAD IMAGES
 preloadImages();
+
+// set up points of interest icon before use later on
+var POIicon = L.icon({
+                     iconUrl: urlBegin + '/04/POImarker.png',
+                     iconSize: [40,40]
+                     });
 
 function preloadImages(){
     // Eastlake preload
@@ -297,25 +647,17 @@ function changeEastlakeAngle(e){
     }*/
     
     //add a test hotspot to the new image
-    var hotspot1 = L.marker([155, 360]);
+    var hotspot1 = L.marker([165, 360], {icon: POIicon});
     hotspot1.bindPopup("<b>Skybridge</b>");
-    var miscellaneous = L.layerGroup([hotspot1]);
-    
-    //menu basics
-    var filters = {
-        "Miscellaneous": miscellaneous
-    };
-    
-    var mapMenu = L.control.layers(null,filters,{collapsed: false});
     
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
-                            iconSize: [80,80]
+                            iconUrl: urlBegin + '/04/edited_back_arrow.png',
+                            iconSize: [100,100]
                             });
     
     //define back button marker for the map
-    var backButton = L.marker([318, 15], {icon: goBackIcon});
+    var backButton = L.marker([308, 25], {icon: goBackIcon});
     
     
     // add all layers for path to zoom in
@@ -335,7 +677,7 @@ function changeEastlakeAngle(e){
                 
                 //when all layers have been added, add back the back button and menu
                 if (i == 46){
-                    mapMenu.addTo(map);
+                    hotspot1.addTo(map);
                     backButton.addTo(map);
                 }
                 
@@ -349,7 +691,6 @@ function changeEastlakeAngle(e){
         map.removeLayer(eastlakeSequence[44]);
         map.removeLayer(hotspot1);
         map.removeLayer(backButton);
-        mapMenu.removeFrom(map);
                   
         //remove all layers and get back to the home image
         var k = 45;
@@ -387,24 +728,17 @@ function changeArnoldAngle(e){
     }*/
     
     //add a test hotspot to the new image
-    var hotspot1 = L.marker([155, 360]);
+    var hotspot1 = L.marker([155, 360], {icon: POIicon});
     hotspot1.bindPopup("<b>Test</b>");
-    var miscellaneous = L.layerGroup([hotspot1]);
-    
-    //menu basics
-    var filters = {
-        "Miscellaneous": miscellaneous
-    };
-    var mapMenu = L.control.layers(null,filters,{collapsed: false});
     
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
-                            iconSize: [80,80]
+                            iconUrl: urlBegin + '/04/edited_back_arrow.png',
+                            iconSize: [100,100]
                             });
     
     //define back button marker for the map
-    var backButton = L.marker([318, 15], {icon: goBackIcon});
+    var backButton = L.marker([308, 25], {icon: goBackIcon});
     
     
     // add all layers for path to zoom in
@@ -424,7 +758,7 @@ function changeArnoldAngle(e){
                 
                 //when all layers have been added, add back the back button and menu
                 if (i == 41){
-                    mapMenu.addTo(map);
+                    hotspot1.addTo(map);
                     backButton.addTo(map);
                 }
                 
@@ -439,7 +773,6 @@ function changeArnoldAngle(e){
                   map.removeLayer(arnoldSequence[39]);
                   map.removeLayer(hotspot1);
                   map.removeLayer(backButton);
-                  mapMenu.removeFrom(map);
                   
                   //remove all layers and get back to the home image
                   var k = 40;
@@ -477,24 +810,17 @@ function changeSCCAAngle(e){
     }*/
     
     //add a test hotspot to the new image
-    var hotspot1 = L.marker([155, 360]);
+    var hotspot1 = L.marker([155, 360], {icon: POIicon});
     hotspot1.bindPopup("<b>Test</b>");
-    var miscellaneous = L.layerGroup([hotspot1]);
-    
-    //menu basics
-    var filters = {
-        "Miscellaneous": miscellaneous
-    };
-    var mapMenu = L.control.layers(null,filters,{collapsed: false});
     
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
-                            iconSize: [80,80]
+                            iconUrl: urlBegin + '/04/edited_back_arrow.png',
+                            iconSize: [100,100]
                             });
     
     //define back button marker for the map
-    var backButton = L.marker([318, 15], {icon: goBackIcon});
+    var backButton = L.marker([308, 25], {icon: goBackIcon});
     
     
     // add all layers for path to zoom in
@@ -514,7 +840,7 @@ function changeSCCAAngle(e){
                 
                 //when all layers have been added, add back the back button and menu
                 if (i == 33){
-                    mapMenu.addTo(map);
+                    hotspot1.addTo(map);
                     backButton.addTo(map);
                 }
                 
@@ -529,7 +855,6 @@ function changeSCCAAngle(e){
                   map.removeLayer(SCCASequence[31]);
                   map.removeLayer(hotspot1);
                   map.removeLayer(backButton);
-                  mapMenu.removeFrom(map);
                   
                   //remove all layers and get back to the home image
                   var k = 32;
@@ -567,24 +892,17 @@ function changeThomasAngle(e){
     }*/
     
     //add a test hotspot to the new image
-    var hotspot1 = L.marker([155, 360]);
+    var hotspot1 = L.marker([155, 360], {icon: POIicon});
     hotspot1.bindPopup("<b>Test</b>");
-    var miscellaneous = L.layerGroup([hotspot1]);
-    
-    //menu basics
-    var filters = {
-        "Miscellaneous": miscellaneous
-    };
-    var mapMenu = L.control.layers(null,filters,{collapsed: false});
-    
+ 
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
-                            iconSize: [80,80]
+                            iconUrl: urlBegin + '/04/edited_back_arrow.png',
+                            iconSize: [100,100]
                             });
     
     //define back button marker for the map
-    var backButton = L.marker([318, 15], {icon: goBackIcon});
+    var backButton = L.marker([308, 25], {icon: goBackIcon});
     
     
     // add all layers for path to zoom in
@@ -604,7 +922,7 @@ function changeThomasAngle(e){
                 
                 //when all layers have been added, add back the back button and menu
                 if (i == 41){
-                    mapMenu.addTo(map);
+                    hotspot1.addTo(map);
                     backButton.addTo(map);
                 }
                 
@@ -619,7 +937,6 @@ function changeThomasAngle(e){
                   map.removeLayer(thomasSequence[39]);
                   map.removeLayer(hotspot1);
                   map.removeLayer(backButton);
-                  mapMenu.removeFrom(map);
                   
                   //remove all layers and get back to the home image
                   var k = 40;
@@ -657,24 +974,17 @@ function changeYaleAngle(e){
     }*/
     
     //add a test hotspot to the new image
-    var hotspot1 = L.marker([155, 360]);
+    var hotspot1 = L.marker([155, 360], {icon: POIicon});
     hotspot1.bindPopup("<b>Test</b>");
-    var miscellaneous = L.layerGroup([hotspot1]);
-    
-    //menu basics
-    var filters = {
-        "Miscellaneous": miscellaneous
-    };
-    var mapMenu = L.control.layers(null,filters,{collapsed: false});
-    
+   
     //define the back button
     var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/03/edited_back_arrow.png',
-                            iconSize: [80,80]
+                            iconUrl: urlBegin + '/04/edited_back_arrow.png',
+                            iconSize: [100,100]
                             });
     
     //define back button marker for the map
-    var backButton = L.marker([318, 15], {icon: goBackIcon});
+    var backButton = L.marker([308, 25], {icon: goBackIcon});
     
     
     // add all layers for path to zoom in
@@ -694,7 +1004,7 @@ function changeYaleAngle(e){
                 
                 //when all layers have been added, add back the back button and menu
                 if (i == 46){
-                    mapMenu.addTo(map);
+                    hotspot1.addTo(map);
                     backButton.addTo(map);
                 }
                 
@@ -709,7 +1019,6 @@ function changeYaleAngle(e){
                   map.removeLayer(yaleSequence[39]);
                   map.removeLayer(hotspot1);
                   map.removeLayer(backButton);
-                  mapMenu.removeFrom(map);
                   
                   //remove all layers and get back to the home image
                   var k = 45;
@@ -733,7 +1042,7 @@ function addDefaultPins(){
     // ADD THE FH LOGO TO THE BOTTOM LEFT CORNER
     var FredHutchLogoIcon = L.icon({
                                    iconUrl: urlBegin + '/04/FredHutchLogo.png',
-                                   iconSize: [200, 48]
+                                   iconSize: [171, 46]
                                    });
     var FredHutchLogo = L.marker([20, 60], {icon: FredHutchLogoIcon}).addTo(map);
     pins[1] = FredHutchLogo;
@@ -882,7 +1191,64 @@ function addDefaultPins(){
                                });
     var compass = L.marker([215, 25], {icon: compassIcon}).addTo(map);
     pins[22] = compass;
-
+    
+    // LEGEND
+    var legendIcon = L.icon({
+                            iconUrl: urlBegin + '/04/Legend.png',
+                            iconSize: [155,153]
+                            });
+    var legend = L.marker([290, 550], {icon: legendIcon}).addTo(map);
+    pins[23] = legend;
+    
+    // CAMPUS TOUR DESCRIPTION ON DEFAULT VIEW
+    var campusTourHeaderIcon = L.icon({
+                                      iconUrl: urlBegin + '/04/CampusTourHeader.png',
+                                      iconSize: [262,162]
+                                      });
+    var campusTourHeader = L.marker([290, 75], {icon: campusTourHeaderIcon}).addTo(map);
+    pins[24] = campusTourHeader;
+    
+    // STREET NAMES
+    // Fairview Avenue North
+    var FairviewAvenueNorthIcon = L.icon({
+                                         iconUrl: urlBegin + '/04/FairviewAvenueNorthName.png',
+                                         iconSize: [135, 57]
+                                         });
+    var FairviewAvenueNorth = L.marker([110, 75], {icon: FairviewAvenueNorthIcon}).addTo(map);
+    pins[25] = FairviewAvenueNorth;
+    
+    // Campus Drive
+    var CampusDriveIcon = L.icon({
+                                 iconUrl: urlBegin + '/04/CampusDriveName.png',
+                                 iconSize: [62, 84]
+                                 });
+    var CampusDrive = L.marker([90, 310], {icon: CampusDriveIcon}).addTo(map);
+    pins[26] = CampusDrive;
+     
+    // Aloha Street
+    var AlohaStreetIcon = L.icon({
+                                iconUrl: urlBegin + '/04/AlohaStreetName.png',
+                                iconSize: [67, 55]
+                                });
+    var AlohaStreet = L.marker([80, 470], {icon: AlohaStreetIcon}).addTo(map);
+    pins[27] = AlohaStreet;
+   
+    // Eastlake Avenue East
+    var EastlakeAvenueEastIcon = L.icon({
+                                        iconUrl: urlBegin + '/04/EastlakeAvenueEastName.png',
+                                        iconSize: [129, 47]
+                                        });
+    var EastlakeAvenueEast = L.marker([215, 270], {icon: EastlakeAvenueEastIcon}).addTo(map);
+    pins[28] = EastlakeAvenueEast;
+                    
+    // Minor Avenue North
+    var MinorAvenueNorthIcon = L.icon({
+                                      iconUrl: urlBegin + '/04/MinorAvenueNorthName.png',
+                                      iconSize: [99, 95]
+                                      });
+    var MinorAvenueNorth = L.marker([105, 540], {icon: MinorAvenueNorthIcon}).addTo(map);
+    pins[29] = MinorAvenueNorth;
+    
     return pins;
 }
 
@@ -910,9 +1276,15 @@ function addLayersForGoBack(){
     map.addLayer(parking3of3);
     map.addLayer(lightrail);
     map.addLayer(compass);
+    map.addLayer(campusTourHeader);
+    map.addLayer(FairviewAvenueNorth);
+    map.addLayer(CampusDrive);
+    map.addLayer(AlohaStreet);
+    map.addLayer(EastlakeAvenueEast);
+    map.addLayer(MinorAvenueNorth);
 }
 
-// remove the pins when you hit a hotzone and zoom in
+// remove the pins when you hit a hotzone and zoom in (except FH Logo and legend)
 function removeLayersForZoom(){
     map.removeLayer(HutchKidsPin);
     map.removeLayer(HutchKidsPopup);
@@ -937,6 +1309,12 @@ function removeLayersForZoom(){
     map.removeLayer(parking3of3);
     map.removeLayer(lightrail);
     map.removeLayer(compass);
+    map.removeLayer(campusTourHeader);
+    map.removeLayer(FairviewAvenueNorth);
+    map.removeLayer(CampusDrive);
+    map.removeLayer(AlohaStreet);
+    map.removeLayer(EastlakeAvenueEast);
+    map.removeLayer(MinorAvenueNorth);
 }
 
 //create the zones and add to map
@@ -976,17 +1354,24 @@ parking2of3 = pins[19];
 parking3of3 = pins[20];
 lightrail = pins[21];
 compass = pins[22];
+legend = pins[23];
+campusTourHeader = pins[24];
+FairviewAvenueNorth = pins[25];
+CampusDrive = pins[26];
+AlohaStreet = pins[27];
+EastlakeAvenueEast = pins[28];
+MinorAvenueNorth = pins[29];
 
 
 // TESTING POPUPS IN CUSTOM LOCATION FOR HUTCH KIDS
 var popupOptions = {
-    offset:  new L.Point(0, 70)
+    offset:  new L.Point(0, 125)
 };
 var HutchKidsPopup = L.popup(popupOptions)
-    .setLatLng([ 135, 495 ])
-    .setContent('<b>Hutch Kids</b>')
+    .setLatLng([ 145, 500 ])
+    .setContent('<b>Hutch Kids</b><p></p>Bring your kids here while you work.')
     ;
-var HutchKidsPin = L.marker([135, 495]);
+var HutchKidsPin = L.marker([145, 500], {icon: POIicon});
 HutchKidsPin.addTo(map);
 HutchKidsPin.on('click', function(){
                 HutchKidsPopup.openOn(map);
@@ -1076,7 +1461,7 @@ function sleep(milliseconds) {
 
 
 window.onload = function(){
-//    alert("Fully loaded");
+    //alert("Fully loaded");
 }
 
 </script>

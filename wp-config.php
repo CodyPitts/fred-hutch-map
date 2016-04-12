@@ -1,7 +1,4 @@
 <?php
-if ( file_exists( 'wp-config-local.php' ) ) {
-require_once 'wp-config-local.php';
-}
 /**
  * The base configuration for WordPress
  *
@@ -23,24 +20,19 @@ require_once 'wp-config-local.php';
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-if ( ! defined( 'DB_NAME' ) ) {
-define( 'DB_NAME', 'wordpress' );
-}
+define('DB_NAME', 'wordpress');
 
+/** ADDED: allow for font files to be uploaded */
+define('ALLOW_UNFILTERED_UPLOADS', true);
+    
 /** MySQL database username */
-if ( ! defined( 'DB_USER' ) ) {
 define('DB_USER', 'root');
-}
 
 /** MySQL database password */
-if ( ! defined( 'DB_PASSWORD' ) ) {
 define('DB_PASSWORD', 'root');
-}
 
 /** MySQL hostname */
-if ( ! defined( 'DB_HOST' ) ) {
 define('DB_HOST', 'localhost');
-}
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8mb4');
