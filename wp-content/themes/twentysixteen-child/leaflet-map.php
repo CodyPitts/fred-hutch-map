@@ -5,27 +5,25 @@
 ?>
 
 <!DOCTYPE html>
-
 <html>
-<head>
-<title>Fred Hutch Virtual Map</title>
-<meta charset="utf-8" />
+    <head>
+        <title>Fred Hutch Virtual Map</title>
+        <meta charset="utf-8" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.1/leaflet.css" />
 
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.1/leaflet.css" />
-</head>
-<style>
-    body {
+    </head>
+    <style>
+        body {
         padding: 0;
         margin: 0;
     }
-
     .stop-scrolling {
         height: 100%;
         overflow: hidden;
     }
-
     <!--SIZE FOR IPHONE 6 PLUS-->
     html, body, #map {
         height: 100%;
@@ -35,52 +33,47 @@
         margin-left: auto;
         margin-right: auto;
     }
-
     @media only screen and (min-device-width: 415px) {
         html, body, #map {
             height: 100%;
-            max-width: 1200px;
-            max-height: 675px;
             position: relative;
             margin-left: auto;
             margin-right: auto;
             top: 5px;
         }
     }
-
     @font-face {
         font-family: 'geogrotesque';
-        src: url('http://localhost:8888/wordpresstest/wp-content/uploads/2016/04/Emtype-Foundry-Geogrotesque-Regular.eot');
-        src: local('☺'), url('http://localhost:8888/wordpresstest/wp-content/uploads/2016/04/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://localhost:8888/wordpresstest/wp-content/uploads/2016/04/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
+        src: url('http://localhost/wp-content/uploads/2016/05/Emtype-Foundry-Geogrotesque-Regular.eot');
+        src: local('☺'), url('http://localhost/wp-content/uploads/2016/05/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://localhost/wp-content/uploads/2016/05/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
     }
-
     .leaflet-popup-content-wrapper {
-        border: 2px solid rgb(18,48,84);
+        background: rgb(18,48,84);
         border-radius: 0px;
         font-family: 'geogrotesque';
+        font-size: 12px;
+        color: white;
         <!-- can add "width: _____;" to adjust popup sizes-->
     }
-
     .leaflet-popup-tip-container {
         visibility: hidden;
     }
-
+    .leaflet-container {
+        background: none;
+    }
     *, *:before, *:after {
     margin: 0;
     padding: 0;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
     }
-
     body {
         text-align: center;
         line-height: 100vh;
     }
-
     .container {
         display: inline-block;
     }
-
     .dots {
         display: inline-block;
         position: relative;
@@ -276,7 +269,6 @@
         animation-delay: -9s;
         background-color: #39b6b9;
     }
-
     @-webkit-keyframes animBefore {
         0% {
             -webkit-transform: scale(1) translateY(-200%);
@@ -365,7 +357,6 @@
             z-index: 1;
         }
     }
-
     .logo{
         content:url('https://pbs.twimg.com/profile_images/509056962743382016/jOKr-9bc.png');
         height: 60px;
@@ -377,27 +368,26 @@
         margin-right: -50%;
         transform: translate(-50%, -50%);
     }
-
-</style>
-<body>
-
-<div id="loading">
-<div class="container">
-<span class="logo"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-<span class="dots"></span>
-</div>
-</div>
-
-<div id="map"</div>
+    </style>
+    <body>
+        <div id="loading">
+            <div class="container">
+                <span class="logo"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+                <span class="dots"></span>
+            </div>
+        </div>
+        <div id="map"</div>
+    </body>
+</html>
 
 <script>L_DISABLE_3D = true;
 //CAN ALSO ADD 'L_PREFER_CANVAS = true;' TO SPEED UP LOAD TIME, BUT SLOWS DOWN ZOOMING
@@ -407,33 +397,35 @@
 <script src="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.1/leaflet.js"></script>
 <script>
 
-// prevent scrolling (scrolling causes issues with UI)
-$('body').addClass('stop-scrolling');
-$('body').bind('touchmove', function(e){e.preventDefault()})
-                    
 jQuery(window).load(function () {
-                    jQuery('#loading').hide();
-                    });
-                    
+    jQuery('#loading').hide();
+});
+
 L.Browser.webkit3d = false;
 L.Browser.any3d = false;
 
 //Create sequences for image arrays
 var eastlakeSequence = new Array();
-var eastlakePins = new Array();
 var arnoldSequence = new Array();
-var arnoldPins = new Array();
 var SCCASequence = new Array();
-var SCCAPins = new Array();
 var weintraubSequence = new Array();
-var weintraubPins = new Array();
 var thomasSequence = new Array();
-var thomasPins = new Array();
 var yaleSequence = new Array();
-var yalePins = new Array();
-var hotzones;
 
-//FOR ABOVE MAP STYLE (ORIGINAL): width: 960px; height: 315px
+var eastlakePins = new Array();
+var arnoldPins = new Array();
+var SCCAPins = new Array();
+var weintraubPins = new Array();
+var thomasPins = new Array();
+var yalePins = new Array();
+var currPins = new Array();
+
+var hotzones = new Array();
+var pins = new Array();
+var zoomed = false;
+var currSequence = new Array();
+//var currZoomPins = new Array();
+var backButton;
 
 //get URLs for images
 // this part holds "http://host_name"
@@ -461,130 +453,117 @@ var map = L.map('map', {
                 boxZoom: false,
                 crs: L.CRS.Simple
                 });
+
 // remove Leaflet attribution in bottom corner
-map.attributionControl.setPrefix("");
+map.attributionControl.setPrefix("Leaflet");
 // width and height of the image
 var w = 1200,
     h = 675,
-    url = urlBegin + '/04/FredHutch_Home-1200x675.png';
-
-/*// calculate the edges of the image, in coordinate space
-var southWest = map.unproject([0, h], map.getMaxZoom()-1);
-var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
-var bounds = new L.LatLngBounds(southWest, northEast);*/
+    url = urlBegin + '/04/Z2a_TPath01.png';
 
 // setup map dimensions, change x in zoom * x if dimensions are off
 var center_h = h / 4,
     center_w = w / 4;
+var initialView;
 
-var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-var p = w/1400;
+responsive();
 
-map.setView([center_h * p, center_w * p], 1);
+backButton = drawBack();
 
-var initialView = new L.imageOverlay( url, [[ center_h * 2 * p, 0 ], [ 0, center_w * 2 * p]] );
-map.addLayer(initialView);
-$("#map").height(675*p-1).width(1200*p-1);
-map.invalidateSize(false);
 
 // PRELOAD IMAGES
 preloadImages();
 
-// set up points of interest icon before use later on
-var POIicon = L.icon({
-                     iconUrl: urlBegin + '/04/POImarker.png',
-                     iconSize: [40,40]
-                     });
+function preloadImages() {
+    loadImages();
 
-function preloadImages(){
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var p = w/1400;
-    //alert(p);
-    
-    // Eastlake preload
-    for(i = 1; i < 46; i++) {
-        if (i < 10)
-            eastlakeSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_EastlakePath0' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-        else
-            eastlakeSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_EastlakePath' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-    }
-    for (a = 1; a < 46; a++){
-        map.addLayer(eastlakeSequence[a]);
-        map.removeLayer(eastlakeSequence[a]);
+    for (i = 1; i < eastlakeSequence.length; i++){
+        map.addLayer(eastlakeSequence[i]);
+        map.removeLayer(eastlakeSequence[i]);
     }
 
-    // Arnold preload
-    for(i = 1; i < 33; i++) {
-        if (i < 10)
-            arnoldSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_ArnoldPath0' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-        
-        else
-            arnoldSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_ArnoldPath' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-    }
-    for(i = 1; i < 33; i++){
+    for(i = 1; i < arnoldSequence.length; i++){
         map.addLayer(arnoldSequence[i]);
         map.removeLayer(arnoldSequence[i]);
     }
-    
-    // SCCA preload
-    for(i = 1; i < 27; i++) {
-        if (i < 10)
-            SCCASequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_SCCAPath0' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-        
-        else
-            SCCASequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_SCCAPath' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-    }
-    for(i = 1; i < 27; i++){
+
+    for(i = 1; i < SCCASequence.length; i++){
         map.addLayer(SCCASequence[i]);
         map.removeLayer(SCCASequence[i]);
     }
-    
-    // Weintraub preload
-    for(i = 1; i < 33; i++) {
-        if (i < 10)
-            weintraubSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_WeintraubPath0' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-        
-        else
-            weintraubSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_WeintraubPath' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-    }
-    for(i = 1; i < 33; i++){
+
+    for(i = 1; i < weintraubSequence.length; i++){
         map.addLayer(weintraubSequence[i]);
         map.removeLayer(weintraubSequence[i]);
     }
     
-    // Thomas preload
-    for(i = 1; i < 32; i++) {
-        if (i < 10)
-            thomasSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_ThomasPath0' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-        
-        else
-            thomasSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_ThomasPath' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-    }
-    for(i = 1; i < 32; i++){
+    for(i = 1; i < thomasSequence.length; i++){
         map.addLayer(thomasSequence[i]);
         map.removeLayer(thomasSequence[i]);
     }
-    
-    // Yale preload
-    for(i = 1; i < 43; i++) {
-        if (i < 10)
-            yaleSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_YalePath0' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-        
-        else
-            yaleSequence[i] = new L.ImageOverlay(urlBegin + '/04/FredHutch_YalePath' + i + '-1200x675.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
-    }
-    for(i = 1; i < 43; i++){
+
+    for(i = 1; i < yaleSequence.length; i++){
         map.addLayer(yaleSequence[i]);
         map.removeLayer(yaleSequence[i]);
     }
-    
-    // pause loading of the screen
-    sleep(1000);
 }
 
-function createHotzones(){
-    var hotzones = new Array();
+function loadImages(){
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+    var j;
+
+    // Eastlake preload
+    for(i = 20; i < 71; i++) {
+        j = i - 19;
+        eastlakeSequence[j] = new L.ImageOverlay(urlBegin + '/04/Z1_ELPath' + i + '.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
+    }
+
+    // Arnold preload
+    for(i = 20; i < 55; i++) {
+        j = i - 19;
+        arnoldSequence[j] = new L.ImageOverlay(urlBegin + '/04/Z3_APath' + i + '.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
+    }
+   
     
+    // SCCA preload
+    for(i = 20; i < 45; i++) {
+        j = i - 19;
+        SCCASequence[j] = new L.ImageOverlay(urlBegin + '/04/Z4_SCCAPath' + i + '.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
+    }
+    
+    
+    // Weintraub preload
+    for(i = 20; i < 51; i++) {
+        j = i - 19;
+        weintraubSequence[j] = new L.ImageOverlay(urlBegin + '/04/Z2b_HWPath' + i + '.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
+    }
+    
+    // Thomas preload
+    for(i = 20; i < 54; i++) {
+        j = i - 19;
+        thomasSequence[j] = new L.ImageOverlay(urlBegin + '/04/Z2a_TPath' + i + '.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
+    }
+    
+    
+    // Yale preload
+    for(i = 20; i < 67; i++) {
+        j = i - 19;
+        yaleSequence[j] = new L.ImageOverlay(urlBegin + '/04/Z5_YPath' + i + '.png', [[ center_h * 2*p, 0 ], [ 0, center_w * 2*p]]);
+    }
+
+    // pause loading of the screen
+   // sleep(1000);
+}
+
+
+function createHotzones(){
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+    
+    if (hotzones.length > 1) {
+        clearHotzones();
+    }
     //add a hotzone for Eastlake
     // upper left and then clockwise around, format = [up/down, left/right]
     hotzones[1] = L.polygon([[210*p,109*p],[207*p,128*p],[209*p,140*p],[210*p,194*p],[209*p,194*p],[209*p,196*p],[207*p,196*p],[207*p,197*p],[188*p,199*p],[176*p,130*p],[175*p,102*p],[198*p,93*p],[199*p,96*p],[202*p,97*p],[203*p,100*p],[205*p,100*p]], {
@@ -640,8 +619,77 @@ function createHotzones(){
                             dashArray: '4'
                             });
     
-    // return the hotzone to add to the map outside the function
-    return hotzones;
+    for(var i = 1; i < hotzones.length; i++) {
+        map.addLayer(hotzones[i]);
+    }
+
+    // mouseover and mouseout for hotzones
+    hotzones[1].on('mouseover', function(e){
+            highlightFeature(e);
+    });
+    hotzones[1].on('mouseout', function(e){
+            resetStyle(e);
+    });
+    hotzones[2].on('mouseover', function(e){
+            highlightFeature(e);
+    });
+    hotzones[2].on('mouseout', function(e){
+            resetStyle(e);
+    });
+    hotzones[3].on('mouseover', function(e){
+            highlightFeature(e);
+    });
+    hotzones[3].on('mouseout', function(e){
+            resetStyle(e);
+    });
+    hotzones[4].on('mouseover', function(e){
+            highlightFeature(e);
+    });
+    hotzones[4].on('mouseout', function(e){
+            resetStyle(e);
+    });
+    hotzones[5].on('mouseover', function(e){
+            highlightFeature(e);
+    });
+    hotzones[5].on('mouseout', function(e){
+            resetStyle(e);
+    });
+    hotzones[6].on('mouseover', function(e){
+            highlightFeature(e);
+    });
+    hotzones[6].on('mouseout', function(e){
+            resetStyle(e);
+    });
+
+    //Eastlake hotzone click
+    hotzones[1].on('click', function(){
+            click(eastlakeSequence, eastlakePins);
+    });
+
+    //Arnold hotzone click
+    hotzones[2].on('click', function(){
+            click(arnoldSequence, arnoldPins);
+    });
+
+    //SCCA hotzone click
+    hotzones[3].on('click', function(){
+            click(SCCASequence, SCCAPins);
+    });
+
+    //Weintraub hotzone click
+    hotzones[4].on('click', function(){
+            click(weintraubSequence, weintraubPins);
+    });
+
+    //Thomas hotzone click
+    hotzones[5].on('click', function(){
+            click(thomasSequence, thomasPins);
+    });
+
+    //Yale hotzone click
+    hotzones[6].on('click', function(){
+            click(yaleSequence, yalePins);
+    });
 }
 
 //highlight for hotzones on mouseover
@@ -677,212 +725,22 @@ function resetStyle(e) {
     }
 }
 
-function createEastlakePins(){
+function changeAngle(sequence){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
-    // initialize variables
-    var compassRose;
-    var zoomPins = new Array();
-    
-    compassRose = L.icon({
-                         iconUrl: urlBegin + '/04/CompassLogoEastlake.png',
-                         iconSize: [57*p,27*p]
-                         });
-    zoomPins[1] = L.marker([270*p, 25*p], {icon: compassRose});
-    var EastlakeAvenueEastZoom = L.icon({
-                                        iconUrl: urlBegin + '/04/EastlakeAvenueEastNameZoom2.png',
-                                        iconSize: [177*p,77*p]
-                                        });
-    zoomPins[2] = L.marker([115*p, 538*p], {icon: EastlakeAvenueEastZoom});
-    
-    return zoomPins;
-}
 
-function createSCCAPins(){
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var p = w/1400;
-    // initialize variables
-    var compassRose;
-    var zoomPins = new Array();
+    //add a test hotspot to the new image
+    var hotspot1 = L.marker([155*p, 360*p]);
+    hotspot1.bindPopup("<b>Skybridge</b>");
+    var miscellaneous = L.layerGroup([hotspot1]);
+    
+    backButton = drawBack();
 
-    compassRose = L.icon({
-                         iconUrl: urlBegin + '/04/CompassLogoSCCA.png',
-                         iconSize: [57*p,27*p]
-                         });
-    zoomPins[1] = L.marker([270*p, 25*p], {icon: compassRose});
-    var EastlakeAvenueEastZoom = L.icon({
-                                        iconUrl: urlBegin + '/04/EastlakeAvenueEastName.png',
-                                        iconSize: [172*p,63*p]
-                                        });
-    zoomPins[2] = L.marker([230*p, 50*p], {icon: EastlakeAvenueEastZoom});
-    var AlohaStreetZoom = L.icon({
-                                 iconUrl: urlBegin + '/04/AlohaStreetNameZoom2.png',
-                                 iconSize: [108*p,99*p]
-                                 });
-    zoomPins[3] = L.marker([120*p, 273*p], {icon: AlohaStreetZoom});
-    // Bus
-    var busIcon = L.icon({
-                         iconUrl: urlBegin + '/04/BusLogo.png',
-                         iconSize: [27*p,25*p]
-                         });
-    var bus = L.marker([235*p, 185*p], {icon: busIcon});
-    zoomPins[4] = bus;
-    
-    return zoomPins;
-}
-
-function createThomasPins(){
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var p = w/1400;
-    // initialize variables
-    var compassRose;
-    var zoomPins = new Array();
-    
-    compassRose = L.icon({
-                         iconUrl: urlBegin + '/04/CompassLogoThomas.png',
-                         iconSize: [48*p,63*p]
-                         });
-    zoomPins[1] = L.marker([268*p, 20*p], {icon: compassRose});
-    var FairviewAvenueNorthZoom = L.icon({
-                                         iconUrl: urlBegin + '/04/FairviewAvenueNorthNameZoom2.png',
-                                         iconSize: [156*p,194*p]
-                                         });
-    zoomPins[2] = L.marker([240*p, 140*p], {icon: FairviewAvenueNorthZoom});
-    // Parking
-    var parkingIcon = L.icon({
-                             iconUrl: urlBegin + '/04/ParkingLogo.png',
-                             iconSize: [22*p,27*p]
-                             });
-    var parking1of2 = L.marker([175*p, 215*p], {icon: parkingIcon});
-    zoomPins[3] = parking1of2;
-    var parking2of2 = L.marker([70*p, 290*p], {icon: parkingIcon});
-    zoomPins[4] = parking2of2;
-    // Bus
-    var busIcon = L.icon({
-                         iconUrl: urlBegin + '/04/BusLogo.png',
-                         iconSize: [27*p,25*p]
-                         });
-    var bus = L.marker([230*p, 170*p], {icon: busIcon});
-    zoomPins[5] = bus;
-    
-    return zoomPins;
-}
-
-function createWeintraubPins(){
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var p = w/1400;
-    // initialize variables
-    var compassRose;
-    var zoomPins = new Array();
-    
-    compassRose = L.icon({
-                         iconUrl: urlBegin + '/04/CompassLogoWeintraub.png',
-                         iconSize: [59*p,59*p]
-                         });
-    zoomPins[1] = L.marker([268*p, 20*p], {icon: compassRose});
-    var FairviewAvenueNorthZoom = L.icon({
-                                         iconUrl: urlBegin + '/04/FairviewAvenueNorthNameZoom.png',
-                                         iconSize: [186*p,174*p]
-                                         });
-    zoomPins[2] = L.marker([90*p, 425*p], {icon: FairviewAvenueNorthZoom});
-    var EastlakeAvenueEastZoom = L.icon({
-                                        iconUrl: urlBegin + '/04/EastlakeAvenueEastNameZoom.png',
-                                        iconSize: [129*p,119*p]
-                                        });
-    zoomPins[3] = L.marker([262*p, 256*p], {icon: EastlakeAvenueEastZoom});
-    // Buses
-    var busIcon = L.icon({
-                         iconUrl: urlBegin + '/04/BusLogo.png',
-                         iconSize: [27*p,25*p]
-                         });
-    var bus = L.marker([135*p, 484*p], {icon: busIcon});
-    zoomPins[4] = bus;
-    var bus = L.marker([304*p, 267*p], {icon: busIcon});
-    zoomPins[5] = bus;
-    
-    return zoomPins;
-}
-
-function createArnoldPins(){
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var p = w/1400;
-    // initialize variables
-    var compassRose;
-    var zoomPins = new Array();
-    
-    compassRose = L.icon({
-                         iconUrl: urlBegin + '/04/CompassLogoArnold.png',
-                         iconSize: [63*p,51*p]
-                         });
-    zoomPins[1] = L.marker([270*p, 23*p], {icon: compassRose});
-    var CampusDriveZoom = L.icon({
-                                 iconUrl: urlBegin + '/04/CampusDriveNameZoom.png',
-                                 iconSize: [115*p,133*p]
-                                 });
-    zoomPins[2] = L.marker([170*p, 432*p], {icon: CampusDriveZoom});
-    
-    return zoomPins;
-}
-
-function createYalePins(){
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    var p = w/1400;
-    // initialize variables
-    var compassRose;
-    var zoomPins = new Array();
-    
-    compassRose = L.icon({
-                         iconUrl: urlBegin + '/04/CompassLogoYale.png',
-                         iconSize: [59*p,59*p]
-                         });
-    zoomPins[1] = L.marker([268*p, 20*p], {icon: compassRose});
-    var AlohaStreetZoom = L.icon({
-                                 iconUrl: urlBegin + '/04/AlohaStreetNameZoom.png',
-                                 iconSize: [113*p,107*p]
-                                 });
-    zoomPins[2] = L.marker([50*p, 350*p], {icon: AlohaStreetZoom});
-    var MinorAvenueNorthZoom = L.icon({
-                                      iconUrl: urlBegin + '/04/MinorAvenueNorthNameZoom.png',
-                                      iconSize: [184*p,187*p]
-                                      });
-    zoomPins[3] = L.marker([110*p, 565*p], {icon: MinorAvenueNorthZoom});
-    
-    // Parking
-    var parkingIcon = L.icon({
-                             iconUrl: urlBegin + '/04/ParkingLogo.png',
-                             iconSize: [22*p,27*p]
-                             });
-    var parking = L.marker([175*p, 215*p], {icon: parkingIcon});
-    zoomPins[4] = parking;
-    
-    return zoomPins;
-}
-
-
-function changeAngle(sequence, zoomPins){
-    //var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    //var p = w/1400;
-    
-    for(var a = 1; a < hotzones.length; a++)
-        map.removeLayer(hotzones[a]);
-    
-    //define the back button
-    var goBackIcon = L.icon({
-                            iconUrl: urlBegin + '/04/edited_back_arrow.png',
-                            iconSize: [70*p,70*p]
-                            });
-    
-    //define back button marker for the map
-    var backButton = L.marker([312*p, 25*p], {icon: goBackIcon});
-    
     // add all layers for path to zoom in
     map.addLayer(sequence[1]);
     var i = 2;
-    setInterval(function(){
+    var zoomIn = setInterval(function(){
                 map.addLayer(sequence[i]);
-                
-                // pauses the system briefly while the layer is added
-                sleep(15);
                 
                 if (i > 3 && map.hasLayer(sequence[i])){
                     map.removeLayer(sequence[i-2]);
@@ -891,50 +749,211 @@ function changeAngle(sequence, zoomPins){
                 i++;
                 
                 //when all layers have been added, add back the back button and menu
-                if (i == (sequence.length-1)){
+                if (i == (sequence.length - 1)){ //=46
                     backButton.addTo(map);
-                    for(var j = 1; j < zoomPins.length; j++)
-                        zoomPins[j].addTo(map);
+                    
+                    for (var j = 1; j < currPins.length; j++) {
+                        map.addLayer(currPins[j]);
+                    }
+                    clearInterval(zoomIn);
                 }
-            
-                sleep(15);
-                
-                }, 10, 43);
-    
+
+    }, 40, sequence.length - 2);
+
     //event to go back when the back button is clicked
     backButton.on('click', function(e){
-                //map.removeLayer(hotspot1);
-                  map.removeLayer(backButton);
-                  for(var j = 1; j < zoomPins.length; j++)
-                    map.removeLayer(zoomPins[j]);
-                  back(sequence);
-                  });
+        back(sequence);
+    });
+
+    zoomed = true;
 }
+
 
 function back(sequence) {
     // removing the leftover layers from the additions above, and other features
+    //last = sequence.length - 1;
+    //map.removeLayer(sequence[1]);
+    //map.removeLayer(sequence[last - 1]);
+    //map.removeLayer(sequence[last]);
     map.removeLayer(sequence[(sequence.length - 3)]);
-    
+
+    //map.removeLayer(hotspot1);
+    map.removeLayer(backButton);
+    //mapMenu.removeFrom(map);
+    map.removeLayer(pins[1]);
+    //for (var i = 1; i < currZoomPins.length; i++) {
+        //map.removeLayer(currZoomPins[i]);
+    //}
+                  
     //remove all layers and get back to the home image
     var k = sequence.length - 1; //=45 sequence.length - 2
-    setInterval(function(){
-                map.removeLayer(sequence[k]);
-                map.addLayer(sequence[k-1]);
-                k--;
-                
-                // when the initial layer is finally added back on, put the defaults back
-                if(k == 1){
-                    addLayersForGoBack();
-                }
-                }, 40, 44);
-    
+    var zoomOut = setInterval(function(){
+        map.removeLayer(sequence[k]);
+        map.addLayer(sequence[k-1]);
+        k--;
+                    
+        // when the initial layer is finally added back on, put the defaults back
+        if(k == 1){
+            map.removeLayer(pins[23]);
+            addLayersForGoBack();
+            createHotzones();
+            var last = sequence.length - 1;
+            //map.removeLayer(sequence[1]);
+            map.removeLayer(sequence[last - 1]);
+            map.removeLayer(sequence[last]);
+            clearInterval(zoomOut);
+        }
+    }, 40, sequence.length - 2);
+
+    zoomed = false;    
 }
+
+function drawBack() {
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+
+    if(backButton) {
+        map.removeLayer(backButton);
+    }
+
+    var goBackIcon = L.icon({
+            iconUrl: urlBegin + '/04/back_button.png',
+            iconSize: [80*p,80*p]
+    });
+    
+    //define back button marker for the map
+    var back = L.marker([312*p, 25*p], {icon: goBackIcon});
+
+    return back;
+}
+
+function createEastlakePins(){
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+    // initialize variables
+    var compassRose;
+    
+    compassRose = L.icon({
+                         iconUrl: urlBegin + '/05/CompassLogoEastlake.png',
+                         iconSize: [57*p,27*p]
+                         });
+    eastlakePins[1] = L.marker([270*p, 25*p], {icon: compassRose});
+}
+
+function createSCCAPins(){
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+    // initialize variables
+    var compassRose;
+
+    compassRose = L.icon({
+                         iconUrl: urlBegin + '/05/CompassLogoSCCA.png',
+                         iconSize: [57*p,27*p]
+                         });
+    SCCAPins[1] = L.marker([270*p, 25*p], {icon: compassRose});
+    // Bus
+    var busIcon = L.icon({
+                         iconUrl: urlBegin + '/04/BusLogo.png',
+                         iconSize: [27*p,25*p]
+                         });
+    var bus = L.marker([235*p, 185*p], {icon: busIcon});
+    SCCAPins[2] = bus;
+}
+
+function createThomasPins(){
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+    // initialize variables
+    var compassRose;
+    
+    compassRose = L.icon({
+                         iconUrl: urlBegin + '/05/CompassLogoThomas.png',
+                         iconSize: [48*p,63*p]
+                         });
+    thomasPins[1] = L.marker([268*p, 20*p], {icon: compassRose});
+    // Parking
+    var parkingIcon = L.icon({
+                             iconUrl: urlBegin + '/04/ParkingLogo.png',
+                             iconSize: [22*p,27*p]
+                             });
+    var parking1of2 = L.marker([175*p, 215*p], {icon: parkingIcon});
+    thomasPins[2] = parking1of2;
+    var parking2of2 = L.marker([70*p, 290*p], {icon: parkingIcon});
+    thomasPins[3] = parking2of2;
+    // Bus
+    var busIcon = L.icon({
+                         iconUrl: urlBegin + '/04/BusLogo.png',
+                         iconSize: [27*p,25*p]
+                         });
+    var bus = L.marker([230*p, 170*p], {icon: busIcon});
+    thomasPins[4] = bus;
+}
+
+function createWeintraubPins(){
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+    // initialize variables
+    var compassRose;
+    
+    compassRose = L.icon({
+                         iconUrl: urlBegin + '/05/CompassLogoWeintraub.png',
+                         iconSize: [59*p,59*p]
+                         });
+    weintraubPins[1] = L.marker([268*p, 20*p], {icon: compassRose});
+    // Buses
+    var busIcon = L.icon({
+                         iconUrl: urlBegin + '/04/BusLogo.png',
+                         iconSize: [27*p,25*p]
+                         });
+    var bus = L.marker([135*p, 484*p], {icon: busIcon});
+    weintraubPins[2] = bus;
+    var bus = L.marker([304*p, 267*p], {icon: busIcon});
+    weintraubPins[3] = bus;
+}
+
+function createArnoldPins(){
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+    // initialize variables
+    var compassRose;
+    
+    compassRose = L.icon({
+                         iconUrl: urlBegin + '/05/CompassLogoArnold.png',
+                         iconSize: [63*p,51*p]
+                         });
+    arnoldPins[1] = L.marker([270*p, 23*p], {icon: compassRose});
+}
+
+function createYalePins(){
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var p = w/1400;
+    // initialize variables
+    var compassRose;
+    
+    compassRose = L.icon({
+                         iconUrl: urlBegin + '/05/CompassLogoYale.png',
+                         iconSize: [59*p,59*p]
+                         });
+    yalePins[1] = L.marker([268*p, 20*p], {icon: compassRose});
+    // Parking
+    var parkingIcon = L.icon({
+                             iconUrl: urlBegin + '/04/ParkingLogo.png',
+                             iconSize: [22*p,27*p]
+                             });
+    var parking = L.marker([175*p, 215*p], {icon: parkingIcon});
+    yalePins[2] = parking;
+}
+
 
 // add building names and other pins for default map view
 function addDefaultPins(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
-    var pins = new Array();
+
+    var POIicon = L.icon({
+    iconUrl: urlBegin + '/05/POImarker.png',
+    iconSize: [30,30]
+    });
     
     // ADD THE FH LOGO TO THE BOTTOM LEFT CORNER
     var FredHutchLogoIcon = L.icon({
@@ -949,13 +968,13 @@ function addDefaultPins(){
                                   iconUrl: urlBegin + '/04/1144EastlakeName.png',
                                   iconSize: [66*p,34*p]
                                   });
-    var Eastlake1144Pin = L.marker([207*p, 67*p], {icon: Eastlake1144Icon}).addTo(map);
+    var Eastlake1144Pin = L.marker([213*p, 70*p], {icon: Eastlake1144Icon}).addTo(map);
     pins[2] = Eastlake1144Pin;
     
-    // Eastlake Pin
+    // 1100 Eastlake Pin
     var EastlakeIcon = L.icon({
-                              iconUrl: urlBegin + '/04/EastlakeName.png',
-                              iconSize: [68*p,67*p]
+                              iconUrl: urlBegin + '/05/EastlakeName.png',
+                              iconSize: [103*p,68*p]
                               });
     var EastlakePin = L.marker([210*p, 160*p], {icon: EastlakeIcon}).addTo(map);
     pins[3] = EastlakePin;
@@ -989,7 +1008,7 @@ function addDefaultPins(){
                               iconUrl: urlBegin + '/04/FairviewName.png',
                               iconSize: [65*p,18*p]
                               });
-    var FairviewPin = L.marker([105*p, 265*p], {icon: FairviewIcon}).addTo(map);
+    var FairviewPin = L.marker([95*p, 270*p], {icon: FairviewIcon}).addTo(map);
     pins[7] = FairviewPin;
     
     // Arnold Pin
@@ -1037,7 +1056,7 @@ function addDefaultPins(){
                           iconUrl: urlBegin + '/04/SCCAName.png',
                           iconSize: [40*p,64*p]
                           });
-    var SCCAPin = L.marker([230*p, 350*p], {icon: SCCAIcon}).addTo(map);
+    var SCCAPin = L.marker([230*p, 334*p], {icon: SCCAIcon}).addTo(map);
     pins[13] = SCCAPin;
     
     // BUSES
@@ -1100,8 +1119,8 @@ function addDefaultPins(){
     
     // CAMPUS TOUR DESCRIPTION ON DEFAULT VIEW
     var campusTourHeaderIcon = L.icon({
-                                      iconUrl: urlBegin + '/04/CampusTourHeader.png',
-                                      iconSize: [262*p,162*p]
+                                      iconUrl: urlBegin + '/05/CampusTourHeader.png',
+                                      iconSize: [210*p,128*p]
                                       });
     var campusTourHeader = L.marker([290*p, 75*p], {icon: campusTourHeaderIcon}).addTo(map);
     pins[24] = campusTourHeader;
@@ -1109,50 +1128,174 @@ function addDefaultPins(){
     // STREET NAMES
     // Fairview Avenue North
     var FairviewAvenueNorthIcon = L.icon({
-                                         iconUrl: urlBegin + '/04/FairviewAvenueNorthName.png',
-                                         iconSize: [135*p, 57*p]
+                                         iconUrl: urlBegin + '/05/FairviewAvenueNorthName.png',
+                                         iconSize: [84*p, 31*p]
                                          });
     var FairviewAvenueNorth = L.marker([70*p, 235*p], {icon: FairviewAvenueNorthIcon}).addTo(map);
     pins[25] = FairviewAvenueNorth;
     
     // Campus Drive
     var CampusDriveIcon = L.icon({
-                                 iconUrl: urlBegin + '/04/CampusDriveName.png',
-                                 iconSize: [62*p, 84*p]
+                                 iconUrl: urlBegin + '/05/CampusDriveName.png',
+                                 iconSize: [67*p, 107*p]
                                  });
     var CampusDrive = L.marker([90*p, 310*p], {icon: CampusDriveIcon}).addTo(map);
     pins[26] = CampusDrive;
     
     // Aloha Street
     var AlohaStreetIcon = L.icon({
-                                 iconUrl: urlBegin + '/04/AlohaStreetName.png',
-                                 iconSize: [67*p, 55*p]
+                                 iconUrl: urlBegin + '/05/AlohaStreetName.png',
+                                 iconSize: [47*p, 41*p]
                                  });
     var AlohaStreet = L.marker([80*p, 470*p], {icon: AlohaStreetIcon}).addTo(map);
     pins[27] = AlohaStreet;
     
     // Eastlake Avenue East
     var EastlakeAvenueEastIcon = L.icon({
-                                        iconUrl: urlBegin + '/04/EastlakeAvenueEastName.png',
-                                        iconSize: [129*p, 47*p]
+                                        iconUrl: urlBegin + '/05/EastlakeAvenueEastName.png',
+                                        iconSize: [86*p, 28*p]
                                         });
     var EastlakeAvenueEast = L.marker([215*p, 270*p], {icon: EastlakeAvenueEastIcon}).addTo(map);
     pins[28] = EastlakeAvenueEast;
     
     // Minor Avenue North
     var MinorAvenueNorthIcon = L.icon({
-                                      iconUrl: urlBegin + '/04/MinorAvenueNorthName.png',
-                                      iconSize: [99*p, 95*p]
+                                      iconUrl: urlBegin + '/05/MinorAvenueNorthName.png',
+                                      iconSize: [58*p, 60*p]
                                       });
-    var MinorAvenueNorth = L.marker([55*p, 520*p], {icon: MinorAvenueNorthIcon}).addTo(map);
+    var MinorAvenueNorth = L.marker([50*p, 510*p], {icon: MinorAvenueNorthIcon}).addTo(map);
     pins[29] = MinorAvenueNorth;
     
-    return pins;
+    // Minor Pin
+    var MinorIcon = L.icon({
+                          iconUrl: urlBegin + '/05/MinorName.png',
+                          iconSize: [42*p,59*p]
+                          });
+    var MinorPin = L.marker([120*p, 480*p], {icon: MinorIcon}).addTo(map);
+    pins[30] = MinorPin;
+    
+    // Yale Avenue
+    var YaleAvenueIcon = L.icon({
+                                iconUrl: urlBegin + '/05/YaleAvenueName.png',
+                                iconSize: [64*p, 33*p]
+                                });
+    var YaleAvenue = L.marker([176*p, 390*p], {icon: YaleAvenueIcon}).addTo(map);
+    pins[31] = YaleAvenue;
+    
+    // Yale Avenue
+    var ValleyStreetIcon = L.icon({
+                                iconUrl: urlBegin + '/05/ValleyStreetName.png',
+                                iconSize: [52*p, 32*p]
+                                });
+    var ValleyStreet = L.marker([205*p, 400*p], {icon: ValleyStreetIcon}).addTo(map);
+    pins[32] = ValleyStreet;
+    
+    // DEFAULT POI
+    var popupOptions = {
+        autoPan: false,
+        offset:  new L.Point(0*p, 0*p)
+    };
+    
+    // Pelton Auditorium
+    var PeltonPopup = L.popup(popupOptions)
+        .setLatLng([ 175*p, 160*p ])
+        .setContent('<b style="font-size: 17px;">PELTON AUDITORIUM</b><br><br>Text here.')
+    ;
+    pins[33] = L.marker([175*p, 160*p], {icon: POIicon}).addTo(map);
+    pins[33].on('click', function(){
+                PeltonPopup.openOn(map);
+                });
+    
+    // Sze Conference Rooms
+    var SzePopup = L.popup(popupOptions)
+        .setLatLng([ 190*p, 220*p ])
+        .setContent('<b style="font-size: 17px;">SZE CONFERENCE ROOMS</b><br><br>Text here.')
+    ;
+    pins[34] = L.marker([190*p, 220*p], {icon: POIicon}).addTo(map);
+    pins[34].on('click', function(){
+                SzePopup.openOn(map);
+                });
+    
+    // Vessel
+    var VesselPopup = L.popup(popupOptions)
+        .setLatLng([ 152*p, 286*p ])
+        .setContent('<b style="font-size: 17px;">VESSEL</b><br><br>Text here.')
+    ;
+    pins[35] = L.marker([152*p, 286*p], {icon: POIicon}).addTo(map);
+    pins[35].on('click', function(){
+                VesselPopup.openOn(map);
+                });
+    
+    // Visitor Center
+    var VisitorCenterPopup = L.popup(popupOptions)
+        .setLatLng([ 160*p, 334*p ])
+        .setContent('<b style="font-size: 17px;">VISITOR CENTER</b><br><br>Text here.')
+    ;
+    pins[36] = L.marker([160*p, 334*p], {icon: POIicon}).addTo(map);
+    pins[36].on('click', function(){
+                VisitorCenterPopup.openOn(map);
+                });
+    
+    // Rain or Shine Gift Shop
+    var GiftShopPopup = L.popup(popupOptions)
+        .setLatLng([ 214*p, 335*p ])
+        .setContent('<b style="font-size: 17px;">RAIN OR SHINE GIFT SHOP</b><br><br>Text here.')
+    ;
+    pins[37] = L.marker([214*p, 355*p], {icon: POIicon}).addTo(map);
+    pins[37].on('click', function(){
+                GiftShopPopup.openOn(map);
+                });
+    
+    // HR Lobby and Reception
+    var HRPopup = L.popup(popupOptions)
+        .setLatLng([ 180*p, 415*p ])
+        .setContent('<b style="font-size: 17px;">HR LOBBY AND RECEPTION</b><br><br>Text here.')
+    ;
+    pins[38] = L.marker([180*p, 415*p], {icon: POIicon}).addTo(map);
+    pins[38].on('click', function(){
+                HRPopup.openOn(map);
+                });
+    
+    // Arnold Rooftop Deck
+    var ArnoldRooftopPopup = L.popup(popupOptions)
+        .setLatLng([ 93*p, 433*p ])
+        .setContent('<b style="font-size: 17px;">ARNOLD ROOFTOP DECK</b><br><br>Text here.')
+    ;
+    pins[39] = L.marker([93*p, 433*p], {icon: POIicon}).addTo(map);
+    pins[39].on('click', function(){
+                ArnoldRooftopPopup.openOn(map);
+                });
+    
+    // Hutch Kids
+    var HutchKidsPopup = L.popup(popupOptions)
+        .setLatLng([ 145*p, 500*p ])
+        .setContent('<b style="font-size: 17px;">HUTCH KIDS</b><br><br>Text here.')
+    ;
+    pins[40] = L.marker([145*p, 500*p], {icon: POIicon}).addTo(map);
+    pins[40].on('click', function(){
+                    HutchKidsPopup.openOn(map);
+                    });
+    
+    // Thomas Building Popup
+    popupOptions = {
+        offset:  new L.Point(0*p, -10*p),
+        maxWidth: 250,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    var Pin5Popup = L.popup(popupOptions)
+        .setLatLng([ 185*p, 245*p ])
+        .setContent('<b style="font-size: 17px;">THOMAS</b><br><br>Named for Nobel Laureate Dr. E. Donnall Thomas, this building is home to the Clinical Research Division, a group with more than 100 faculty members and dozens of individual labs. Their focus has expanded to encompass 12 diverse areas of research including hematopoietic cell transplantation, immunotherapy, gene therapy, solid tumor biology and genetics.')
+    ;
+    pins[5].on('click', function(){
+        Pin5Popup.openOn(map);
+    });
+    
 }
 
 // add pins back when you hit the back button to go to default map view
 function addLayersForGoBack(){
-    map.addLayer(HutchKidsPin);
+    addDefaultPins();
     for (var i = 2; i < pins.length; i++){
         if (i != 23)
         map.addLayer(pins[i]);
@@ -1169,148 +1312,115 @@ function addLayersForGoBack(){
     }
 }
 
+// remove the pins when you hit a hotzone and zoom in
 // remove the pins when you hit a hotzone and zoom in (except FH Logo and legend)
 function removeLayersForZoom(){
-    map.removeLayer(HutchKidsPin);
-    map.removeLayer(HutchKidsPopup);
     for (var i = 2; i < pins.length; i++){
         if (i != 23)
             map.removeLayer(pins[i]);
     }
 }
 
-//create the zones and add to map
-hotzones = createHotzones();
-map.addLayer(hotzones[1]);
-map.addLayer(hotzones[2]);
-map.addLayer(hotzones[3]);
-map.addLayer(hotzones[4]);
-map.addLayer(hotzones[5]);
-map.addLayer(hotzones[6]);
-
-// add default pins to the global context for use in other functions
-var pins = addDefaultPins();
-FredHutchLogo = pins[1];
-legend = pins[23];
-
-// create default pins
-eastlakePins = createEastlakePins();
-arnoldPins = createArnoldPins();
-SCCAPins = createSCCAPins();
-weintraubPins = createWeintraubPins();
-thomasPins = createThomasPins();
-yalePins = createYalePins();
-
-// TESTING POPUPS IN CUSTOM LOCATION FOR HUTCH KIDS
-var popupOptions = {
-    offset:  new L.Point(0*p, 125*p)
-};
-var HutchKidsPopup = L.popup(popupOptions)
-    .setLatLng([ 145*p, 500*p ])
-    .setContent('<b>Hutch Kids</b><p></p>Bring your kids here while you work.')
-    ;
-var HutchKidsPin = L.marker([145*p, 500*p], {icon: POIicon});
-HutchKidsPin.addTo(map);
-HutchKidsPin.on('click', function(){
-                HutchKidsPopup.openOn(map);
-                });
-
-// mouseover and mouseout for hotzones
-hotzones[1].on('mouseover', function(e){
-        highlightFeature(e);
-});
-hotzones[1].on('mouseout', function(e){
-        resetStyle(e);
-});
-hotzones[2].on('mouseover', function(e){
-        highlightFeature(e);
-});
-hotzones[2].on('mouseout', function(e){
-        resetStyle(e);
-});
-hotzones[3].on('mouseover', function(e){
-        highlightFeature(e);
-});
-hotzones[3].on('mouseout', function(e){
-        resetStyle(e);
-});
-hotzones[4].on('mouseover', function(e){
-        highlightFeature(e);
-});
-hotzones[4].on('mouseout', function(e){
-        resetStyle(e);
-});
-hotzones[5].on('mouseover', function(e){
-        highlightFeature(e);
-});
-hotzones[5].on('mouseout', function(e){
-        resetStyle(e);
-});
-hotzones[6].on('mouseover', function(e){
-        highlightFeature(e);
-});
-hotzones[6].on('mouseout', function(e){
-        resetStyle(e);
-});
 
 // open the FH website when the logo is clicked
-FredHutchLogo.on('click', function(e){
+pins[1].on('click', function(){
         var win = window.open('https://www.fredhutch.org', '_blank');
         win.focus();
 });
 
-//Eastlake hotzone click
-hotzones[1].on('click', function(e){
-        removeLayersForZoom();
-        changeAngle(eastlakeSequence, eastlakePins);
-});
 
-//Arnold hotzone click
-hotzones[2].on('click', function(e){
-        removeLayersForZoom();
-        changeAngle(arnoldSequence, arnoldPins);
-});
-
-//SCCA hotzone click
-hotzones[3].on('click', function(e){
-        removeLayersForZoom();
-        changeAngle(SCCASequence, SCCAPins);
-});
-
-//Weintraub hotzone click
-hotzones[4].on('click', function(){
-        removeLayersForZoom();
-        changeAngle(weintraubSequence, weintraubPins);
-});
-
-//Thomas hotzone click
-hotzones[5].on('click', function(e){
-        removeLayersForZoom();
-        changeAngle(thomasSequence, thomasPins);
-});
-
-//Yale hotzone click
-hotzones[6].on('click', function(e){
-        removeLayersForZoom();
-        changeAngle(yaleSequence, yalePins);
-});
-
-// mimic system sleep
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-            break;
-        }
-    }
+function click(sequence, zoomPins) {
+    clearHotzones();
+    removeLayersForZoom();
+    map.removeLayer(initialView); 
+    currPins = zoomPins;//remove??
+    changeAngle(sequence);
+    currSequence = sequence;
 }
 
-// used for placing pins (tells you the coordinates)
+$(document).ready(function(){
+    $(window).resize(function(){
+        clearPins();
+        clearHotzones();
+        responsive();
+    });
+});
+
+function responsive() {
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    var percent = w/1400;
+    map.setView([center_h * percent, center_w * percent], 1);
+
+    loadImages();
+    
+    if (initialView){
+        map.removeLayer(initialView);
+    }
+
+    initialView = new L.imageOverlay( url, [[ center_h * 2 * percent, 0 ], [ 0, center_w * 2 * percent]] );
+    map.addLayer(initialView);
+
+    createSCCAPins();
+    createYalePins();
+    createArnoldPins();
+    createWeintraubPins();
+    createThomasPins();
+    createEastlakePins();
+
+    if (zoomed) {
+        //1, 44, 45, length: 46 (eastlake)
+        last = currSequence.length - 1;
+        map.removeLayer(currSequence[1]);
+        map.removeLayer(currSequence[last - 1]);
+        map.removeLayer(currSequence[last]);
+
+        //loadImages();
+        map.addLayer(currSequence[last]);
+
+        for (var i = 1; i < zoomPins.length; i++) {
+            map.addLayer(zoomPins[i]);
+        }
+
+        if(backButton) {
+            map.removeLayer(backButton);
+            backButton = drawBack();
+            backButton.addTo(map);
+
+            backButton.on('click', function(e){
+            back(currSequence);
+            });
+        }
+    }
+
+    else {
+        createHotzones();
+        addDefaultPins();
+    }
+
+    $("#map").height(668*percent-1).width(1200*percent-2);
+    map.invalidateSize(false);
+}
+
 /*map.on('click', function(e) {
-       alert("Lat, Lon: " + e.latlng.lat + ", " + e.latlng.lng)
-        });*/
+    alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+});*/
+
+function clearPins(){
+
+    for (var i = 1; i < pins.length; i++) {
+        map.removeLayer(pins[i]);
+    }
+
+    delete pins;
+}
+
+function clearHotzones(){
+
+    for (var i = 1; i < hotzones.length; i++) {
+        map.removeLayer(hotzones[i]);
+    }
+
+    delete hotzones;
+}
 
 </script>
-</body>
-</html>
-
