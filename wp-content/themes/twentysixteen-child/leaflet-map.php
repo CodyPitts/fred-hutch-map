@@ -37,8 +37,8 @@ body {
 
 @font-face {
     font-family: 'geogrotesque';
-    src: url('http://localhost/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.eot');
-    src: local('☺'), url('http://localhost/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://localhost/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
+    src: url('http://localhost:8888/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.eot');
+    src: local('☺'), url('http://localhost:8888/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://localhost:8888/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
 }
 .leaflet-popup-content-wrapper {
     background: rgb(18,48,84);
@@ -382,7 +382,6 @@ body {
 </body>
 </html>
 
-
 <script>L_DISABLE_3D = true;
 //CAN ALSO ADD 'L_PREFER_CANVAS = true;' TO SPEED UP LOAD TIME, BUT SLOWS DOWN ZOOMING
 </script>
@@ -400,9 +399,9 @@ $('body').addClass('stop-scrolling');
 $('body').bind('touchmove', function(e){e.preventDefault()});
 
 jQuery(window).load(function () {
-    jQuery('#loading').hide();
-    $('body').unbind('touchmove');
-});
+                    jQuery('#loading').hide();
+                    $('body').unbind('touchmove');
+                    });
 
 L.Browser.webkit3d = false;
 L.Browser.any3d = false;
@@ -457,7 +456,6 @@ if (directoryFolder == "wordpresstest")
     urlBegin = urlBegin + "/" + directoryFolder + "/wp-content/uploads";
 else
     urlBegin = urlBegin + "/wp-content/uploads";
-
 
 //JSON query for popup content
 var text;
@@ -649,7 +647,7 @@ function createHotzones(){
                             });
     
     //add a hotzone for Weintraub
-    hotzones[4] = L.polygon([[163*p,62*p],[188*p,198*p],[155*p,210*p],[154*p,213*p],[137*p,215*p],[126*p,212*p],[104*p,146*p],[105*p,134*p],[127*p,122*p],[135*p,124*p],[122*p,65*p],[145*p,53*p]], {
+    hotzones[4] = L.polygon([[163*p,62*p],[188*p,198*p],[155*p,210*p],[154*p,213*p],[137*p,215*p],[126*p,212*p],[104*p,146*p],[105*p,134*p],[127*p,122*p],[135*p,124*p],[122*p,65*p],[147*p,52*p]], {
                             weight: 0,
                             opacity: 0,
                             color: 'green',
@@ -908,11 +906,66 @@ function createEastlakePins(){
     // initialize variables
     var compassRose;
     
+    // initialize pin options
+    var POIicon = L.icon({
+                         iconUrl: urlBegin + '/POImarker.png',
+                         iconSize: [40*p,40*p]
+                         });
+    var popupOptions = {
+        offset:  new L.Point(0*p, 0*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+
+    // Compass
     compassRose = L.icon({
                          iconUrl: urlBegin + '/CompassLogoEastlake.png',
                          iconSize: [57*p,27*p]
                          });
     eastlakePins[1] = L.marker([270*p, 25*p], {icon: compassRose});
+    
+    // Rubia
+    var RubiaPopup = L.popup(popupOptions)
+    .setLatLng([ 136*p, 280*p ])
+    .setContent('<b style="font-size: 17px;">RUBIA ESPRESSO BAR</b><br><br>Located on the 1st floor of the 1100 Eastlake Building, at Rubia Espresso, you will enjoy local espresso drinks and Starbucks coffee, specialty teas, assorted pastries and desserts. During lunch, enjoy flavorful grab-and-go choices, including freshly prepared sandwiches, salads abundant with local, sustainable produce and made-from-scratch soups.')
+    ;
+    eastlakePins[2] = L.marker([136*p, 280*p], {icon: POIicon});
+    eastlakePins[2].on('click', function(){
+                     RubiaPopup.openOn(map);
+                     });
+    
+    // Sky bridge
+    var SkyBridgePopup = L.popup(popupOptions)
+    .setLatLng([ 120*p, 437*p ])
+    .setContent('<b style="font-size: 17px;">SKY BRIDGE</b><br>')
+    ;
+    eastlakePins[3] = L.marker([120*p, 437*p], {icon: POIicon});
+    eastlakePins[3].on('click', function(){
+                       SkyBridgePopup.openOn(map);
+                       });
+    
+    // MAIN 1100 EASTLAKE PIN
+    var EastlakeIcon = L.icon({
+                              iconUrl: urlBegin + '/EastlakeName.png',
+                              iconSize: [154.5*p,102*p]
+                              });
+    eastlakePins[4] = L.marker([190*p, 340*p], {icon: EastlakeIcon});
+    
+    // MAIN 1144 EASTLAKE PIN
+    var Eastlake1144Icon = L.icon({
+                                  iconUrl: urlBegin + '/1144EastlakeName.png',
+                                  iconSize: [99*p,51*p]
+                                  });
+     eastlakePins[5] = L.marker([185*p, 100*p], {icon: Eastlake1144Icon});
+    
+    // Eastlake Avenue East
+    var EastlakeAvenueEastIcon = L.icon({
+                                         iconUrl: urlBegin + '/EastlakeAvenueEastNameEastlake.png',
+                                         iconSize: [86*p, 17*p]
+                                         });
+    eastlakePins[6] = L.marker([73*p, 310*p], {icon: EastlakeAvenueEastIcon});
+    
 }
 
 function createSCCAPins(){
@@ -920,18 +973,105 @@ function createSCCAPins(){
     var p = w/1400;
     // initialize variables
     var compassRose;
+    
+    // initialize pin options
+    var POIicon = L.icon({
+                         iconUrl: urlBegin + '/POImarker.png',
+                         iconSize: [40*p,40*p]
+                         });
+    var popupOptions = {
+        offset:  new L.Point(0*p, 0*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    
     compassRose = L.icon({
                          iconUrl: urlBegin + '/CompassLogoSCCA.png',
                          iconSize: [57*p,27*p]
                          });
     SCCAPins[1] = L.marker([270*p, 25*p], {icon: compassRose});
+    
     // Bus
     var busIcon = L.icon({
                          iconUrl: urlBegin + '/BusLogo.png',
                          iconSize: [27*p,25*p]
                          });
-    var bus = L.marker([235*p, 185*p], {icon: busIcon});
+    var bus = L.marker([255*p, 150*p], {icon: busIcon});
     SCCAPins[2] = bus;
+    
+    // Red Brick Bistro
+    var RedBrickBistroPopup = L.popup(popupOptions)
+    .setLatLng([ 213*p, 295*p ])
+    .setContent('<b style="font-size: 17px;">RED BRICK BISTRO</b><br><br>Located on the 2nd floor in the Seattle Cancer Care Alliance building, you will enjoy specialty coffee and espresso, local fruits, fresh pastries and hot cereals. During lunch, enjoy entrées with flavors from home and around the world. For those on the go, we offer healthy grab and go choices including freshly prepared sandwiches, made-from-scratch soups and local beverages.')
+    ;
+    SCCAPins[3] = L.marker([213*p, 295*p], {icon: POIicon});
+    SCCAPins[3].on('click', function(){
+                       RedBrickBistroPopup.openOn(map);
+                       });
+    
+    // Rain or Shine Gift Shop
+    var GiftShopPopup = L.popup(popupOptions)
+    .setLatLng([ 213*p, 315*p ])
+    .setContent('<b style="font-size: 17px;">RAIN OR SHINE GIFT SHOP</b><br><br>Located on the first floor of the Seattle Cancer Care Alliance (SCCA) clinic, the Rain or Shine Gift Shop carries a variety of quality merchandise, from sundries to sparkles. Rain or Shine is staffed by volunteers. Proceeds benefit patient programs. Whether it’s a convenience item, a gift for a loved one or a little piece of fun to bring you peace of mind, Rain or Shine is here for your needs. You can even call and place orders for custom gift bags that can be hand-delivered to all floors of SCCA!')
+    ;
+    SCCAPins[4] = L.marker([213*p, 315*p], {icon: POIicon});
+    SCCAPins[4].on('click', function(){
+                GiftShopPopup.openOn(map);
+                });
+    
+    // ATM
+    var ATMPopup = L.popup(popupOptions)
+    .setLatLng([ 213*p, 335*p ])
+    .setContent('<b style="font-size: 17px;">ATM (1ST FLOOR)</b><br><br>ATM - Sound Credit Union (Deposit Taking, Surcharge Free, 24-hour, Accepts Deposits) ')
+    ;
+    SCCAPins[5] = L.marker([213*p, 335*p], {icon: POIicon});
+    SCCAPins[5].on('click', function(){
+                   ATMPopup.openOn(map);
+                   });
+    
+    // MAIN SCCA PIN
+    var SCCAIcon = L.icon({
+                          iconUrl: urlBegin + '/SCCAName.png',
+                          iconSize: [60*p,96*p]
+                          });
+    SCCAPins[6] = L.marker([280*p, 320*p], {icon: SCCAIcon});
+    
+    // MAIN ALOHA PIN
+    var AlohaIcon = L.icon({
+                           iconUrl: urlBegin + '/AlohaName.png',
+                           iconSize: [75*p,27*p]
+                           });
+    SCCAPins[7] = L.marker([95*p, 420*p], {icon: AlohaIcon});
+    
+    // MAIN VALLEY PIN
+    var ValleyIcon = L.icon({
+                            iconUrl: urlBegin + '/ValleyName.png',
+                            iconSize: [82.5*p,31.5*p]
+                            });
+    SCCAPins[8] = L.marker([195*p, 490*p], {icon: ValleyIcon});
+    
+    // Eastlake Avenue East
+    var EastlakeAvenueEastIcon = L.icon({
+                                        iconUrl: urlBegin + '/EastlakeAvenueEastNameSCCA.png',
+                                        iconSize: [86.5*p, 31*p]
+                                        });
+    SCCAPins[9] = L.marker([238*p, 110*p], {icon: EastlakeAvenueEastIcon});
+    
+    // Aloha Street
+    var AlohaStreetIcon = L.icon({
+                                 iconUrl: urlBegin + '/AlohaStreetNameSCCA.png',
+                                 iconSize: [54.5*p, 62.5*p]
+                                 });
+    SCCAPins[10] = L.marker([135*p, 260*p], {icon: AlohaStreetIcon});
+    
+    // Yale Avenue
+    var YaleAvenueIcon = L.icon({
+                                iconUrl: urlBegin + '/YaleAvenueNameSCCA.png',
+                                iconSize: [24*p, 63.5*p]
+                                });
+    SCCAPins[11] = L.marker([55*p, 580*p], {icon: YaleAvenueIcon});
+    
 }
 
 function createThomasPins(){
@@ -940,11 +1080,25 @@ function createThomasPins(){
     // initialize variables
     var compassRose;
     
+    // initialize pin options
+    var POIicon = L.icon({
+                         iconUrl: urlBegin + '/POImarker.png',
+                         iconSize: [40*p,40*p]
+                         });
+    var popupOptions = {
+        offset:  new L.Point(0*p, 0*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    
+    // Compass
     compassRose = L.icon({
                          iconUrl: urlBegin + '/CompassLogoThomas.png',
                          iconSize: [48*p,63*p]
                          });
     thomasPins[1] = L.marker([268*p, 20*p], {icon: compassRose});
+    
     // Parking
     var parkingIcon = L.icon({
                              iconUrl: urlBegin + '/ParkingLogo.png',
@@ -954,6 +1108,7 @@ function createThomasPins(){
     thomasPins[2] = parking1of2;
     var parking2of2 = L.marker([70*p, 290*p], {icon: parkingIcon});
     thomasPins[3] = parking2of2;
+    
     // Bus
     var busIcon = L.icon({
                          iconUrl: urlBegin + '/BusLogo.png',
@@ -961,6 +1116,161 @@ function createThomasPins(){
                          });
     var bus = L.marker([230*p, 170*p], {icon: busIcon});
     thomasPins[4] = bus;
+    
+    // Thomas Reception
+    var ThomasReceptionPopup = L.popup(popupOptions)
+    .setLatLng([ 115*p, 335*p ])
+    .setContent('<b style="font-size: 17px;">THOMAS RECEPTION</b><br><br>This is where visitors sign in for Thomas, Weintraub and Hutchinson buildings. We also provide visitor access cards and parking sign in. Employee loaner badges may be checked out here. We direct visitor’s and guest to meetings and events in the buildings or on Campus. The reception desk is staffed M-F, 7:00 a.m. to 7:00 p.m.')
+    ;
+    thomasPins[5] = L.marker([115*p, 335*p], {icon: POIicon});
+    thomasPins[5].on('click', function(){
+                   ThomasReceptionPopup.openOn(map);
+                   });
+    
+    // Nobel
+    var NobelPopup = L.popup(popupOptions)
+    .setLatLng([ 123*p, 355*p ])
+    .setContent('<b style="font-size: 17px;">THE HUTCH\'S NOBEL LAUREATES</b><br><br>Fred Hutch is home to three Nobel laureates. The prize was established by the will of Alfred Nobel in 1895, awarded annually since 1901 for outstanding contributions in physics, chemistry, literature, peace, and physiology or medicine.')
+    ;
+    thomasPins[6] = L.marker([123*p, 355*p], {icon: POIicon});
+    thomasPins[6].on('click', function(){
+                     NobelPopup.openOn(map);
+                     });
+    
+    // Sze Conference Rooms
+    var SzePopup = L.popup(popupOptions)
+    .setLatLng([ 130*p, 375*p ])
+    .setContent('<b style="font-size: 17px;">LUCILLE J. SZE CONFERENCE ROOM</b><br>')
+    ;
+    thomasPins[7] = L.marker([130*p, 375*p], {icon: POIicon});
+    thomasPins[7].on('click', function(){
+                SzePopup.openOn(map);
+                });
+    
+    // Patient Recognition Wall
+    var RecognitionWallPopup = L.popup(popupOptions)
+    .setLatLng([ 137*p, 395*p ])
+    .setContent('<b style="font-size: 17px;">PATIENT RECOGNITION WALL</b><br><br>More than 1 million people have received blood stem cell transplants around the globe, all of which trace back to the pioneering work at Fred Hutch. In 1975, Hutch physician-scientists performed roughly 100 transplants per year. Today more than 50,000 patients are transplanted annually worldwide, about 500 of whom are treated by our researchers. The courage of these patients inspires us and drives our continued research.')
+    ;
+    thomasPins[8] = L.marker([137*p, 395*p], {icon: POIicon});
+    thomasPins[8].on('click', function(){
+                     RecognitionWallPopup.openOn(map);
+                     });
+    
+    // BMT Survivor Wall
+    var SurvivorWallPopup = L.popup(popupOptions)
+    .setLatLng([ 144*p, 415*p ])
+    .setContent('<b style="font-size: 17px;">BMT SURVIVOR WALL</b><br>')
+    ;
+    thomasPins[9] = L.marker([144*p, 415*p], {icon: POIicon});
+    thomasPins[9].on('click', function(){
+                     SurvivorWallPopup.openOn(map);
+                     });
+    
+    // The Hutchinson Story
+    var HutchinsonStoryPopup = L.popup(popupOptions)
+    .setLatLng([ 151*p, 435*p ])
+    .setContent('<b style="font-size: 17px;">THE HUTCHINSON STORY</b><br><br>Although Fred Hutch opened its doors in 1975, its history began nearly 20 years earlier with the vision of Seattle surgeon Dr. William Hutchinson, brother of baseball hero Fred Hutchinson. Fred’s cancer served as the driving force for Dr. Bill in the creation of a center devoted to studying the disease.')
+    ;
+    thomasPins[10] = L.marker([151*p, 435*p], {icon: POIicon});
+    thomasPins[10].on('click', function(){
+                     HutchinsonStoryPopup.openOn(map);
+                     });
+    
+    // President and Director's Office
+    var OfficePopup = L.popup(popupOptions)
+    .setLatLng([ 158*p, 455*p ])
+    .setContent('<b style="font-size: 17px;">PRESIDENT AND DIRECTOR\'S OFFICE</b><br>')
+    ;
+    thomasPins[11] = L.marker([158*p, 455*p], {icon: POIicon});
+    thomasPins[11].on('click', function(){
+                      OfficePopup.openOn(map);
+                      });
+    
+    // Etude de Femme
+    var EtudePopup = L.popup(popupOptions)
+    .setLatLng([ 165*p, 475*p ])
+    .setContent('<b style="font-size: 17px;">ETUDE DE FEMME</b><br><br>This small piece by the great sculptor shows off his mastery of anatomy and his ability to manipulate bronze to create a sense of motion. The woman’s right hand is raised to her shoulder and clasped, with the left shoulder pointing downward. These seemingly simple gestures in Rodin’s demure, semi-reclining nude are evocative of Michelangelo’s great Renaissance masterpiece, David.')
+    ;
+    thomasPins[12] = L.marker([165*p, 475*p], {icon: POIicon});
+    thomasPins[12].on('click', function(){
+                      EtudePopup.openOn(map);
+                      });
+    
+    // ThermoScientific OrbiTrap Elite mass spectrometer
+    var ThermoScientificPopup = L.popup(popupOptions)
+    .setLatLng([ 172*p, 495*p ])
+    .setContent('<b style="font-size: 17px;">THERMOSCIENTIFIC ORBITRAP ELITE MASS SPECTROMETER</b><br>')
+    ;
+    thomasPins[13] = L.marker([172*p, 495*p], {icon: POIicon});
+    thomasPins[13].on('click', function(){
+                      ThermoScientificPopup.openOn(map);
+                      });
+    
+    // MAIN 1100 Eastlake Pin
+    var EastlakeIcon = L.icon({
+                              iconUrl: urlBegin + '/EastlakeName.png',
+                              iconSize: [154.5*p,102*p]
+                              });
+    thomasPins[14] = L.marker([313*p, 410*p], {icon: EastlakeIcon});
+
+    
+    // MAIN Weintraub Pin
+    var WeintraubIcon = L.icon({
+                               iconUrl: urlBegin + '/WeintraubName.png',
+                               iconSize: [118.5*p,96*p]
+                               });
+    thomasPins[15] = L.marker([300*p, 320*p], {icon: WeintraubIcon});
+
+    
+    // MAIN Thomas Pin
+    var ThomasIcon = L.icon({
+                            iconUrl: urlBegin + '/ThomasName.png',
+                            iconSize: [84*p,96*p]
+                            });
+    thomasPins[16] = L.marker([210*p, 375*p], {icon: ThomasIcon});
+
+    // MAIN Hutchinson Pin
+    var HutchinsonIcon = L.icon({
+                                iconUrl: urlBegin + '/HutchinsonName.png',
+                                iconSize: [118.5*p,96*p]
+                                });
+    thomasPins[17] = L.marker([272*p, 240*p], {icon: HutchinsonIcon});
+
+    // MAIN Fairview Pin
+    var FairviewIcon = L.icon({
+                              iconUrl: urlBegin + '/FairviewName.png',
+                              iconSize: [97.5*p,27*p]
+                              });
+    thomasPins[18] = L.marker([115*p, 95*p], {icon: FairviewIcon});
+    
+    // Yale Avenue
+    var YaleAvenueIcon = L.icon({
+                                iconUrl: urlBegin + '/YaleAvenueNameThomas.png',
+                                iconSize: [35.5*p, 63.5*p]
+                                });
+    thomasPins[19] = L.marker([150*p, 198*p], {icon: YaleAvenueIcon});
+    
+    // Campus Drive
+    var CampusDriveIcon = L.icon({
+                                 iconUrl: urlBegin + '/CampusDriveNameThomas.png',
+                                 iconSize: [110*p, 65.5*p]
+                                 });
+    thomasPins[20] = L.marker([22*p, 175*p], {icon: CampusDriveIcon});
+    
+    // Fairview Avenue North
+    var FairviewAvenueNorthIcon = L.icon({
+                                 iconUrl: urlBegin + '/FairviewAvenueNorthNameThomas.png',
+                                 iconSize: [75*p, 65*p]
+                                 });
+    thomasPins[21] = L.marker([235*p, 135*p], {icon: FairviewAvenueNorthIcon});
+    
+    // Eastlake Avenue East
+    var EastlakeAvenueEastIcon = L.icon({
+                                        iconUrl: urlBegin + '/EastlakeAvenueEastNameThomas.png',
+                                        iconSize: [84*p, 47*p]
+                                        });
+    thomasPins[22] = L.marker([200*p, 530*p], {icon: EastlakeAvenueEastIcon});
 }
 
 function createWeintraubPins(){
@@ -969,11 +1279,19 @@ function createWeintraubPins(){
     // initialize variables
     var compassRose;
     
+    // initialize pin options
+    var POIicon = L.icon({
+                         iconUrl: urlBegin + '/POImarker.png',
+                         iconSize: [40*p,40*p]
+                         });
+    
+    // Compass
     compassRose = L.icon({
                          iconUrl: urlBegin + '/CompassLogoWeintraub.png',
                          iconSize: [59*p,59*p]
                          });
     weintraubPins[1] = L.marker([268*p, 20*p], {icon: compassRose});
+    
     // Buses
     var busIcon = L.icon({
                          iconUrl: urlBegin + '/BusLogo.png',
@@ -983,6 +1301,172 @@ function createWeintraubPins(){
     weintraubPins[2] = bus;
     var bus = L.marker([304*p, 267*p], {icon: busIcon});
     weintraubPins[3] = bus;
+    
+    // setup initial popup options
+    var popupOptions = {
+        offset:  new L.Point(0*p, 255*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    
+    // Bricks and Slates
+    var BricksAndSlatesPopup = L.popup(popupOptions)
+    .setLatLng([ 250*p, 365*p ])
+    .setContent('<b style="font-size: 17px;">BRICKS AND SLATES</b><br><br>Be part of Fred Hutch\'s campus and support cancer research with an engraved brick or slate. Whether you’d like to honor or memorialize a friend or family member, or commemorate a special anniversary, birthday or other life event, your purchase will fuel breakthrough research that saves lives. Your brick or slate will be customized with your own personal message and placed in Mundie Courtyard on the Fred Hutch campus. Your tribute will become forever a part of the history of our world-renowned campus.')
+    ;
+    weintraubPins[4] = L.marker([250*p, 365*p], {icon: POIicon});
+    weintraubPins[4].on('click', function(){
+                      BricksAndSlatesPopup.openOn(map);
+                      });
+    
+    // reinitialize popup options
+    popupOptions = {
+        offset:  new L.Point(0*p, 0*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    
+    // Time Capsule
+    var TimeCapsulePopup = L.popup(popupOptions)
+    .setLatLng([ 170*p, 335*p ])
+    .setContent('<b style="font-size: 17px;">TIME CAPSULE</b><br><br>A time capsule was buried on the Fred Hutch campus on June 1, 1993, to be opened in 2093. It contains two fruit flies named Chuck and Thelma, a marrow-aspiration needle, a Hickman catheter, DNA from an HIV lab, a Starbucks cup and a day’s worth of lab trash.')
+    ;
+    weintraubPins[5] = L.marker([170*p, 335*p], {icon: POIicon});
+    weintraubPins[5].on('click', function(){
+                        TimeCapsulePopup.openOn(map);
+                        });
+    
+    // Towne Court (Waterfall)
+    var TowneCourtPopup = L.popup(popupOptions)
+    .setLatLng([ 215*p, 210*p ])
+    .setContent('<b style="font-size: 17px;">TOWNE COURT (WATERFALL)</b><br>')
+    ;
+    weintraubPins[6] = L.marker([215*p, 210*p], {icon: POIicon});
+    weintraubPins[6].on('click', function(){
+                        TowneCourtPopup.openOn(map);
+                        });
+    
+    // Jennifer Pelton Auditorium
+    var AuditoriumPopup = L.popup(popupOptions)
+    .setLatLng([ 215*p, 230*p ])
+    .setContent('<b style="font-size: 17px;">JENNIFER PELTON AUDITORIUM</b><br>')
+    ;
+    weintraubPins[7] = L.marker([215*p, 230*p], {icon: POIicon});
+    weintraubPins[7].on('click', function(){
+                        AuditoriumPopup.openOn(map);
+                        });
+    
+    // Art
+    var ArtPopup = L.popup(popupOptions)
+    .setLatLng([ 215*p, 250*p ])
+    .setContent('<b style="font-size: 17px;">PRESTON SINGLETARY COLLECTION</b><br><br>For nearly two decades, Preston Singletary has straddled two unique cultures — melding his Native American Tlingit ancestry with the dynamism of the Studio Glass movement. Tlingit people traditionally used organic materials including wood, cedar bark, and spruce root in the creation of utilitarian and symbolic objects such as totem poles, baskets and rain hats.  Singletary was schooled in the traditions of European glass, studying the aesthetics and techniques of glassmakers from Italy to Sweden, and he uses this contemporary sculptural medium to capture the essence of Tlingit forms.<br><br><b style="font-size: 17px;">RON REEDER PHOTOGRAPHY</b><br><br>These rich and textural photos capture the wanderlust of the photographer. Reeder is a retired member of Fred Hutch’s Basic Sciences Division.')
+    ;
+    weintraubPins[8] = L.marker([215*p, 250*p], {icon: POIicon});
+    weintraubPins[8].on('click', function(){
+                        ArtPopup.openOn(map);
+                        });
+    
+    // Arnold Library
+    var LibraryPopup = L.popup(popupOptions)
+    .setLatLng([ 215*p, 270*p ])
+    .setContent('<b style="font-size: 17px;">ARNOLD LIBRARY</b><br><br>The Arnold Library provides high quality, responsive services and resources in support of Fred Hutch\'s research, education and patient care programs. Our physical space houses study carrels with wireless Internet access, patron computers and the Shared Resources Computer Lab. The digital side of our operation encompasses subscription management for more than 25,000 ebooks and over 32,000 online journals and a variety of databases and web services. Librarians curate Fred Hutch researchers profiles, provide center-wide tracking of scholarly publishing, support Center authors with NIH Public Access Policy compliance, manage the Shared Resources website, provide training and support for citation management tools like EndNote, provide reports and consultation on publication metrics, host a course guides system to support faculty instructors, manage the Fred Hutch history archive and administer several institutional repositories.')
+    ;
+    weintraubPins[9] = L.marker([215*p, 270*p], {icon: POIicon});
+    weintraubPins[9].on('click', function(){
+                        LibraryPopup.openOn(map);
+                        });
+    
+    // Double Helix Espresso
+    var EspressoPopup = L.popup(popupOptions)
+    .setLatLng([ 215*p, 290*p ])
+    .setContent('<b style="font-size: 17px;">DOUBLE HELIX ESPRESSO</b><br><br>Located in the Weintraub Building, enjoy Starbucks espresso drinks and coffee, specialty teas, assorted pastries and desserts.  A selection of Grab-N-Go sandwiches and salads, ask your Barista for what\'s available.')
+    ;
+    weintraubPins[10] = L.marker([215*p, 290*p], {icon: POIicon});
+    weintraubPins[10].on('click', function(){
+                        EspressoPopup.openOn(map);
+                        });
+    
+    // ATM (Inside Double Helix Café)
+    var ATMPopup = L.popup(popupOptions)
+    .setLatLng([ 215*p, 310*p ])
+    .setContent('<b style="font-size: 17px;">ATM (INSIDE DOUBLE HELIX CAFÉ)</b><br><br>ATM - Sounds Credit Union (Restricted Access, Surcharge Free, Restricted Access) ')
+    ;
+    weintraubPins[11] = L.marker([215*p, 310*p], {icon: POIicon});
+    weintraubPins[11].on('click', function(){
+                         ATMPopup.openOn(map);
+                         });
+    
+    // Double Helix Café
+    var CaféPopup = L.popup(popupOptions)
+    .setLatLng([ 215*p, 330*p ])
+    .setContent('<b style="font-size: 17px;">DOUBLE HELIX CAFÉ</b><br><br>Located in the Weintraub Building, enjoy traditional dishes to comfort food.  You\'ll find a salad bar abundant with local, sustainable produce and toppings, healthy grab-and-go choices, including freshly prepared sandwiches, made-from-scratch soups and local beverages.')
+    ;
+    weintraubPins[12] = L.marker([215*p, 330*p], {icon: POIicon});
+    weintraubPins[12].on('click', function(){
+                         CaféPopup.openOn(map);
+                         });
+    
+    // Mundie Courtyard
+    var MundiePopup = L.popup(popupOptions)
+    .setLatLng([ 215*p, 350*p ])
+    .setContent('<b style="font-size: 17px;">MUNDIE COURTYARD</b><br>')
+    ;
+    weintraubPins[13] = L.marker([215*p, 350*p], {icon: POIicon});
+    weintraubPins[13].on('click', function(){
+                         MundiePopup.openOn(map);
+                         });
+    
+    // MAIN 1100 Eastlake Pin
+    var EastlakeIcon = L.icon({
+                              iconUrl: urlBegin + '/EastlakeName.png',
+                              iconSize: [154.5*p,102*p]
+                              });
+    weintraubPins[14] = L.marker([280*p, 140*p], {icon: EastlakeIcon});
+    
+    // MAIN Weintraub Pin
+    var WeintraubIcon = L.icon({
+                               iconUrl: urlBegin + '/WeintraubName.png',
+                               iconSize: [118.5*p,96*p]
+                               });
+    weintraubPins[15] = L.marker([260*p, 285*p], {icon: WeintraubIcon});
+    
+    // MAIN Thomas Pin
+    var ThomasIcon = L.icon({
+                            iconUrl: urlBegin + '/ThomasName.png',
+                            iconSize: [84*p,96*p]
+                            });
+    weintraubPins[16] = L.marker([310*p, 375*p], {icon: ThomasIcon});
+    
+    // MAIN Hutchinson Pin
+    var HutchinsonIcon = L.icon({
+                                iconUrl: urlBegin + '/HutchinsonName.png',
+                                iconSize: [118.5*p,96*p]
+                                });
+    weintraubPins[17] = L.marker([235*p, 425*p], {icon: HutchinsonIcon});
+    
+    // Yale Avenue
+    var YaleAvenueIcon = L.icon({
+                                iconUrl: urlBegin + '/YaleAvenueNameWeintraub.png',
+                                iconSize: [32.5*p, 63.5*p]
+                                });
+    weintraubPins[18] = L.marker([215*p, 480*p], {icon: YaleAvenueIcon});
+    
+    // Fairview Avenue North
+    var FairviewAvenueNorthIcon = L.icon({
+                                         iconUrl: urlBegin + '/FairviewAvenueNorthNameWeintraub.png',
+                                         iconSize: [75*p, 65*p]
+                                         });
+    weintraubPins[19] = L.marker([80*p, 445*p], {icon: FairviewAvenueNorthIcon});
+    
+    // Eastlake Avenue East
+    var EastlakeAvenueEastIcon = L.icon({
+                                        iconUrl: urlBegin + '/EastlakeAvenueEastNameWeintraub.png',
+                                        iconSize: [78*p, 61.5*p]
+                                        });
+    weintraubPins[20] = L.marker([167*p, 140*p], {icon: EastlakeAvenueEastIcon});
+    
 }
 
 function createArnoldPins(){
@@ -991,11 +1475,178 @@ function createArnoldPins(){
     // initialize variables
     var compassRose;
     
+    // initialize pin options
+    var POIicon = L.icon({
+                         iconUrl: urlBegin + '/POImarker.png',
+                         iconSize: [40*p,40*p]
+                         });
+    var popupOptions = {
+        offset:  new L.Point(0*p, 100*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    
+    // compass
     compassRose = L.icon({
                          iconUrl: urlBegin + '/CompassLogoArnold.png',
                          iconSize: [63*p,51*p]
                          });
     arnoldPins[1] = L.marker([270*p, 23*p], {icon: compassRose});
+    
+    // Arnold Rooftop
+    var ArnoldRooftopPopup = L.popup(popupOptions)
+        .setLatLng([ 310*p, 275*p ])
+        .setContent('<b style="font-size: 17px;">ARNOLD ROOFTOP DECK</b>')
+        ;
+    arnoldPins[2] = L.marker([310*p, 272*p], {icon: POIicon});
+    arnoldPins[2].on('click', function(){
+                ArnoldRooftopPopup.openOn(map);
+                });
+    
+    // Reinitialize popup options for pins with popups ABOVE the pin
+    popupOptions = {
+        offset:  new L.Point(0*p, 0*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    // Vessel
+    var VesselPopup = L.popup(popupOptions)
+    .setLatLng([ 125*p, 405*p ])
+    .setContent('<b style="font-size: 17px;">VESSEL</b><br><br>“Vessel” is a 60-foot glass-and-metal piece installed on the Fred Hutch campus in 2008. Rising more than four stories in a transparent and searching gesture, this monumental but delicate sculpture employs light to represent the optimistic spirit of the institution.')
+    ;
+    arnoldPins[3] = L.marker([125*p, 405*p], {icon: POIicon});
+    arnoldPins[3].on('click', function(){
+                     VesselPopup.openOn(map);
+                     });
+    
+    // Arnold Reception
+    var ArnoldReceptionPopup = L.popup(popupOptions)
+    .setLatLng([ 167*p, 190*p ])
+    .setContent('<b style="font-size: 17px;">ARNOLD RECEPTION</b><br><br>PHS/Arnold  Reception is your area for parking and check in  needs  for  visitors to the Arnold Building. We contact  hosts for guest  pickup or  direct guests to their meeting spaces,  the Visitor Center (located in the lobby) and other areas of the building  and campus. Reception is able to assist with general questions in regards to  Fred Hutch,  and the  general needs of visitors and employees.<br><br>PHS/Arnold Reception is open Monday through Friday, 8 am to 5 pm.                                                                                                 ')
+    ;
+    arnoldPins[4] = L.marker([167*p, 190*p], {icon: POIicon});
+    arnoldPins[4].on('click', function(){
+                     ArnoldReceptionPopup.openOn(map);
+                     });
+    
+    // MAIN ARNOLD PIN
+    var ArnoldIcon = L.icon({
+                            iconUrl: urlBegin + '/ArnoldName.png',
+                            iconSize: [79.5*p,97.5*p]
+                            });
+    arnoldPins[5] = L.marker([267*p, 190*p], {icon: ArnoldIcon});
+    
+    // MAIN FAIRVIEW PIN
+    var FairviewIcon = L.icon({
+                              iconUrl: urlBegin + '/FairviewName.png',
+                              iconSize: [97.5*p,27*p]
+                              });
+    var FairviewPin = L.marker([190*p, 540*p], {icon: FairviewIcon});
+    arnoldPins[6] = FairviewPin;
+    
+    // Visitor Center
+    var VisitorCenterPopup = L.popup(popupOptions)
+    .setLatLng([ 169*p, 210*p ])
+    .setContent('<b style="font-size: 17px;">VISITOR CENTER</b><br><br>The vibrant new space honors our past, embraces our future and invites visitors to share their stories.')
+    ;
+    arnoldPins[7] = L.marker([169*p, 210*p], {icon: POIicon});
+    arnoldPins[7].on('click', function(){
+                     VisitorCenterPopup.openOn(map);
+                     });
+    
+    // Carl and Reneé Behnke Conference Suite
+    var CarlAndReneéPopup = L.popup(popupOptions)
+    .setLatLng([ 173*p, 230*p ])
+    .setContent('<b style="font-size: 17px;">CARL AND RENEÉ BEHNKE CONFERENCE SUITE</b><br>')
+    ;
+    arnoldPins[8] = L.marker([173*p, 230*p], {icon: POIicon});
+    arnoldPins[8].on('click', function(){
+                     CarlAndReneéPopup.openOn(map);
+                     });
+    
+    // Art
+    var ArtPopup = L.popup(popupOptions)
+    .setLatLng([ 173*p, 250*p ])
+    .setContent('<b style="font-size: 17px;">SUNFLOWER STAR BASKET WITH BLACK TIE LIP WRAP</b><br><br><b style="font-size: 17px;">WORKS FROM CORNISH COLLEGE OF THE ARTS</b><br><br>Selections from a revolving exhibit of projects from graduates of Seattle’s Cornish College of the Arts can be found in the atrium and other common areas of the Robert M. Arnold (Public Health Sciences) building. Most pieces are on loan for a year, but a few — including “Pull,” an interactive work by artist Russ Anderson — are on permanent loan or have been donated to the Hutch.<br><br><b style="font-size: 17px;">KULLMAN PHOTOGRAPHY COLLECTION</b><br><br>The family of former Hutch patient Frederick Kullman donated 20th century black-and-white photography masterworks by Ansel Adams, W. Eugene Smith, Edward Weston and Henri Cartier-Bresson, among others. “It was our hope,” the family said, "that people from all parts of the center\'s campus; medical and non-medical personnel, visitors, and patients and their families view and enjoy the photographs."')
+    ;
+    arnoldPins[9] = L.marker([173*p, 250*p], {icon: POIicon});
+    arnoldPins[9].on('click', function(){
+                     ArtPopup.openOn(map);
+                     });
+    
+    // Consuming Choices Café
+    var CaféPopup = L.popup(popupOptions)
+    .setLatLng([ 173*p, 270*p ])
+    .setContent('<b style="font-size: 17px;">CONSUMING CHOICES CAFÉ</b><br><br>Located in the Arnold Building, it\'s a perfect way to start your morning. Enjoy assorted pastries and Starbucks espresso, or a hearty breakfast special. From traditional dishes and comfort food to imaginative and nutritious vegetarian and vegan entrées, we will capture your taste appeal. You will find a salad bar abundant with local, sustainable produce and toppings, healthy grab-and-go choices, including freshly prepared sandwiches, made-from-scratch soups and local beverages.')
+    ;
+    arnoldPins[10] = L.marker([173*p, 270*p], {icon: POIicon});
+    arnoldPins[10].on('click', function(){
+                     CaféPopup.openOn(map);
+                     });
+    
+    // UW Shuttle
+    var UWShuttlePopup = L.popup(popupOptions)
+    .setLatLng([ 150*p, 330*p ])
+    .setContent('<b style="font-size: 17px;">UNIVERSITY OF WASHINGTON SHUTTLE</b><br>')
+    ;
+    arnoldPins[11] = L.marker([150*p, 330*p], {icon: POIicon});
+    arnoldPins[11].on('click', function(){
+                      UWShuttlePopup.openOn(map);
+                      });
+    
+    // PHS Study Reception
+    var PHSStudyReceptionPopup = L.popup(popupOptions)
+    .setLatLng([ 178*p, 340*p ])
+    .setContent('<b style="font-size: 17px;">PUBLIC HEALTH SCIENCES STUDY PARTICIPANT RECEPTION</b><br>')
+    ;
+    arnoldPins[12] = L.marker([178*p, 340*p], {icon: POIicon});
+    arnoldPins[12].on('click', function(){
+                      PHSStudyReceptionPopup.openOn(map);
+                      });
+    
+    // Ounce Café
+    var OunceCaféReceptionPopup = L.popup(popupOptions)
+    .setLatLng([ 178*p, 355*p ])
+    .setContent('<b style="font-size: 17px;">AN OUNCE OF PREVENTION ESPRESSO</b><br><br>Located in the Arnold Building Atrium, enjoy local espresso drinks and coffee, specialty teas, assorted bottled beverages, and assorted pastries and desserts.')
+    ;
+    arnoldPins[13] = L.marker([178*p, 355*p], {icon: POIicon});
+    arnoldPins[13].on('click', function(){
+                      OunceCaféReceptionPopup.openOn(map);
+                      });
+    
+    // SP Parking
+    var SPParkingReceptionPopup = L.popup(popupOptions)
+    .setLatLng([ 170*p, 380*p ])
+    .setContent('<b style="font-size: 17px;">STUDY PARTICIPANT PARKING</b><br><br>Participants in PHS studies may park in the Participant spaces on Level D (enter off Campus Drive), unless otherwise directed by the Study Coordinator. They should register their vehicle at the front desk of the Prevention Center. They should park in a space with a sign that says “reserved Study Participant.” There is no time limit for parking for study participants. Roll up gates in the Arnold garage open at 7:00 a.m. and close at 7:00 p.m. If the garage gates are down, the participant should contact Security by pressing the red button adjacent to the parking attendant booth. Security staff will then open the garage gates.')
+    ;
+    arnoldPins[14] = L.marker([170*p, 380*p], {icon: POIicon});
+    arnoldPins[14].on('click', function(){
+                      SPParkingReceptionPopup.openOn(map);
+                      });
+    
+    // Fairview Avenue North
+    var FairviewAvenueNorthIcon = L.icon({
+                                         iconUrl: urlBegin + '/FairviewAvenueNorthNameArnold.png',
+                                         iconSize: [93.5*p, 97.5*p]
+                                         });
+    arnoldPins[15] = L.marker([285*p, 390*p], {icon: FairviewAvenueNorthIcon});
+
+    // Campus Drive
+    var CampusDriveIcon = L.icon({
+                                 iconUrl: urlBegin + '/CampusDriveNameArnold.png',
+                                 iconSize: [44.5*p, 116*p]
+                                 });
+    arnoldPins[16] = L.marker([175*p, 435*p], {icon: CampusDriveIcon});
+
+    // Aloha Street
+    var AlohaStreetIcon = L.icon({
+                                 iconUrl: urlBegin + '/AlohaStreetNameArnold.png',
+                                 iconSize: [50.5*p, 34*p]
+                                 });
+    arnoldPins[17] = L.marker([182*p, 22*p], {icon: AlohaStreetIcon});
+    
 }
 
 function createYalePins(){
@@ -1004,6 +1655,19 @@ function createYalePins(){
     // initialize variables
     var compassRose;
     
+    // initialize pin options
+    var POIicon = L.icon({
+                         iconUrl: urlBegin + '/POImarker.png',
+                         iconSize: [40*p,40*p]
+                         });
+    var popupOptions = {
+        offset:  new L.Point(0*p, 260*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    
+    // Compass
     compassRose = L.icon({
                          iconUrl: urlBegin + '/CompassLogoYale.png',
                          iconSize: [59*p,59*p]
@@ -1016,6 +1680,166 @@ function createYalePins(){
                              });
     var parking = L.marker([175*p, 215*p], {icon: parkingIcon});
     yalePins[2] = parking;
+    
+    // Daily Grind Café
+    var CaféPopup = L.popup(popupOptions)
+    .setLatLng([ 245*p, 165*p ])
+    .setContent('<b style="font-size: 17px;">DAILY GRIND CAFÉ</b><br><br>Located in the Yale Building, enjoy local espresso drinks and Starbucks coffee, specialty teas, assorted pastries, hot cereals and desserts. During lunch, enjoy flavorful grab-and-go choices, including freshly prepared sandwiches, salads abundant with local, sustainable produce and made-from-scratch soups.')
+    ;
+    yalePins[3] = L.marker([245*p, 165*p], {icon: POIicon});
+    yalePins[3].on('click', function(){
+                      CaféPopup.openOn(map);
+                      });
+    
+    // Transportation Desk
+    var TransportationDeskPopup = L.popup(popupOptions)
+    .setLatLng([ 245*p, 185*p ])
+    .setContent('<b style="font-size: 17px;">TRANSPORTATION DESK</b><br><br><u>Transportation</u> provides information about Parking and Transportation benefits. Come here to sign up for parking or ORCA cards. Need a cab ride home? Transportation can help. Register for bike cage access or a locker assignment. You may also pay in person for the pay lot located on campus at Transportation front desk. Visitors parking sign in for Yale visitor’s lot here.                                       <br><br><u>Security:</u> Security produces new and replacement ID badges/card keys for both Hutch and SCCA from 8:00am – 4:30p M-F, issues loaner Yale card keys for forgotten badges, collects lost and found items and is available to answer general security questions.')
+    ;
+    yalePins[4] = L.marker([245*p, 185*p], {icon: POIicon});
+    yalePins[4].on('click', function(){
+                   TransportationDeskPopup.openOn(map);
+                   });
+    
+    // HR Lobby and Reception
+    var HRPopup = L.popup(popupOptions)
+    .setLatLng([ 245*p, 205*p ])
+    .setContent('<b style="font-size: 17px;">HR LOBBY AND RECEPTION</b><br><br>HR Reception is your point of contact for all areas of employment at Fred Hutch or SCCA.  It is a point of contact for candidate inquiries and new hire on-boarding as well as a resource to current employees with questions regarding benefits, payroll and retirement.  Stop on by Monday through Friday, 8 am to 5 pm.')
+    ;
+    yalePins[5] = L.marker([245*p, 205*p], {icon: POIicon});
+    yalePins[5].on('click', function(){
+                HRPopup.openOn(map);
+                });
+    
+    // Hutch Kids
+    var HutchKidsPopup = L.popup(popupOptions)
+    .setLatLng([ 245*p, 385*p ])
+    .setContent('<b style="font-size: 17px;">HUTCH KIDS</b><br><br>Hutch Kids is a childcare center for the families of employees at the Center. Hutch Kids Child Care has been accredited by the National Association for the Education of Young Children (NAEYC) since 1993. Hutch Kids’ Mission is to provide quality on-site childcare for children under 6 years of age and support for employees’ families.')
+    ;
+    yalePins[6] = L.marker([245*p, 385*p], {icon: POIicon});
+    yalePins[6].on('click', function(){
+                HutchKidsPopup.openOn(map);
+                });
+    
+    // reinitialize popup options
+    popupOptions = {
+        offset:  new L.Point(0*p, 100*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    
+    // Exercise Room
+    var ExerciseRoomPopup = L.popup(popupOptions)
+    .setLatLng([ 245*p, 225*p ])
+    .setContent('<b style="font-size: 17px;">EXERCISE ROOM</b><br>')
+    ;
+    yalePins[7] = L.marker([245*p, 225*p], {icon: POIicon});
+    yalePins[7].on('click', function(){
+                   ExerciseRoomPopup.openOn(map);
+                   });
+    
+    // reinitialize popup options
+    popupOptions = {
+        offset:  new L.Point(0*p, 0*p),
+        maxWidth: 250*p,
+        autoPan: false,
+        maxHeight: 185*p
+    };
+    
+    // Artist in Residence - Preston Singletary Studios
+    var ArtistPopup = L.popup(popupOptions)
+    .setLatLng([ 195*p, 405*p ])
+    .setContent('<b style="font-size: 17px;">ARTIST IN RESIDENCE - PRESTON SINGLETARY STUDIOS</b><br>')
+    ;
+    yalePins[8] = L.marker([195*p, 405*p], {icon: POIicon});
+    yalePins[8].on('click', function(){
+                   ArtistPopup.openOn(map);
+                   });
+    
+    // Clinical Research Support
+    var ClinicalResearchPopup = L.popup(popupOptions)
+    .setLatLng([ 165*p, 465*p ])
+    .setContent('<b style="font-size: 17px;">CLINICAL RESEARCH SUPPORT</b><br><br>Clinical Research Support oversees a group of resources available to investigators to support their research, simplify processes and enable regulatory compliance.')
+    ;
+    yalePins[9] = L.marker([165*p, 465*p], {icon: POIicon});
+    yalePins[9].on('click', function(){
+                   ClinicalResearchPopup.openOn(map);
+                   });
+    
+    // Obliteride
+    var ObliteridePopup = L.popup(popupOptions)
+    .setLatLng([ 120*p, 510*p ])
+    .setContent('<b style="font-size: 17px;">OBLITERIDE</b><br>')
+    ;
+    yalePins[10] = L.marker([120*p, 510*p], {icon: POIicon});
+    yalePins[10].on('click', function(){
+                   ObliteridePopup.openOn(map);
+                   });
+
+    // MAIN ALOHA PIN
+    var AlohaIcon = L.icon({
+                           iconUrl: urlBegin + '/AlohaName.png',
+                           iconSize: [75*p,27*p]
+                           });
+    yalePins[11] = L.marker([240*p, 35*p], {icon: AlohaIcon});
+    
+    // MAIN VALLEY PIN
+    var ValleyIcon = L.icon({
+                            iconUrl: urlBegin + '/ValleyName.png',
+                            iconSize: [82.5*p,31.5*p]
+                            });
+    yalePins[12] = L.marker([285*p, 110*p], {icon: ValleyIcon});
+    
+    // MAIN YALE PIN
+    var YaleIcon = L.icon({
+                          iconUrl: urlBegin + '/YaleName.png',
+                          iconSize: [57*p,100.5*p]
+                          });
+    yalePins[13] = L.marker([300*p, 250*p], {icon: YaleIcon});
+    
+    // MAIN LEA PIN
+    var LeaIcon = L.icon({
+                         iconUrl: urlBegin + '/LeaName.png',
+                         iconSize: [45*p,28.5*p]
+                         });
+    yalePins[14] = L.marker([287*p, 395*p], {icon: LeaIcon});
+    
+    // MAIN MINOR PIN
+    var MinorIcon = L.icon({
+                           iconUrl: urlBegin + '/MinorName.png',
+                           iconSize: [63*p,88.5*p]
+                           });
+    yalePins[15] = L.marker([145*p, 425*p], {icon: MinorIcon});
+    
+    // MAIN ARNOLD PIN
+    var ArnoldIcon = L.icon({
+                            iconUrl: urlBegin + '/ArnoldName.png',
+                            iconSize: [79.5*p,97.5*p]
+                            });
+    yalePins[16] = L.marker([105*p, 105*p], {icon: ArnoldIcon});
+    
+    // Aloha Street
+    var AlohaStreetIcon = L.icon({
+                                 iconUrl: urlBegin + '/AlohaStreetNameYale.png',
+                                 iconSize: [70*p, 34*p]
+                                 });
+    yalePins[17] = L.marker([135*p, 75*p], {icon: AlohaStreetIcon});
+
+    // Yale Avenue
+    var YaleAvenueIcon = L.icon({
+                                iconUrl: urlBegin + '/YaleAvenueNameYale.png',
+                                iconSize: [57*p, 50.5*p]
+                                });
+    yalePins[18] = L.marker([190*p, 60*p], {icon: YaleAvenueIcon});
+
+    // Minor Avenue North
+    var MinorAvenueNorthIcon = L.icon({
+                                      iconUrl: urlBegin + '/MinorAvenueNorthNameYale.png',
+                                      iconSize: [46.5*p, 69*p]
+                                      });
+    yalePins[19] = L.marker([135*p, 555*p], {icon: MinorAvenueNorthIcon});
+
 }
 
 function addPermanentGraphics()
@@ -1157,7 +1981,7 @@ function addDefaultPins(){
                          iconSize: [27*p,25*p]
                          });
     // Bus 1 of 4
-    var bus1of4 = L.marker([215*p, 310*p], {icon: busIcon}).addTo(map);
+    var bus1of4 = L.marker([215*p, 305*p], {icon: busIcon}).addTo(map);
     pins[13] = bus1of4;
     // Bus 2 of 4
     var bus2of4 = L.marker([200*p, 225*p], {icon: busIcon}).addTo(map);
@@ -1275,24 +2099,26 @@ function addDefaultPins(){
     
     // DEFAULT POI
     var popupOptions = {
+        offset:  new L.Point(0*p, 0*p),
+        maxWidth: 250*p,
         autoPan: false,
-        offset:  new L.Point(0*p, 0*p)
+        maxHeight: 185*p
     };
     
-    // Pelton Auditorium
+    // Jennifer Pelton Auditorium
     var PeltonPopup = L.popup(popupOptions)
     .setLatLng([ 175*p, 160*p ])
-    .setContent('<b style="font-size: 17px;">PELTON AUDITORIUM</b><br><br>Text here.')
+    .setContent('<b style="font-size: 17px;">JENNIFER PELTON AUDITORIUM</b><br>')
     ;
     pins[31] = L.marker([175*p, 160*p], {icon: POIicon}).addTo(map);
     pins[31].on('click', function(){
                 PeltonPopup.openOn(map);
                 });
     
-    // Sze Conference Rooms
+    // Sze Conference Room
     var SzePopup = L.popup(popupOptions)
     .setLatLng([ 190*p, 220*p ])
-    .setContent('<b style="font-size: 17px;">SZE CONFERENCE ROOMS</b><br><br>Text here.')
+    .setContent('<b style="font-size: 17px;">LUCILLE J. SZE CONFERENCE ROOM</b><br>')
     ;
     pins[32] = L.marker([190*p, 220*p], {icon: POIicon}).addTo(map);
     pins[32].on('click', function(){
@@ -1302,7 +2128,7 @@ function addDefaultPins(){
     // Vessel
     var VesselPopup = L.popup(popupOptions)
     .setLatLng([ 152*p, 286*p ])
-    .setContent('<b style="font-size: 17px;">VESSEL</b><br><br>Text here.')
+    .setContent('<b style="font-size: 17px;">VESSEL</b><br><br>“Vessel” is a 60-foot glass-and-metal piece installed on the Fred Hutch campus in 2008. Rising more than four stories in a transparent and searching gesture, this monumental but delicate sculpture employs light to represent the optimistic spirit of the institution.')
     ;
     pins[33] = L.marker([152*p, 286*p], {icon: POIicon}).addTo(map);
     pins[33].on('click', function(){
@@ -1312,7 +2138,7 @@ function addDefaultPins(){
     // Visitor Center
     var VisitorCenterPopup = L.popup(popupOptions)
     .setLatLng([ 160*p, 334*p ])
-    .setContent('<b style="font-size: 17px;">VISITOR CENTER</b><br><br>Text here.')
+    .setContent('<b style="font-size: 17px;">VISITOR CENTER</b><br><br>The vibrant new space honors our past, embraces our future and invites visitors to share their stories.')
     ;
     pins[34] = L.marker([160*p, 334*p], {icon: POIicon}).addTo(map);
     pins[34].on('click', function(){
@@ -1321,8 +2147,8 @@ function addDefaultPins(){
     
     // Rain or Shine Gift Shop
     var GiftShopPopup = L.popup(popupOptions)
-    .setLatLng([ 214*p, 335*p ])
-    .setContent('<b style="font-size: 17px;">RAIN OR SHINE GIFT SHOP</b><br><br>Text here.')
+    .setLatLng([ 214*p, 355*p ])
+    .setContent('<b style="font-size: 17px;">RAIN OR SHINE GIFT SHOP</b><br><br>Located on the first floor of the Seattle Cancer Care Alliance (SCCA) clinic, the Rain or Shine Gift Shop carries a variety of quality merchandise, from sundries to sparkles. Rain or Shine is staffed by volunteers. Proceeds benefit patient programs.Whether it’s a convenience item, a gift for a loved one or a little piece of fun to bring you peace of mind, Rain or Shine is here for your needs. You can even call and place orders for custom gift bags that can be hand-delivered to all floors of SCCA!')
     ;
     pins[35] = L.marker([214*p, 355*p], {icon: POIicon}).addTo(map);
     pins[35].on('click', function(){
@@ -1332,7 +2158,7 @@ function addDefaultPins(){
     // HR Lobby and Reception
     var HRPopup = L.popup(popupOptions)
     .setLatLng([ 180*p, 415*p ])
-    .setContent('<b style="font-size: 17px;">HR LOBBY AND RECEPTION</b><br><br>Text here.')
+    .setContent('<b style="font-size: 17px;">HR LOBBY AND RECEPTION</b><br><br>HR Reception is your point of contact for all areas of employment at Fred Hutch or SCCA.  It is a point of contact for candidate inquiries and new hire on-boarding as well as a resource to current employees with questions regarding benefits, payroll and retirement.  Stop on by Monday through Friday, 8 am to 5 pm. ')
     ;
     pins[36] = L.marker([180*p, 415*p], {icon: POIicon}).addTo(map);
     pins[36].on('click', function(){
@@ -1342,7 +2168,7 @@ function addDefaultPins(){
     // Arnold Rooftop Deck
     var ArnoldRooftopPopup = L.popup(popupOptions)
     .setLatLng([ 93*p, 433*p ])
-    .setContent('<b style="font-size: 17px;">ARNOLD ROOFTOP DECK</b><br><br>Text here.')
+    .setContent('<b style="font-size: 17px;">ARNOLD ROOFTOP DECK</b><br>')
     ;
     pins[37] = L.marker([93*p, 433*p], {icon: POIicon}).addTo(map);
     pins[37].on('click', function(){
@@ -1352,7 +2178,7 @@ function addDefaultPins(){
     // Hutch Kids
     var HutchKidsPopup = L.popup(popupOptions)
     .setLatLng([ 145*p, 500*p ])
-    .setContent('<b style="font-size: 17px;">HUTCH KIDS</b><br><br>Text here.')
+    .setContent('<b style="font-size: 17px;">HUTCH KIDS</b><br><br>Hutch Kids is a childcare center for the families of employees at the Center. Hutch Kids Child Care has been accredited by the National Association for the Education of Young Children (NAEYC) since 1993. Hutch Kids’ Mission is to provide quality on-site childcare for children under 6 years of age and support for employees’ families.')
     ;
     pins[38] = L.marker([145*p, 500*p], {icon: POIicon}).addTo(map);
     pins[38].on('click', function(){
@@ -1362,18 +2188,19 @@ function addDefaultPins(){
     // Thomas Building Popup
     popupOptions = {
         offset:  new L.Point(0*p, -10*p),
-        maxWidth: 250,
+        maxWidth: 250*p,
         autoPan: false,
         maxHeight: 185*p
     };
+    /*
     var Pin4Popup = L.popup(popupOptions)
     .setLatLng([ 185*p, 245*p ])
-    .setContent(text)
+    .setContent('<b style="font-size: 17px;">THOMAS</b><br><br>Named for Nobel Laureate Dr. E. Donnall Thomas, this building is home to the Clinical Research Division, a group with more than 100 faculty members and dozens of individual labs. Their focus has expanded to encompass 12 diverse areas of research including hematopoietic cell transplantation, immunotherapy, gene therapy, solid tumor biology and genetics.')
     ;
     pins[4].on('click', function(){
                Pin4Popup.openOn(map);
                });
-    
+    */
     if (screenSizeChanging)
         map.closePopup();
     
@@ -1513,9 +2340,11 @@ function responsive() {
     $("#map").height(668*percent-1).width(1200*percent-2);
     map.invalidateSize(false);
 }
+
 /*map.on('click', function(e) {
  alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
  });*/
+ 
 function clearPins(){
     for (var i = 1; i < permanentGraphics.length; i++) {
         map.removeLayer(permanentGraphics[i]);
