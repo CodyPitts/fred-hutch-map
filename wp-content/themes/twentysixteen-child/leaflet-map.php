@@ -37,9 +37,14 @@ body {
 
 @font-face {
     font-family: 'geogrotesque';
-    src: url('http://localhost:8888/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.eot');
-    src: local('☺'), url('http://localhost:8888/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://localhost:8888/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
+    src: url('http://localhost/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.eot');
+    src: local('☺'), url('http://localhost/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://localhost/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
 }
+.post img {
+    display:block;
+    margin:auto;
+}
+
 .leaflet-popup-content-wrapper {
     background: rgb(18,48,84);
     border-radius: 0px;
@@ -390,18 +395,34 @@ body {
 <script src="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.1/leaflet.js"></script>
 <script>
 
-$.ajaxSetup({
-    async:false
+//JSON query for popup content
+var posts = new Array();
+$.getJSON( "http://localhost/popups/info/" ) 
+    .done(function( json ) {
+        for (var i = 0; i < json.length; i++) {
+            posts[i] = json[i];
+        }
+        begin(posts);
+    })
+    .fail(function( jqxhr, textStatus, error ) {
+        var err = textStatus + ", " + error;
+        console.log( "Request Failed: " + err );
+        begin('');
+    });
+
+
+jQuery(window).load(function () {
+    jQuery('#loading').hide();
+    $('body').unbind('touchmove');
 });
+
+function begin(posts) {
 
 // prevent scrolling (scrolling causes issues with UI)
 $('body').addClass('stop-scrolling');
 $('body').bind('touchmove', function(e){e.preventDefault()});
 
-jQuery(window).load(function () {
-                    jQuery('#loading').hide();
-                    $('body').unbind('touchmove');
-                    });
+
 
 L.Browser.webkit3d = false;
 L.Browser.any3d = false;
@@ -456,17 +477,6 @@ if (directoryFolder == "wordpresstest")
     urlBegin = urlBegin + "/" + directoryFolder + "/wp-content/uploads";
 else
     urlBegin = urlBegin + "/wp-content/uploads";
-
-//JSON query for popup content
-var text;
-$.getJSON( "http://localhost:8888/popups/info/" )
-    .done(function( json ) {
-        text = json[0].content;
-    })
-    .fail(function( jqxhr, textStatus, error ) {
-        var err = textStatus + ", " + error;
-        console.log( "Request Failed: " + err );
-});
 
 // setup map
 var map = L.map('map', {
@@ -1013,7 +1023,7 @@ function createSCCAPins(){
     // Rain or Shine Gift Shop
     var GiftShopPopup = L.popup(popupOptions)
     .setLatLng([ 213*p, 315*p ])
-    .setContent('<b style="font-size: 17px;">RAIN OR SHINE GIFT SHOP</b><br><br>Located on the first floor of the Seattle Cancer Care Alliance (SCCA) clinic, the Rain or Shine Gift Shop carries a variety of quality merchandise, from sundries to sparkles. Rain or Shine is staffed by volunteers. Proceeds benefit patient programs. Whether it’s a convenience item, a gift for a loved one or a little piece of fun to bring you peace of mind, Rain or Shine is here for your needs. You can even call and place orders for custom gift bags that can be hand-delivered to all floors of SCCA!')
+    .setContent(getPost('RAIN OR SHINE GIFT SHOP'))
     ;
     SCCAPins[4] = L.marker([213*p, 315*p], {icon: POIicon});
     SCCAPins[4].on('click', function(){
@@ -1140,7 +1150,7 @@ function createThomasPins(){
     // Sze Conference Rooms
     var SzePopup = L.popup(popupOptions)
     .setLatLng([ 130*p, 375*p ])
-    .setContent('<b style="font-size: 17px;">LUCILLE J. SZE CONFERENCE ROOM</b><br>')
+    .setContent(getPost('LUCILLE J. SZE CONFERENCE ROOM'))
     ;
     thomasPins[7] = L.marker([130*p, 375*p], {icon: POIicon});
     thomasPins[7].on('click', function(){
@@ -1160,7 +1170,7 @@ function createThomasPins(){
     // BMT Survivor Wall
     var SurvivorWallPopup = L.popup(popupOptions)
     .setLatLng([ 144*p, 415*p ])
-    .setContent('<b style="font-size: 17px;">BMT SURVIVOR WALL</b><br>')
+    .setContent(getPost('BMT SURVIVOR WALL'))
     ;
     thomasPins[9] = L.marker([144*p, 415*p], {icon: POIicon});
     thomasPins[9].on('click', function(){
@@ -1180,7 +1190,7 @@ function createThomasPins(){
     // President and Director's Office
     var OfficePopup = L.popup(popupOptions)
     .setLatLng([ 158*p, 455*p ])
-    .setContent('<b style="font-size: 17px;">PRESIDENT AND DIRECTOR\'S OFFICE</b><br>')
+    .setContent(getPost('PRESIDENT AND DIRECTOR\'S OFFICE'))
     ;
     thomasPins[11] = L.marker([158*p, 455*p], {icon: POIicon});
     thomasPins[11].on('click', function(){
@@ -1200,7 +1210,7 @@ function createThomasPins(){
     // ThermoScientific OrbiTrap Elite mass spectrometer
     var ThermoScientificPopup = L.popup(popupOptions)
     .setLatLng([ 172*p, 495*p ])
-    .setContent('<b style="font-size: 17px;">THERMOSCIENTIFIC ORBITRAP ELITE MASS SPECTROMETER</b><br>')
+    .setContent(getPost('THERMOSCIENTIFIC ORBITRAP ELITE MASS SPECTROMETER'))
     ;
     thomasPins[13] = L.marker([172*p, 495*p], {icon: POIicon});
     thomasPins[13].on('click', function(){
@@ -1341,7 +1351,7 @@ function createWeintraubPins(){
     // Towne Court (Waterfall)
     var TowneCourtPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 210*p ])
-    .setContent('<b style="font-size: 17px;">TOWNE COURT (WATERFALL)</b><br>')
+    .setContent(getPost('TOWNE COURT (WATERFALL)'))
     ;
     weintraubPins[6] = L.marker([215*p, 210*p], {icon: POIicon});
     weintraubPins[6].on('click', function(){
@@ -1351,7 +1361,7 @@ function createWeintraubPins(){
     // Jennifer Pelton Auditorium
     var AuditoriumPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 230*p ])
-    .setContent('<b style="font-size: 17px;">JENNIFER PELTON AUDITORIUM</b><br>')
+    .setContent(getPost('JENNIFER PELTON AUDITORIUM'))
     ;
     weintraubPins[7] = L.marker([215*p, 230*p], {icon: POIicon});
     weintraubPins[7].on('click', function(){
@@ -1411,7 +1421,7 @@ function createWeintraubPins(){
     // Mundie Courtyard
     var MundiePopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 350*p ])
-    .setContent('<b style="font-size: 17px;">MUNDIE COURTYARD</b><br>')
+    .setContent(getPost('MUNDIE COURTYARD'))
     ;
     weintraubPins[13] = L.marker([215*p, 350*p], {icon: POIicon});
     weintraubPins[13].on('click', function(){
@@ -1497,7 +1507,7 @@ function createArnoldPins(){
     // Arnold Rooftop
     var ArnoldRooftopPopup = L.popup(popupOptions)
         .setLatLng([ 310*p, 275*p ])
-        .setContent('<b style="font-size: 17px;">ARNOLD ROOFTOP DECK</b>')
+        .setContent(getPost('ARNOLD ROOFTOP DECK'))
         ;
     arnoldPins[2] = L.marker([310*p, 272*p], {icon: POIicon});
     arnoldPins[2].on('click', function(){
@@ -1514,7 +1524,7 @@ function createArnoldPins(){
     // Vessel
     var VesselPopup = L.popup(popupOptions)
     .setLatLng([ 125*p, 405*p ])
-    .setContent('<b style="font-size: 17px;">VESSEL</b><br><br>“Vessel” is a 60-foot glass-and-metal piece installed on the Fred Hutch campus in 2008. Rising more than four stories in a transparent and searching gesture, this monumental but delicate sculpture employs light to represent the optimistic spirit of the institution.')
+    .setContent(getPost('VESSEL'))
     ;
     arnoldPins[3] = L.marker([125*p, 405*p], {icon: POIicon});
     arnoldPins[3].on('click', function(){
@@ -1549,7 +1559,7 @@ function createArnoldPins(){
     // Visitor Center
     var VisitorCenterPopup = L.popup(popupOptions)
     .setLatLng([ 169*p, 210*p ])
-    .setContent('<b style="font-size: 17px;">VISITOR CENTER</b><br><br>The vibrant new space honors our past, embraces our future and invites visitors to share their stories.')
+    .setContent(getPost('VISITOR CENTER'))
     ;
     arnoldPins[7] = L.marker([169*p, 210*p], {icon: POIicon});
     arnoldPins[7].on('click', function(){
@@ -1559,7 +1569,7 @@ function createArnoldPins(){
     // Carl and Reneé Behnke Conference Suite
     var CarlAndReneéPopup = L.popup(popupOptions)
     .setLatLng([ 173*p, 230*p ])
-    .setContent('<b style="font-size: 17px;">CARL AND RENEÉ BEHNKE CONFERENCE SUITE</b><br>')
+    .setContent(getPost('CARL AND RENEÉ BEHNKE CONFERENCE SUITE'))
     ;
     arnoldPins[8] = L.marker([173*p, 230*p], {icon: POIicon});
     arnoldPins[8].on('click', function(){
@@ -1589,7 +1599,7 @@ function createArnoldPins(){
     // UW Shuttle
     var UWShuttlePopup = L.popup(popupOptions)
     .setLatLng([ 150*p, 330*p ])
-    .setContent('<b style="font-size: 17px;">UNIVERSITY OF WASHINGTON SHUTTLE</b><br>')
+    .setContent(getPost('UNIVERSITY OF WASHINGTON SHUTTLE'))
     ;
     arnoldPins[11] = L.marker([150*p, 330*p], {icon: POIicon});
     arnoldPins[11].on('click', function(){
@@ -1599,7 +1609,7 @@ function createArnoldPins(){
     // PHS Study Reception
     var PHSStudyReceptionPopup = L.popup(popupOptions)
     .setLatLng([ 178*p, 340*p ])
-    .setContent('<b style="font-size: 17px;">PUBLIC HEALTH SCIENCES STUDY PARTICIPANT RECEPTION</b><br>')
+    .setContent(getPost('PUBLIC HEALTH SCIENCES STUDY PARTICIPANT RECEPTION'))
     ;
     arnoldPins[12] = L.marker([178*p, 340*p], {icon: POIicon});
     arnoldPins[12].on('click', function(){
@@ -1694,7 +1704,8 @@ function createYalePins(){
     // Transportation Desk
     var TransportationDeskPopup = L.popup(popupOptions)
     .setLatLng([ 245*p, 185*p ])
-    .setContent('<b style="font-size: 17px;">TRANSPORTATION DESK</b><br><br><u>Transportation</u> provides information about Parking and Transportation benefits. Come here to sign up for parking or ORCA cards. Need a cab ride home? Transportation can help. Register for bike cage access or a locker assignment. You may also pay in person for the pay lot located on campus at Transportation front desk. Visitors parking sign in for Yale visitor’s lot here.                                       <br><br><u>Security:</u> Security produces new and replacement ID badges/card keys for both Hutch and SCCA from 8:00am – 4:30p M-F, issues loaner Yale card keys for forgotten badges, collects lost and found items and is available to answer general security questions.')
+    .setContent(getPost('TRANSPORTATION DESK'))
+    /*.setContent('<b style="font-size: 17px;">TRANSPORTATION DESK</b><br><br><u>Transportation</u> provides information about Parking and Transportation benefits. Come here to sign up for parking or ORCA cards. Need a cab ride home? Transportation can help. Register for bike cage access or a locker assignment. You may also pay in person for the pay lot located on campus at Transportation front desk. Visitors parking sign in for Yale visitor’s lot here.                                       <br><br><u>Security:</u> Security produces new and replacement ID badges/card keys for both Hutch and SCCA from 8:00am – 4:30p M-F, issues loaner Yale card keys for forgotten badges, collects lost and found items and is available to answer general security questions.')*/
     ;
     yalePins[4] = L.marker([245*p, 185*p], {icon: POIicon});
     yalePins[4].on('click', function(){
@@ -1704,7 +1715,7 @@ function createYalePins(){
     // HR Lobby and Reception
     var HRPopup = L.popup(popupOptions)
     .setLatLng([ 245*p, 205*p ])
-    .setContent('<b style="font-size: 17px;">HR LOBBY AND RECEPTION</b><br><br>HR Reception is your point of contact for all areas of employment at Fred Hutch or SCCA.  It is a point of contact for candidate inquiries and new hire on-boarding as well as a resource to current employees with questions regarding benefits, payroll and retirement.  Stop on by Monday through Friday, 8 am to 5 pm.')
+    .setContent(getPost('HR LOBBY AND RECEPTION'));
     ;
     yalePins[5] = L.marker([245*p, 205*p], {icon: POIicon});
     yalePins[5].on('click', function(){
@@ -1714,7 +1725,7 @@ function createYalePins(){
     // Hutch Kids
     var HutchKidsPopup = L.popup(popupOptions)
     .setLatLng([ 245*p, 385*p ])
-    .setContent('<b style="font-size: 17px;">HUTCH KIDS</b><br><br>Hutch Kids is a childcare center for the families of employees at the Center. Hutch Kids Child Care has been accredited by the National Association for the Education of Young Children (NAEYC) since 1993. Hutch Kids’ Mission is to provide quality on-site childcare for children under 6 years of age and support for employees’ families.')
+    .setContent(getPost('HUTCH KIDS'));
     ;
     yalePins[6] = L.marker([245*p, 385*p], {icon: POIicon});
     yalePins[6].on('click', function(){
@@ -1732,7 +1743,7 @@ function createYalePins(){
     // Exercise Room
     var ExerciseRoomPopup = L.popup(popupOptions)
     .setLatLng([ 245*p, 225*p ])
-    .setContent('<b style="font-size: 17px;">EXERCISE ROOM</b><br>')
+    .setContent(getPost('EXERCISE ROOM'))
     ;
     yalePins[7] = L.marker([245*p, 225*p], {icon: POIicon});
     yalePins[7].on('click', function(){
@@ -1750,7 +1761,7 @@ function createYalePins(){
     // Artist in Residence - Preston Singletary Studios
     var ArtistPopup = L.popup(popupOptions)
     .setLatLng([ 195*p, 405*p ])
-    .setContent('<b style="font-size: 17px;">ARTIST IN RESIDENCE - PRESTON SINGLETARY STUDIOS</b><br>')
+    .setContent(getPost('ARTIST IN RESIDENCE - PRESTON SINGLETARY STUDIOS'))
     ;
     yalePins[8] = L.marker([195*p, 405*p], {icon: POIicon});
     yalePins[8].on('click', function(){
@@ -1760,7 +1771,7 @@ function createYalePins(){
     // Clinical Research Support
     var ClinicalResearchPopup = L.popup(popupOptions)
     .setLatLng([ 165*p, 465*p ])
-    .setContent('<b style="font-size: 17px;">CLINICAL RESEARCH SUPPORT</b><br><br>Clinical Research Support oversees a group of resources available to investigators to support their research, simplify processes and enable regulatory compliance.')
+    .setContent(getPost('CLINICAL RESEARCH SUPPORT'))
     ;
     yalePins[9] = L.marker([165*p, 465*p], {icon: POIicon});
     yalePins[9].on('click', function(){
@@ -1770,7 +1781,7 @@ function createYalePins(){
     // Obliteride
     var ObliteridePopup = L.popup(popupOptions)
     .setLatLng([ 120*p, 510*p ])
-    .setContent('<b style="font-size: 17px;">OBLITERIDE</b><br>')
+    .setContent(getPost('OBLITERIDE'))
     ;
     yalePins[10] = L.marker([120*p, 510*p], {icon: POIicon});
     yalePins[10].on('click', function(){
@@ -2108,7 +2119,7 @@ function addDefaultPins(){
     // Jennifer Pelton Auditorium
     var PeltonPopup = L.popup(popupOptions)
     .setLatLng([ 175*p, 160*p ])
-    .setContent('<b style="font-size: 17px;">JENNIFER PELTON AUDITORIUM</b><br>')
+    .setContent(getPost('JENNIFER PELTON AUDITORIUM'))
     ;
     pins[31] = L.marker([175*p, 160*p], {icon: POIicon}).addTo(map);
     pins[31].on('click', function(){
@@ -2118,7 +2129,7 @@ function addDefaultPins(){
     // Sze Conference Room
     var SzePopup = L.popup(popupOptions)
     .setLatLng([ 190*p, 220*p ])
-    .setContent('<b style="font-size: 17px;">LUCILLE J. SZE CONFERENCE ROOM</b><br>')
+    .setContent(getPost('LUCILLE J. SZE CONFERENCE ROOM'))
     ;
     pins[32] = L.marker([190*p, 220*p], {icon: POIicon}).addTo(map);
     pins[32].on('click', function(){
@@ -2128,7 +2139,7 @@ function addDefaultPins(){
     // Vessel
     var VesselPopup = L.popup(popupOptions)
     .setLatLng([ 152*p, 286*p ])
-    .setContent('<b style="font-size: 17px;">VESSEL</b><br><br>“Vessel” is a 60-foot glass-and-metal piece installed on the Fred Hutch campus in 2008. Rising more than four stories in a transparent and searching gesture, this monumental but delicate sculpture employs light to represent the optimistic spirit of the institution.')
+    .setContent(getPost('vessel'))
     ;
     pins[33] = L.marker([152*p, 286*p], {icon: POIicon}).addTo(map);
     pins[33].on('click', function(){
@@ -2138,7 +2149,7 @@ function addDefaultPins(){
     // Visitor Center
     var VisitorCenterPopup = L.popup(popupOptions)
     .setLatLng([ 160*p, 334*p ])
-    .setContent('<b style="font-size: 17px;">VISITOR CENTER</b><br><br>The vibrant new space honors our past, embraces our future and invites visitors to share their stories.')
+    .setContent(getPost('VISITOR CENTER'))
     ;
     pins[34] = L.marker([160*p, 334*p], {icon: POIicon}).addTo(map);
     pins[34].on('click', function(){
@@ -2148,7 +2159,7 @@ function addDefaultPins(){
     // Rain or Shine Gift Shop
     var GiftShopPopup = L.popup(popupOptions)
     .setLatLng([ 214*p, 355*p ])
-    .setContent('<b style="font-size: 17px;">RAIN OR SHINE GIFT SHOP</b><br><br>Located on the first floor of the Seattle Cancer Care Alliance (SCCA) clinic, the Rain or Shine Gift Shop carries a variety of quality merchandise, from sundries to sparkles. Rain or Shine is staffed by volunteers. Proceeds benefit patient programs.Whether it’s a convenience item, a gift for a loved one or a little piece of fun to bring you peace of mind, Rain or Shine is here for your needs. You can even call and place orders for custom gift bags that can be hand-delivered to all floors of SCCA!')
+    .setContent(getPost('RAIN OR SHINE GIFT SHOP'))
     ;
     pins[35] = L.marker([214*p, 355*p], {icon: POIicon}).addTo(map);
     pins[35].on('click', function(){
@@ -2158,7 +2169,7 @@ function addDefaultPins(){
     // HR Lobby and Reception
     var HRPopup = L.popup(popupOptions)
     .setLatLng([ 180*p, 415*p ])
-    .setContent('<b style="font-size: 17px;">HR LOBBY AND RECEPTION</b><br><br>HR Reception is your point of contact for all areas of employment at Fred Hutch or SCCA.  It is a point of contact for candidate inquiries and new hire on-boarding as well as a resource to current employees with questions regarding benefits, payroll and retirement.  Stop on by Monday through Friday, 8 am to 5 pm. ')
+    .setContent(getPost('HR LOBBY AND RECEPTION'))
     ;
     pins[36] = L.marker([180*p, 415*p], {icon: POIicon}).addTo(map);
     pins[36].on('click', function(){
@@ -2168,7 +2179,7 @@ function addDefaultPins(){
     // Arnold Rooftop Deck
     var ArnoldRooftopPopup = L.popup(popupOptions)
     .setLatLng([ 93*p, 433*p ])
-    .setContent('<b style="font-size: 17px;">ARNOLD ROOFTOP DECK</b><br>')
+    .setContent(getPost('ARNOLD ROOFTOP DECK'))
     ;
     pins[37] = L.marker([93*p, 433*p], {icon: POIicon}).addTo(map);
     pins[37].on('click', function(){
@@ -2178,7 +2189,7 @@ function addDefaultPins(){
     // Hutch Kids
     var HutchKidsPopup = L.popup(popupOptions)
     .setLatLng([ 145*p, 500*p ])
-    .setContent('<b style="font-size: 17px;">HUTCH KIDS</b><br><br>Hutch Kids is a childcare center for the families of employees at the Center. Hutch Kids Child Care has been accredited by the National Association for the Education of Young Children (NAEYC) since 1993. Hutch Kids’ Mission is to provide quality on-site childcare for children under 6 years of age and support for employees’ families.')
+    .setContent(getPost('HUTCH KIDS'))
     ;
     pins[38] = L.marker([145*p, 500*p], {icon: POIicon}).addTo(map);
     pins[38].on('click', function(){
@@ -2192,19 +2203,41 @@ function addDefaultPins(){
         autoPan: false,
         maxHeight: 185*p
     };
-    /*
+    
+
     var Pin4Popup = L.popup(popupOptions)
     .setLatLng([ 185*p, 245*p ])
-    .setContent('<b style="font-size: 17px;">THOMAS</b><br><br>Named for Nobel Laureate Dr. E. Donnall Thomas, this building is home to the Clinical Research Division, a group with more than 100 faculty members and dozens of individual labs. Their focus has expanded to encompass 12 diverse areas of research including hematopoietic cell transplantation, immunotherapy, gene therapy, solid tumor biology and genetics.')
+    .setContent(getPost('THOMAS'))
     ;
     pins[4].on('click', function(){
                Pin4Popup.openOn(map);
                });
-    */
+    
     if (screenSizeChanging)
         map.closePopup();
     
 }
+
+function getPost(title) {
+    var content = '<div class="post"><b style="font-size: 17px;">';
+    var i = 0;
+
+    while(posts[i].title !== title && i < posts.length - 1) {
+        i++;
+    }
+    if (posts[i].title == title) {
+        content += posts[i].title + '</b><br><br>' + posts[i].content;
+        if (posts[i].link != null) {
+            content += '<br><br>' +'<img src="' + posts[i].link + '">';
+        }
+    }
+    else {
+        content += title + '</b><br><br>No information currently available.';
+    }
+    content += '</div>';
+    return content;
+}
+
 // add pins back when you hit the back button to go to default map view
 function addLayersForGoBack(){
     addDefaultPins();
@@ -2239,15 +2272,15 @@ function click(sequence, zoomPins) {
 }
 
 $(document).ready(function(){
-                  $(window).resize(function(){
-                                   screenSizeChanging = true;
-                                   clearPins();
-                                   clearHotzones();
-                                   // prevent responsive from firing if user is adjusting screen size
-                                   if (!ZOOMING)
-                                    responsive();
-                                   });
-                  });
+    $(window).resize(function(){
+        screenSizeChanging = true;
+        clearPins();
+        clearHotzones();
+        // prevent responsive from firing if user is adjusting screen size
+        if (!ZOOMING)
+            responsive();
+    });
+});
 
 // draw pins on zoom in
 function zoomPinsDraw(zoomPins)
@@ -2370,5 +2403,6 @@ function sleep(milliseconds) {
             break;
         }
     }
+}
 }
 </script>
