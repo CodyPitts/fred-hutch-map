@@ -37,8 +37,8 @@ body {
 
 @font-face {
     font-family: 'geogrotesque';
-    src: url('http://localhost/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.eot');
-    src: local('☺'), url('http://localhost/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://localhost/wordpresstest/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
+    src: url('http://54.191.11.98/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.eot');
+    src: local('☺'), url('http://54.191.11.98/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.ttf') format('truetype'), url('http://54.191.11.98/wp-content/uploads/Emtype-Foundry-Geogrotesque-Regular.svg') format('svg');
 }
 .post img {
     display:block;
@@ -397,7 +397,7 @@ body {
 
 //JSON query for popup content
 var posts = new Array();
-$.getJSON( "http://localhost:8888/popups/info/" ) 
+$.getJSON( "http://54.191.11.98/popups/info/" ) 
     .done(function( json ) {
         for (var i = 0; i < json.length; i++) {
             posts[i] = json[i];

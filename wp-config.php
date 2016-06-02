@@ -1,4 +1,7 @@
 <?php
+if ( file_exists( dirname( __FILE__ ) . '/wp-config-local.php' ) ) { 
+require_once dirname( __FILE__ ) . '/wp-config-local.php';
+}
 /**
  * The base configuration for WordPress
  *
