@@ -421,7 +421,7 @@ body {
     transform: translate(-50%, -50%);
 }
 </style>
-<body>
+<body id="leaflet-map">
 <div id="loading">
 <div class="container">
 <span class="logo"></span>
@@ -451,7 +451,7 @@ body {
 
 //JSON query for popup content
 var posts = new Array();
-$.getJSON( "http://localhost/popups/info/" ) 
+$.getJSON( "http://localhost:8888/popups/info/" ) 
     .done(function( json ) {
         for (var i = 0; i < json.length; i++) {
             posts[i] = json[i];
@@ -1021,8 +1021,8 @@ function createEastlakePins(){
     // Rubia
     var RubiaPopup = L.popup(popupOptions)
     .setLatLng([ 136*p, 280*p ])
-    .setContent('<b style="font-size: 17px;">RUBIA ESPRESSO BAR</b><br><br>Located on the 1st floor of the 1100 Eastlake Building, at Rubia Espresso, you will enjoy local espresso drinks and Starbucks coffee, specialty teas, assorted pastries and desserts. During lunch, enjoy flavorful grab-and-go choices, including freshly prepared sandwiches, salads abundant with local, sustainable produce and made-from-scratch soups.')
-    ;
+    .setContent(getPost('RUBIA ESPRESSO BAR'));
+    
     eastlakePins[2] = L.marker([136*p, 280*p], {icon: POIicon});
     eastlakePins[2].on('click', function(){
                      RubiaPopup.openOn(map);
@@ -1098,8 +1098,8 @@ function createSCCAPins(){
     // Red Brick Bistro
     var RedBrickBistroPopup = L.popup(popupOptions)
     .setLatLng([ 213*p, 295*p ])
-    .setContent('<b style="font-size: 17px;">RED BRICK BISTRO</b><br><br>Located on the 2nd floor in the Seattle Cancer Care Alliance building, you will enjoy specialty coffee and espresso, local fruits, fresh pastries and hot cereals. During lunch, enjoy entrées with flavors from home and around the world. For those on the go, we offer healthy grab and go choices including freshly prepared sandwiches, made-from-scratch soups and local beverages.')
-    ;
+    .setContent(getPost('RED BRICK BISTRO'));
+    
     SCCAPins[3] = L.marker([213*p, 295*p], {icon: POIicon});
     SCCAPins[3].on('click', function(){
                        RedBrickBistroPopup.openOn(map);
@@ -1118,8 +1118,8 @@ function createSCCAPins(){
     // ATM
     var ATMPopup = L.popup(popupOptions)
     .setLatLng([ 213*p, 335*p ])
-    .setContent('<b style="font-size: 17px;">ATM (1ST FLOOR)</b><br><br>ATM - Sound Credit Union (Deposit Taking, Surcharge Free, 24-hour, Accepts Deposits) ')
-    ;
+    .setContent(getPost('ATM (1ST FLOOR)'));
+    
     SCCAPins[5] = L.marker([213*p, 335*p], {icon: POIicon});
     SCCAPins[5].on('click', function(){
                    ATMPopup.openOn(map);
@@ -1217,8 +1217,8 @@ function createThomasPins(){
     // Thomas Reception
     var ThomasReceptionPopup = L.popup(popupOptions)
     .setLatLng([ 115*p, 335*p ])
-    .setContent('<b style="font-size: 17px;">THOMAS RECEPTION</b><br><br>This is where visitors sign in for Thomas, Weintraub and Hutchinson buildings. We also provide visitor access cards and parking sign in. Employee loaner badges may be checked out here. We direct visitor’s and guest to meetings and events in the buildings or on Campus. The reception desk is staffed M-F, 7:00 a.m. to 7:00 p.m.')
-    ;
+    .setContent(getPost('THOMAS RECEPTION'));
+    
     thomasPins[5] = L.marker([115*p, 335*p], {icon: POIicon});
     thomasPins[5].on('click', function(){
                    ThomasReceptionPopup.openOn(map);
@@ -1227,8 +1227,8 @@ function createThomasPins(){
     // Nobel
     var NobelPopup = L.popup(popupOptions)
     .setLatLng([ 123*p, 355*p ])
-    .setContent('<b style="font-size: 17px;">THE HUTCH\'S NOBEL LAUREATES</b><br><br>Fred Hutch is home to three Nobel laureates. The prize was established by the will of Alfred Nobel in 1895, awarded annually since 1901 for outstanding contributions in physics, chemistry, literature, peace, and physiology or medicine.')
-    ;
+    .setContent(getPost('THE HUTCH\'S NOBEL LAUREATES'));
+    
     thomasPins[6] = L.marker([123*p, 355*p], {icon: POIicon});
     thomasPins[6].on('click', function(){
                      NobelPopup.openOn(map);
@@ -1247,8 +1247,8 @@ function createThomasPins(){
     // Patient Recognition Wall
     var RecognitionWallPopup = L.popup(popupOptions)
     .setLatLng([ 137*p, 395*p ])
-    .setContent('<b style="font-size: 17px;">PATIENT RECOGNITION WALL</b><br><br>More than 1 million people have received blood stem cell transplants around the globe, all of which trace back to the pioneering work at Fred Hutch. In 1975, Hutch physician-scientists performed roughly 100 transplants per year. Today more than 50,000 patients are transplanted annually worldwide, about 500 of whom are treated by our researchers. The courage of these patients inspires us and drives our continued research.')
-    ;
+    .setContent(getPost('PATIENT RECOGNITION WALL'));
+    
     thomasPins[8] = L.marker([137*p, 395*p], {icon: POIicon});
     thomasPins[8].on('click', function(){
                      RecognitionWallPopup.openOn(map);
@@ -1267,8 +1267,8 @@ function createThomasPins(){
     // The Hutchinson Story
     var HutchinsonStoryPopup = L.popup(popupOptions)
     .setLatLng([ 151*p, 435*p ])
-    .setContent('<b style="font-size: 17px;">THE HUTCHINSON STORY</b><br><br>Although Fred Hutch opened its doors in 1975, its history began nearly 20 years earlier with the vision of Seattle surgeon Dr. William Hutchinson, brother of baseball hero Fred Hutchinson. Fred’s cancer served as the driving force for Dr. Bill in the creation of a center devoted to studying the disease.')
-    ;
+    .setContent(getPost("THE HUTCHINSON STORY"));
+    
     thomasPins[10] = L.marker([151*p, 435*p], {icon: POIicon});
     thomasPins[10].on('click', function(){
                      HutchinsonStoryPopup.openOn(map);
@@ -1277,8 +1277,8 @@ function createThomasPins(){
     // President and Director's Office
     var OfficePopup = L.popup(popupOptions)
     .setLatLng([ 158*p, 455*p ])
-    .setContent(getPost('PRESIDENT AND DIRECTOR\'S OFFICE'))
-    ;
+    .setContent(getPost('PRESIDENT AND DIRECTOR\'S OFFICE'));
+
     thomasPins[11] = L.marker([158*p, 455*p], {icon: POIicon});
     thomasPins[11].on('click', function(){
                       OfficePopup.openOn(map);
@@ -1287,8 +1287,8 @@ function createThomasPins(){
     // Etude de Femme
     var EtudePopup = L.popup(popupOptions)
     .setLatLng([ 165*p, 475*p ])
-    .setContent('<b style="font-size: 17px;">ETUDE DE FEMME</b><br><br>This small piece by the great sculptor shows off his mastery of anatomy and his ability to manipulate bronze to create a sense of motion. The woman’s right hand is raised to her shoulder and clasped, with the left shoulder pointing downward. These seemingly simple gestures in Rodin’s demure, semi-reclining nude are evocative of Michelangelo’s great Renaissance masterpiece, David.')
-    ;
+    .setContent(getPost("ETUDE DE FEMME"));
+    
     thomasPins[12] = L.marker([165*p, 475*p], {icon: POIicon});
     thomasPins[12].on('click', function(){
                       EtudePopup.openOn(map);
@@ -1413,8 +1413,8 @@ function createWeintraubPins(){
     // Bricks and Slates
     var BricksAndSlatesPopup = L.popup(popupOptions)
     .setLatLng([ 250*p, 365*p ])
-    .setContent('<b style="font-size: 17px;">BRICKS AND SLATES</b><br><br>Be part of Fred Hutch\'s campus and support cancer research with an engraved brick or slate. Whether you’d like to honor or memorialize a friend or family member, or commemorate a special anniversary, birthday or other life event, your purchase will fuel breakthrough research that saves lives. Your brick or slate will be customized with your own personal message and placed in Mundie Courtyard on the Fred Hutch campus. Your tribute will become forever a part of the history of our world-renowned campus.')
-    ;
+    .setContent(getPost("BRICKS AND SLATES"));
+
     weintraubPins[4] = L.marker([250*p, 365*p], {icon: POIicon});
     weintraubPins[4].on('click', function(){
                       BricksAndSlatesPopup.openOn(map);
@@ -1431,8 +1431,8 @@ function createWeintraubPins(){
     // Time Capsule
     var TimeCapsulePopup = L.popup(popupOptions)
     .setLatLng([ 170*p, 335*p ])
-    .setContent('<b style="font-size: 17px;">TIME CAPSULE</b><br><br>A time capsule was buried on the Fred Hutch campus on June 1, 1993, to be opened in 2093. It contains two fruit flies named Chuck and Thelma, a marrow-aspiration needle, a Hickman catheter, DNA from an HIV lab, a Starbucks cup and a day’s worth of lab trash.')
-    ;
+    .setContent(getPost('TIME CAPSULE'));
+
     weintraubPins[5] = L.marker([170*p, 335*p], {icon: POIicon});
     weintraubPins[5].on('click', function(){
                         TimeCapsulePopup.openOn(map);
@@ -1441,8 +1441,8 @@ function createWeintraubPins(){
     // Towne Court (Waterfall)
     var TowneCourtPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 210*p ])
-    .setContent(getPost('TOWNE COURT (WATERFALL)'))
-    ;
+    .setContent(getPost('TOWNE COURT (WATERFALL)'));
+
     weintraubPins[6] = L.marker([215*p, 210*p], {icon: POIicon});
     weintraubPins[6].on('click', function(){
                         TowneCourtPopup.openOn(map);
@@ -1451,8 +1451,8 @@ function createWeintraubPins(){
     // Jennifer Pelton Auditorium
     var AuditoriumPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 230*p ])
-    .setContent(getPost('JENNIFER PELTON AUDITORIUM'))
-    ;
+    .setContent(getPost('JENNIFER PELTON AUDITORIUM'));
+
     weintraubPins[7] = L.marker([215*p, 230*p], {icon: POIicon});
     weintraubPins[7].on('click', function(){
                         AuditoriumPopup.openOn(map);
@@ -1461,8 +1461,8 @@ function createWeintraubPins(){
     // Art
     var ArtPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 250*p ])
-    .setContent('<b style="font-size: 17px;">PRESTON SINGLETARY COLLECTION</b><br><br>For nearly two decades, Preston Singletary has straddled two unique cultures — melding his Native American Tlingit ancestry with the dynamism of the Studio Glass movement. Tlingit people traditionally used organic materials including wood, cedar bark, and spruce root in the creation of utilitarian and symbolic objects such as totem poles, baskets and rain hats.  Singletary was schooled in the traditions of European glass, studying the aesthetics and techniques of glassmakers from Italy to Sweden, and he uses this contemporary sculptural medium to capture the essence of Tlingit forms.<br><br><b style="font-size: 17px;">RON REEDER PHOTOGRAPHY</b><br><br>These rich and textural photos capture the wanderlust of the photographer. Reeder is a retired member of Fred Hutch’s Basic Sciences Division.')
-    ;
+    .setContent(getPost("PRESTON SINGLETARY COLLECTION"));
+
     weintraubPins[8] = L.marker([215*p, 250*p], {icon: POIicon});
     weintraubPins[8].on('click', function(){
                         ArtPopup.openOn(map);
@@ -1471,8 +1471,8 @@ function createWeintraubPins(){
     // Arnold Library
     var LibraryPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 270*p ])
-    .setContent('<b style="font-size: 17px;">ARNOLD LIBRARY</b><br><br>The Arnold Library provides high quality, responsive services and resources in support of Fred Hutch\'s research, education and patient care programs. Our physical space houses study carrels with wireless Internet access, patron computers and the Shared Resources Computer Lab. The digital side of our operation encompasses subscription management for more than 25,000 ebooks and over 32,000 online journals and a variety of databases and web services. Librarians curate Fred Hutch researchers profiles, provide center-wide tracking of scholarly publishing, support Center authors with NIH Public Access Policy compliance, manage the Shared Resources website, provide training and support for citation management tools like EndNote, provide reports and consultation on publication metrics, host a course guides system to support faculty instructors, manage the Fred Hutch history archive and administer several institutional repositories.')
-    ;
+    .setContent(getPost("ARNOLD LIBRARY"));
+
     weintraubPins[9] = L.marker([215*p, 270*p], {icon: POIicon});
     weintraubPins[9].on('click', function(){
                         LibraryPopup.openOn(map);
@@ -1481,8 +1481,8 @@ function createWeintraubPins(){
     // Double Helix Espresso
     var EspressoPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 290*p ])
-    .setContent('<b style="font-size: 17px;">DOUBLE HELIX ESPRESSO</b><br><br>Located in the Weintraub Building, enjoy Starbucks espresso drinks and coffee, specialty teas, assorted pastries and desserts.  A selection of Grab-N-Go sandwiches and salads, ask your Barista for what\'s available.')
-    ;
+    .setContent(getPost("DOUBLE HELIX ESPRESSO"));
+
     weintraubPins[10] = L.marker([215*p, 290*p], {icon: POIicon});
     weintraubPins[10].on('click', function(){
                         EspressoPopup.openOn(map);
@@ -1491,8 +1491,8 @@ function createWeintraubPins(){
     // ATM (Inside Double Helix Café)
     var ATMPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 310*p ])
-    .setContent('<b style="font-size: 17px;">ATM (INSIDE DOUBLE HELIX CAFÉ)</b><br><br>ATM - Sounds Credit Union (Restricted Access, Surcharge Free, Restricted Access) ')
-    ;
+    .setContent(getPost("ATM (INSIDE DOUBLE HELIX CAFÉ)"));
+
     weintraubPins[11] = L.marker([215*p, 310*p], {icon: POIicon});
     weintraubPins[11].on('click', function(){
                          ATMPopup.openOn(map);
@@ -1501,8 +1501,8 @@ function createWeintraubPins(){
     // Double Helix Café
     var CaféPopup = L.popup(popupOptions)
     .setLatLng([ 215*p, 330*p ])
-    .setContent('<b style="font-size: 17px;">DOUBLE HELIX CAFÉ</b><br><br>Located in the Weintraub Building, enjoy traditional dishes to comfort food.  You\'ll find a salad bar abundant with local, sustainable produce and toppings, healthy grab-and-go choices, including freshly prepared sandwiches, made-from-scratch soups and local beverages.')
-    ;
+    .setContent(getPost("DOUBLE HELIX CAFÉ"));
+
     weintraubPins[12] = L.marker([215*p, 330*p], {icon: POIicon});
     weintraubPins[12].on('click', function(){
                          CaféPopup.openOn(map);
@@ -1599,8 +1599,8 @@ function createArnoldPins(){
     // Arnold Rooftop
     var ArnoldRooftopPopup = L.popup(popupOptions)
         .setLatLng([ 310*p, 275*p ])
-        .setContent(getPost('ARNOLD ROOFTOP DECK'))
-        ;
+        .setContent(getPost('ARNOLD ROOFTOP DECK'));
+
     arnoldPins[2] = L.marker([310*p, 272*p], {icon: POIicon});
     arnoldPins[2].on('click', function(){
                 ArnoldRooftopPopup.openOn(map);
@@ -1613,11 +1613,11 @@ function createArnoldPins(){
         autoPan: false,
         maxHeight: 185*p
     };
+
     // Vessel
     var VesselPopup = L.popup(popupOptions)
     .setLatLng([ 125*p, 405*p ])
-    .setContent(getPost('VESSEL'))
-    ;
+    .setContent(getPost('VESSEL'));
     arnoldPins[3] = L.marker([125*p, 405*p], {icon: POIicon});
     arnoldPins[3].on('click', function(){
                      VesselPopup.openOn(map);
@@ -1626,8 +1626,7 @@ function createArnoldPins(){
     // Arnold Reception
     var ArnoldReceptionPopup = L.popup(popupOptions)
     .setLatLng([ 167*p, 190*p ])
-    .setContent('<b style="font-size: 17px;">ARNOLD RECEPTION</b><br><br>PHS/Arnold  Reception is your area for parking and check in  needs  for  visitors to the Arnold Building. We contact  hosts for guest  pickup or  direct guests to their meeting spaces,  the Visitor Center (located in the lobby) and other areas of the building  and campus. Reception is able to assist with general questions in regards to  Fred Hutch,  and the  general needs of visitors and employees.<br><br>PHS/Arnold Reception is open Monday through Friday, 8 am to 5 pm.                                                                                                 ')
-    ;
+    .setContent(getPost("ARNOLD RECEPTION"));
     arnoldPins[4] = L.marker([167*p, 190*p], {icon: POIicon});
     arnoldPins[4].on('click', function(){
                      ArnoldReceptionPopup.openOn(map);
@@ -1651,8 +1650,7 @@ function createArnoldPins(){
     // Visitor Center
     var VisitorCenterPopup = L.popup(popupOptions)
     .setLatLng([ 169*p, 210*p ])
-    .setContent(getPost('VISITOR CENTER'))
-    ;
+    .setContent(getPost('VISITOR CENTER'));
     arnoldPins[7] = L.marker([169*p, 210*p], {icon: POIicon});
     arnoldPins[7].on('click', function(){
                      VisitorCenterPopup.openOn(map);
@@ -1661,8 +1659,7 @@ function createArnoldPins(){
     // Carl and Reneé Behnke Conference Suite
     var CarlAndReneéPopup = L.popup(popupOptions)
     .setLatLng([ 173*p, 230*p ])
-    .setContent(getPost('CARL AND RENEÉ BEHNKE CONFERENCE SUITE'))
-    ;
+    .setContent(getPost('CARL AND RENEÉ BEHNKE CONFERENCE SUITE'));
     arnoldPins[8] = L.marker([173*p, 230*p], {icon: POIicon});
     arnoldPins[8].on('click', function(){
                      CarlAndReneéPopup.openOn(map);
@@ -1681,8 +1678,7 @@ function createArnoldPins(){
     // Consuming Choices Café
     var CaféPopup = L.popup(popupOptions)
     .setLatLng([ 173*p, 270*p ])
-    .setContent('<b style="font-size: 17px;">CONSUMING CHOICES CAFÉ</b><br><br>Located in the Arnold Building, it\'s a perfect way to start your morning. Enjoy assorted pastries and Starbucks espresso, or a hearty breakfast special. From traditional dishes and comfort food to imaginative and nutritious vegetarian and vegan entrées, we will capture your taste appeal. You will find a salad bar abundant with local, sustainable produce and toppings, healthy grab-and-go choices, including freshly prepared sandwiches, made-from-scratch soups and local beverages.')
-    ;
+    .setContent(getPost("CONSUMING CHOICES CAFÉ"));
     arnoldPins[10] = L.marker([173*p, 270*p], {icon: POIicon});
     arnoldPins[10].on('click', function(){
                      CaféPopup.openOn(map);
@@ -1691,8 +1687,7 @@ function createArnoldPins(){
     // UW Shuttle
     var UWShuttlePopup = L.popup(popupOptions)
     .setLatLng([ 150*p, 330*p ])
-    .setContent(getPost('UNIVERSITY OF WASHINGTON SHUTTLE'))
-    ;
+    .setContent(getPost('UNIVERSITY OF WASHINGTON SHUTTLE'));
     arnoldPins[11] = L.marker([150*p, 330*p], {icon: POIicon});
     arnoldPins[11].on('click', function(){
                       UWShuttlePopup.openOn(map);
@@ -1701,8 +1696,7 @@ function createArnoldPins(){
     // PHS Study Reception
     var PHSStudyReceptionPopup = L.popup(popupOptions)
     .setLatLng([ 178*p, 340*p ])
-    .setContent(getPost('PUBLIC HEALTH SCIENCES STUDY PARTICIPANT RECEPTION'))
-    ;
+    .setContent(getPost('PUBLIC HEALTH SCIENCES STUDY PARTICIPANT RECEPTION'));
     arnoldPins[12] = L.marker([178*p, 340*p], {icon: POIicon});
     arnoldPins[12].on('click', function(){
                       PHSStudyReceptionPopup.openOn(map);
@@ -1711,8 +1705,7 @@ function createArnoldPins(){
     // Ounce Café
     var OunceCaféReceptionPopup = L.popup(popupOptions)
     .setLatLng([ 178*p, 355*p ])
-    .setContent('<b style="font-size: 17px;">AN OUNCE OF PREVENTION ESPRESSO</b><br><br>Located in the Arnold Building Atrium, enjoy local espresso drinks and coffee, specialty teas, assorted bottled beverages, and assorted pastries and desserts.')
-    ;
+    .setContent(getPost("AN OUNCE OF PREVENTION ESPRESSO"));
     arnoldPins[13] = L.marker([178*p, 355*p], {icon: POIicon});
     arnoldPins[13].on('click', function(){
                       OunceCaféReceptionPopup.openOn(map);
@@ -1721,8 +1714,7 @@ function createArnoldPins(){
     // SP Parking
     var SPParkingReceptionPopup = L.popup(popupOptions)
     .setLatLng([ 170*p, 380*p ])
-    .setContent('<b style="font-size: 17px;">STUDY PARTICIPANT PARKING</b><br><br>Participants in PHS studies may park in the Participant spaces on Level D (enter off Campus Drive), unless otherwise directed by the Study Coordinator. They should register their vehicle at the front desk of the Prevention Center. They should park in a space with a sign that says “reserved Study Participant.” There is no time limit for parking for study participants. Roll up gates in the Arnold garage open at 7:00 a.m. and close at 7:00 p.m. If the garage gates are down, the participant should contact Security by pressing the red button adjacent to the parking attendant booth. Security staff will then open the garage gates.')
-    ;
+    .setContent(getPost("STUDY PARTICIPANT PARKING"));
     arnoldPins[14] = L.marker([170*p, 380*p], {icon: POIicon});
     arnoldPins[14].on('click', function(){
                       SPParkingReceptionPopup.openOn(map);
@@ -2237,7 +2229,7 @@ function addDefaultPins(){
     // Vessel
     var VesselPopup = L.popup(popupOptions)
     .setLatLng([ 152*p, 286*p ])
-    .setContent(getPost('vessel'))
+    .setContent(getPost('VESSEL'))
     ;
     pins[33] = L.marker([152*p, 286*p], {icon: POIicon}).addTo(map);
     pins[33].on('click', function(){
@@ -2494,8 +2486,8 @@ function responsive() {
 
 // UNCOMMENT THIS TO SEE LATITUDE/LONGITUDE ON SCREEN WHEN YOU CLICK ON A SPOT
 /*map.on('click', function(e) {
- alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
- });*/
+    alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+});*/
  
 // removes all pins (called when making responsive changes)
 // Preconditions: Pin arrays initialized
