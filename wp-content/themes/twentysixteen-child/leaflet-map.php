@@ -910,6 +910,9 @@ function drawBack() {
     return back;
 }
 
+// Creation of pins for Eastlake path
+// Preconditions: Images exist and CMS has pin content
+// Postconditions: Pin array initialized and ready to display
 function createEastlakePins(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -975,9 +978,11 @@ function createEastlakePins(){
                                          iconSize: [86*p, 17*p]
                                          });
     eastlakePins[6] = L.marker([73*p, 310*p], {icon: EastlakeAvenueEastIcon});
-    
 }
 
+// Creation of pins for SCCA path
+// Preconditions: Images exist and CMS has pin content
+// Postconditions: Pin array initialized and ready to display
 function createSCCAPins(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -1081,9 +1086,11 @@ function createSCCAPins(){
                                 iconSize: [24*p, 63.5*p]
                                 });
     SCCAPins[11] = L.marker([55*p, 580*p], {icon: YaleAvenueIcon});
-    
 }
 
+// Creation of pins for Thomas path
+// Preconditions: Images exist and CMS has pin content
+// Postconditions: Pin array initialized and ready to display
 function createThomasPins(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -1283,6 +1290,9 @@ function createThomasPins(){
     thomasPins[22] = L.marker([200*p, 530*p], {icon: EastlakeAvenueEastIcon});
 }
 
+// Creation of pins for Weintraub path
+// Preconditions: Images exist and CMS has pin content
+// Postconditions: Pin array initialized and ready to display
 function createWeintraubPins(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -1476,9 +1486,11 @@ function createWeintraubPins(){
                                         iconSize: [78*p, 61.5*p]
                                         });
     weintraubPins[20] = L.marker([167*p, 140*p], {icon: EastlakeAvenueEastIcon});
-    
 }
 
+// Creation of pins for Arnold path
+// Preconditions: Images exist and CMS has pin content
+// Postconditions: Pin array initialized and ready to display
 function createArnoldPins(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -1648,9 +1660,11 @@ function createArnoldPins(){
                                  iconSize: [50.5*p, 34*p]
                                  });
     arnoldPins[17] = L.marker([182*p, 22*p], {icon: AlohaStreetIcon});
-    
 }
 
+// Creation of pins for Yale path
+// Preconditions: Images exist and CMS has pin content
+// Postconditions: Pin array initialized and ready to display
 function createYalePins(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -1842,9 +1856,11 @@ function createYalePins(){
                                       iconSize: [46.5*p, 69*p]
                                       });
     yalePins[19] = L.marker([135*p, 555*p], {icon: MinorAvenueNorthIcon});
-
 }
 
+// Creation of Legend and FH logo (pins that are always there)
+// Preconditions: Images exist
+// Postconditions: Pin array initialized and displayed
 function addPermanentGraphics()
 {
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -1874,6 +1890,8 @@ function addPermanentGraphics()
 }
 
 // add building names and other pins for default map view
+// Preconditions: Images exist and CMS has pin content
+// Postconditions: Pin array initialized and displayed
 function addDefaultPins(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -2205,6 +2223,7 @@ function addDefaultPins(){
                Pin4Popup.openOn(map);
                });
     
+    // close popups if user changes screen size
     if (screenSizeChanging)
         map.closePopup();
     
