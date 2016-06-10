@@ -1,3 +1,56 @@
+ <!-- CODE DOCUMENTATION
+ 
+ PURPOSE:
+ The purpose of this code is to create a 3D virtual campus tour for the Fred Hutch campus. 
+ This code uses JQuery to pull content from a CMS in WordPress, and the Leaflet Javascript library
+ for events and pin placements.
+ 
+ OVERVIEW OF CODE FLOW:
+ -loading screen (DNA strand) shows up
+ -pin content loaded from CMS
+ -after pin content load is complete, create initial map view (Leaflet)
+ -preload PNG pictures for paths and default pins
+ -once preloading pictures is complete, loading screen (DNA strand) goes away and map displayed
+ -user clicking on hotzone calls function to "zoom in"; specific function called for path to load pins
+ -user clicking on pin brings up popup (popup info defined next to declaration of pin - pulled from CMS)
+ 
+ DEPENDENCIES:
+ -WordPress twentysixteen-child theme
+ -PNGs of map and icons in uploads folder
+ -post content from CMS
+ 
+ TABLE OF CONTENTS (in sequential line order of script code - defined below):
+ 1. Map Initialization
+ 2. Preload Images
+ 3. Load Images via PNG paths
+ 4. Create hotzones (and define what happens when a hotzone is clicked)
+ 5. Highlight feature for hotzones
+ 6. Reset highlight for hotzones
+ 7. Change angle (zoom in when hotzone clicked)
+ 8. Go back (zoom out when back button clicked)
+ 9. Draw back button 
+ 10. Create Eastlake path pins
+ 11. Create SCCA path pins
+ 12. Create Thomas path pins
+ 13. Create Weintraub path pins
+ 14. Create Arnold path pins
+ 15. Create Yale path pins
+ 16. Add permanent graphics (pins that are always there - legend and FH logo)
+ 17. Add default pins (pins that show up on the default/home image)
+ 18. Get post content (retrieves content from CMS for pins)
+ 19. Add layers for go back (puts default pins/hotzones back when zoomed back out to default view)
+ 20. Remove layers for zoom in (removes default pins when zooming into zones)
+ 21. Click (what happens when a hotzone is clicked)
+ 22. Window resized and pictures need to be adjusted
+ 23. Add pins when zoomed in
+ 24. Remove zoomed in pins when zoomed out
+ 25. Responsive (alter picture sizes for screen dimensions)
+ 26. See latitude/longitude of a certain map spot on click
+ 27. Clear pins (remove all)
+ 28. Clear hotzones (remove all)
+ 29. Sleep (mimics system sleep; used for zoom in paths to prevent glitching)
+ -->
+ 
 <?php
     /*
      Template Name: Leaflet Map
@@ -410,7 +463,7 @@ $.getJSON( "http://54.191.11.98/popups/info/" )
         begin('');
     });
 
-
+// removes loading screen when all images loaded
 jQuery(window).load(function () {
     jQuery('#loading').hide();
     $('body').unbind('touchmove');
@@ -422,10 +475,9 @@ function begin(posts) {
 $('body').addClass('stop-scrolling');
 $('body').bind('touchmove', function(e){e.preventDefault()});
 
-
-
 L.Browser.webkit3d = false;
 L.Browser.any3d = false;
+
 //Create sequences for image arrays
 var eastlakeSequence = new Array();
 var arnoldSequence = new Array();
@@ -472,7 +524,7 @@ if (window.location.protocol != "http:"){
 var pathArray = window.location.pathname.split( '/' );
 var directoryFolder = pathArray[1];
 
-//put them together with folder path ( http://localhost:888/wordpresstest/wp-content/uploads/2016 )
+//put them together with folder path (ex. http://localhost:888/wordpresstest/wp-content/uploads/2016 )
 if (directoryFolder == "wordpresstest")
     urlBegin = urlBegin + "/" + directoryFolder + "/wp-content/uploads";
 else
@@ -512,6 +564,9 @@ backButton = drawBack();
 // PRELOAD IMAGES
 preloadImages();
 
+// Preload images
+// Preconditions: Images exist
+// Postconditions: Path arrays created and ready to use
 function preloadImages() {
     loadImages();
     for (i = 1; i < eastlakeSequence.length; i++){
@@ -540,6 +595,10 @@ function preloadImages() {
         map.removeLayer(yaleSequence[i]);
     }
 }
+
+// Loads images from PNG paths
+// Preconditions: preloadImages() calls this
+// Postconditions: Path arrays created and ready to use
 function loadImages(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -621,6 +680,10 @@ function loadImages(){
     }
     
 }
+
+// Create hotzone polygons for users to click; houses what happens when a hotzone is clicked
+// Preconditions: NONE
+// Postconditions: 6 hotzones created and ready to users to hover over to highlight
 function createHotzones(){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -760,7 +823,10 @@ function createHotzones(){
                    click(yaleSequence, yalePins);
                    });
 }
-//highlight for hotzones on mouseover
+
+// highlight for hotzones on mouseover
+// Preconditions: Event fired
+// Postconditions: Hotzone highlighted green
 function highlightFeature(e) {
     var layer = e.target;
     
@@ -775,7 +841,10 @@ function highlightFeature(e) {
         layer.bringToFront();
     }
 }
-//reset hotzone after mouseout
+
+// reset hotzone after mouseout
+// Preconditions: Hotzone is highlighted green
+// Postconditions: Hotzone not highlighted anymore
 function resetStyle(e) {
     var layer = e.target;
     
@@ -791,6 +860,10 @@ function resetStyle(e) {
         layer.bringToFront();
     }
 }
+
+// Does the animation path for a selection hotzone
+// Preconditions: Hotzone clicked
+// Postconditions: "zoomed in view" with different PNG on top for users to see
 function changeAngle(sequence){
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -856,6 +929,10 @@ function changeAngle(sequence){
                   back(sequence);
                   });
 }
+
+// Zooms back out when the back button is hit
+// Preconditions: Back button clicked
+// Postconditions: Default view is the top view for users to see
 function back(sequence) {
     if (currentState == state.SCCA)
         zoomPinsRemove(SCCAPins);
@@ -894,6 +971,9 @@ function back(sequence) {
     zoomed = false;
 }
 
+// Draws the back button
+// Preconditions: Image exists
+// Postconditions: Back button initialized 
 function drawBack() {
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var p = w/1400;
@@ -2229,6 +2309,9 @@ function addDefaultPins(){
     
 }
 
+// Get pin content
+// Preconditions: CMS has pin content
+// Postconditions: Content returned
 function getPost(title) {
     var content = '<div class="post"><b style="font-size: 17px;">';
     var i = 0;
@@ -2250,6 +2333,8 @@ function getPost(title) {
 }
 
 // add pins back when you hit the back button to go to default map view
+// Preconditions: Hotzones and default pins already initialized
+// Postconditions: Hotzones and default pins displayed 
 function addLayersForGoBack(){
     addDefaultPins();
     for (var i = 1; i < pins.length; i++){
@@ -2267,13 +2352,18 @@ function addLayersForGoBack(){
     }
 }
 
-// remove the pins when you hit a hotzone and zoom in (except FH Logo and legend)
+// remove the default pins when you hit a hotzone and zoom in (except FH Logo and legend)
+// Preconditions: Pins exist
+// Postconditions: Pins removed from map
 function removeLayersForZoom(){
     for (var i = 1; i < pins.length; i++){
         map.removeLayer(pins[i]);
     }
 }
 
+// List of function calls for when a hotzone is clicked
+// Preconditions: zoomPins initialized and sequence defined
+// Postconditions: zoomed in and pins displayed correctly
 function click(sequence, zoomPins) {
     clearHotzones();
     removeLayersForZoom();
@@ -2282,6 +2372,7 @@ function click(sequence, zoomPins) {
     currSequence = sequence;
 }
 
+// called when the window is resized and pins/hotzones/pictures need to be resized
 $(document).ready(function(){
     $(window).resize(function(){
         screenSizeChanging = true;
@@ -2294,6 +2385,8 @@ $(document).ready(function(){
 });
 
 // draw pins on zoom in
+// Preconditions: Pin array initialized
+// Postconditions: Pins displayed
 function zoomPinsDraw(zoomPins)
 {
     for (var i = 1; i < zoomPins.length; i++) {
@@ -2302,6 +2395,8 @@ function zoomPinsDraw(zoomPins)
 }
 
 // remove zoom pins on zoom out
+// Preconditions: Pin array initialized and added to map
+// Postconditions: Pins removed from map display
 function zoomPinsRemove(zoomPins)
 {
     for (var i = 1; i < zoomPins.length; i++) {
@@ -2310,6 +2405,8 @@ function zoomPinsRemove(zoomPins)
 }
 
 // called when screen is resized by user (and on inital draw)
+// Preconditions: PNGs accurate and ready to load
+// Postconditions: Map fits dimensions of screen
 function responsive() {
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     var percent = w/1400;
@@ -2323,6 +2420,7 @@ function responsive() {
     initialView = new L.imageOverlay( url, [[ center_h * 2 * percent, 0 ], [ 0, center_w * 2 * percent]] );
     map.addLayer(initialView);
     
+    // if you are zoomed in
     if (zoomed) {
         map.eachLayer(function (layer) {
                       map.removeLayer(layer);
@@ -2375,6 +2473,7 @@ function responsive() {
                           });
         }
     }
+    // if you are on default view
     else {
         createHotzones();
         addDefaultPins();
@@ -2385,10 +2484,14 @@ function responsive() {
     map.invalidateSize(false);
 }
 
+// UNCOMMENT THIS TO SEE LATITUDE/LONGITUDE ON SCREEN WHEN YOU CLICK ON ANY POINT ON THE MAP
 /*map.on('click', function(e) {
     alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
 });*/
  
+// removes all pins (called when making responsive changes)
+// Preconditions: Pin arrays initialized
+// Postconditions: Pins removed
 function clearPins(){
     for (var i = 1; i < permanentGraphics.length; i++) {
         map.removeLayer(permanentGraphics[i]);
@@ -2399,6 +2502,10 @@ function clearPins(){
     delete pins;
     delete permanentGraphics;
 }
+
+// remove hotzones (called when making reponsive changes)
+// Preconditions: Hotzone array initialized
+// Postconditions: Hotzones removed
 function clearHotzones(){
     for (var i = 1; i < hotzones.length; i++) {
         map.removeLayer(hotzones[i]);
@@ -2406,7 +2513,9 @@ function clearHotzones(){
     delete hotzones;
 }
 
-// mimic system sleep
+// mimic system sleep (used when zooming in to prevent pictures from being added too fast)
+// Preconditions: NONE
+// Postconditions: NONE
 function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
